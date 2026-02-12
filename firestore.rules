@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is active
+    function isActiveUser() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.active == true;
+    }
+    
+    // Helper function to check user role
+    function hasRole(role) {
+      return isActiveUser() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role;
+    }
+    
+    // Users collection - users can read their own data, only owners can write
+    match /users/{userId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow write: if hasRole('owner');
+    }
+    
+    // Schedules collection - employees can read their own schedules, managers/owners can read/write all
+    match /schedules/{scheduleId} {
+      allow read: if isActiveUser() && 
+                     (resource.data.employeeId == request.auth.uid || 
+                      hasRole('manager') || 
+                      hasRole('owner'));
+      allow write: if hasRole('manager') || hasRole('owner');
+    }
+    
+    // Announcements collection - all active employees can read, managers/owners can write
+    match /announcements/{announcementId} {
+      allow read: if isActiveUser();
+      allow create, update, delete: if hasRole('manager') || hasRole('owner');
+    }
+    
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
