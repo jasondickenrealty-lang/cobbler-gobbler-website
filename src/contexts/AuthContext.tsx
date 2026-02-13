@@ -5,7 +5,7 @@ import { User, onAuthStateChanged, signInWithEmailAndPassword, signOut as fireba
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 
-export type UserRole = 'owner' | 'manager' | 'employee';
+export type UserRole = 'employee' | 'cashier' | 'kitchen' | 'driver' | 'manager' | 'owner' | 'admin';
 
 export interface UserData {
   role: UserRole;
