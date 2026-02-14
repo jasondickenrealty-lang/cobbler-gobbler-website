@@ -1,4 +1,4 @@
-# 🍨 CobbleStone Creamery Website - Setup Complete!
+# 🍨 Cobblestone Creamery Website - Setup Complete!
 
 Your production-ready Next.js website has been created at:
 **`c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website`**

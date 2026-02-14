@@ -1,4 +1,4 @@
-# CobbleStone Creamery Ice Cream Shop Website
+# Cobblestone Creamery Ice Cream Shop Website
 
 Production-ready Next.js website with Firebase integration.
 

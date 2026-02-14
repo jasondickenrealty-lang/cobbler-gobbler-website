@@ -20,7 +20,7 @@ Example files:
 ```tsx
 <Image 
   src="/images/hero.jpg" 
-  alt="CobbleStone Creamery Ice Cream"
+  alt="Cobblestone Creamery Ice Cream"
   width={1200}
   height={600}
   className="rounded-lg"
@@ -99,7 +99,7 @@ const menuItems = [
 **Main Heading** (around line 13):
 ```tsx
 <h1 className="text-5xl font-bold mb-4">
-  Welcome to CobbleStone Creamery           ← CHANGE THIS
+  Welcome to Cobblestone Creamery           ← CHANGE THIS
 </h1>
 <p className="text-xl mb-8">
   Homemade Ice Cream & Delicious Desserts  ← CHANGE THIS
@@ -120,7 +120,7 @@ const menuItems = [
 **Your Story** (around line 15):
 ```tsx
 <p className="text-gray-700 leading-relaxed">
-  CobbleStone Creamery Ice Cream Shop has been serving the community since 2010.
+  Cobblestone Creamery Ice Cream Shop has been serving the community since 2010.
   ← WRITE YOUR STORY HERE
 </p>
 ```
@@ -251,7 +251,7 @@ Visit: https://vercel.com/dashboard
 <div className="mb-8">
   <Image 
     src="/images/storefront.jpg" 
-    alt="CobbleStone Creamery Store"
+    alt="Cobblestone Creamery Store"
     width={800}
     height={500}
     className="rounded-lg shadow-lg"

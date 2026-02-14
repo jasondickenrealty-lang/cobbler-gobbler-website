@@ -71,7 +71,7 @@ git init
 git add .
 
 # Commit
-git commit -m "Initial commit - CobbleStone Creamery website"
+git commit -m "Initial commit - Cobblestone Creamery website"
 
 # Add remote (replace with your repo URL)
 git remote add origin https://github.com/yourusername/cobblestone-pos-website.git

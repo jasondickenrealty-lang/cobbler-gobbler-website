@@ -34,7 +34,7 @@ export default function LocationPage() {
         } else {
           // Fallback data if not set in Firestore
           setBusinessInfo({
-            name: 'CobbleStone Creamery',
+            name: 'Cobblestone Creamery',
             address: '123 Main Street',
             city: 'Sweetville',
             state: 'ST',
@@ -52,7 +52,7 @@ export default function LocationPage() {
         console.error('Error fetching business info:', error);
         // Use fallback data
         setBusinessInfo({
-          name: 'CobbleStone Creamery',
+          name: 'Cobblestone Creamery',
           address: '123 Main Street',
           city: 'Sweetville',
           state: 'ST',

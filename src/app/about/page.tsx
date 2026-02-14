@@ -13,7 +13,7 @@ export default function AboutPage() {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-accent">Our Story</h2>
               <p className="text-gray-700 leading-relaxed">
-                CobbleStone Creamery has been serving the community since 2010.
+                Cobblestone Creamery has been serving the community since 2010.
                 What started as a small family business has grown into a beloved local destination
                 for homemade ice cream and traditional cobblers.
               </p>
