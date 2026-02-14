@@ -34,13 +34,13 @@ export default function LocationPage() {
         } else {
           // Fallback data if not set in Firestore
           setBusinessInfo({
-            name: 'Cobbler Gobbler Ice Cream Shop',
+            name: 'CobbleStone Creamery',
             address: '123 Main Street',
             city: 'Sweetville',
             state: 'ST',
             zip: '12345',
             phone: '(555) 123-4567',
-            email: 'info@cobblergobbler.com',
+            email: 'info@cobblestonecreamery.com',
             hours: {
               'Monday - Thursday': '11am - 9pm',
               'Friday - Saturday': '11am - 10pm',
@@ -52,13 +52,13 @@ export default function LocationPage() {
         console.error('Error fetching business info:', error);
         // Use fallback data
         setBusinessInfo({
-          name: 'Cobbler Gobbler Ice Cream Shop',
+          name: 'CobbleStone Creamery',
           address: '123 Main Street',
           city: 'Sweetville',
           state: 'ST',
           zip: '12345',
           phone: '(555) 123-4567',
-          email: 'info@cobblergobbler.com',
+          email: 'info@cobblestonecreamery.com',
           hours: {
             'Monday - Thursday': '11am - 9pm',
             'Friday - Saturday': '11am - 10pm',

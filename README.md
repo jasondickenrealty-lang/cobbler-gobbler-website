@@ -1,4 +1,4 @@
-# Cobbler Gobbler Ice Cream Shop Website
+# CobbleStone Creamery Ice Cream Shop Website
 
 Production-ready Next.js website with Firebase integration.
 
@@ -124,7 +124,7 @@ Use Firebase Console or Firebase Admin SDK to create users:
 await setDoc(doc(db, 'users', userId), {
   role: 'employee',
   active: true,
-  email: 'employee@cobblergobbler.com'
+  email: 'employee@cobblestonecreamery.com'
 });
 ```
 

@@ -12,7 +12,7 @@
 ### Step 1: Install Dependencies
 
 ```powershell
-cd c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website
+cd c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website
 npm install
 ```
 
@@ -29,9 +29,9 @@ code .env.local
 Add your Firebase configuration:
 ```env
 NEXT_PUBLIC_FIREBASE_API_KEY=AIza...
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=cobbler-gobbler-xxxxx.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=cobbler-gobbler-xxxxx
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=cobbler-gobbler-xxxxx.appspot.com
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=cobblestone-pos-xxxxx.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=cobblestone-pos-xxxxx
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=cobblestone-pos-xxxxx.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
 NEXT_PUBLIC_FIREBASE_APP_ID=1:123456789:web:abcdef
 ```
@@ -61,7 +61,7 @@ Visit http://localhost:3000 and verify:
 
 Use Firebase Console:
 1. Go to Authentication
-2. Add user: `test@cobblergobbler.com`
+2. Add user: `test@cobblestonecreamery.com`
 3. Go to Firestore
 4. Create document in `users` collection:
    - Document ID: [the user's UID]
@@ -70,7 +70,7 @@ Use Firebase Console:
      {
        "role": "employee",
        "active": true,
-       "email": "test@cobblergobbler.com"
+       "email": "test@cobblestonecreamery.com"
      }
      ```
 
@@ -88,7 +88,7 @@ During setup:
 - Set up and deploy? **Y**
 - Which scope? Select your account
 - Link to existing project? **N**
-- Project name? **cobbler-gobbler-website**
+- Project name? **cobblestone-pos-website**
 - In which directory? **./**
 - Override settings? **N**
 

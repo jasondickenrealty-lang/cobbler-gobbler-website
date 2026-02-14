@@ -5,7 +5,7 @@
 ### Step 1: Add Your Images
 Put your image files here:
 ```
-c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website\public\images\
+c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website\public\images\
 ```
 
 Example files:
@@ -20,7 +20,7 @@ Example files:
 ```tsx
 <Image 
   src="/images/hero.jpg" 
-  alt="Cobbler Gobbler Ice Cream"
+  alt="CobbleStone Creamery Ice Cream"
   width={1200}
   height={600}
   className="rounded-lg"
@@ -80,7 +80,7 @@ const menuItems = [
 <p>123 Main Street</p>              ← YOUR STREET
 <p>Sweetville, ST 12345</p>         ← YOUR CITY/ZIP
 <p>📞 (555) 123-4567</p>            ← YOUR PHONE
-<p>✉️ info@cobblergobbler.com</p>  ← YOUR EMAIL
+<p>✉️ info@cobblestonecreamery.com</p>  ← YOUR EMAIL
 ```
 
 **Change Hours** (around line 35):
@@ -99,7 +99,7 @@ const menuItems = [
 **Main Heading** (around line 13):
 ```tsx
 <h1 className="text-5xl font-bold mb-4">
-  Welcome to Cobbler Gobbler           ← CHANGE THIS
+  Welcome to CobbleStone Creamery           ← CHANGE THIS
 </h1>
 <p className="text-xl mb-8">
   Homemade Ice Cream & Delicious Desserts  ← CHANGE THIS
@@ -120,7 +120,7 @@ const menuItems = [
 **Your Story** (around line 15):
 ```tsx
 <p className="text-gray-700 leading-relaxed">
-  Cobbler Gobbler Ice Cream Shop has been serving the community since 2010.
+  CobbleStone Creamery Ice Cream Shop has been serving the community since 2010.
   ← WRITE YOUR STORY HERE
 </p>
 ```
@@ -162,7 +162,7 @@ colors: {
 After editing files:
 
 ```powershell
-cd c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website
+cd c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website
 
 # 1. See what changed
 git status
@@ -178,7 +178,7 @@ git push
 ```
 
 **Wait 2 minutes** - Your changes will be live at:
-https://cobbler-gobbler-website-q19i.vercel.app/
+https://cobblestone-pos-website-q19i.vercel.app/
 
 ---
 
@@ -251,7 +251,7 @@ Visit: https://vercel.com/dashboard
 <div className="mb-8">
   <Image 
     src="/images/storefront.jpg" 
-    alt="Cobbler Gobbler Store"
+    alt="CobbleStone Creamery Store"
     width={800}
     height={500}
     className="rounded-lg shadow-lg"

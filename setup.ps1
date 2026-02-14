@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
-# Cobbler Gobbler Website - Automated Setup Script
+# CobbleStone Creamery Website - Automated Setup Script
 
-Write-Host "Cobbler Gobbler Website Setup" -ForegroundColor Cyan
+Write-Host "CobbleStone Creamery Website Setup" -ForegroundColor Cyan
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
 

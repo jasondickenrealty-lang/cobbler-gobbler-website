@@ -1,7 +1,7 @@
-# 🍨 Cobbler Gobbler Website - Setup Complete!
+# 🍨 CobbleStone Creamery Website - Setup Complete!
 
 Your production-ready Next.js website has been created at:
-**`c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website`**
+**`c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website`**
 
 ---
 
@@ -58,7 +58,7 @@ website/
 ### 1. Install & Configure
 
 ```powershell
-cd c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website
+cd c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website
 npm install
 copy .env.example .env.local
 ```

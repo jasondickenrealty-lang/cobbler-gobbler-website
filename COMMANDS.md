@@ -4,7 +4,7 @@
 
 ```powershell
 # Navigate to project
-cd c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website
+cd c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website
 
 # Install dependencies
 npm install
@@ -64,17 +64,17 @@ vercel env add NEXT_PUBLIC_FIREBASE_APP_ID
 
 ```powershell
 # Initialize git in website folder
-cd c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website
+cd c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website
 git init
 
 # Add all files
 git add .
 
 # Commit
-git commit -m "Initial commit - Cobbler Gobbler website"
+git commit -m "Initial commit - CobbleStone Creamery website"
 
 # Add remote (replace with your repo URL)
-git remote add origin https://github.com/yourusername/cobbler-gobbler-website.git
+git remote add origin https://github.com/yourusername/cobblestone-pos-website.git
 
 # Push
 git push -u origin main
@@ -136,7 +136,7 @@ firebase projects:list
 
 ```powershell
 # Open project in VS Code
-cd c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website
+cd c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website
 code .
 ```
 
@@ -154,7 +154,7 @@ Run these commands in order:
 
 ```powershell
 # 1. Navigate to website folder
-cd c:\Users\jason\OneDrive\Desktop\cobbler-gobbler\website
+cd c:\Users\jason\OneDrive\Desktop\cobblestone-pos\website
 
 # 2. Install dependencies
 npm install

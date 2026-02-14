@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-# Cobbler Gobbler Website - Deployment Script
+# CobbleStone Creamery Website - Deployment Script
 
 Write-Host "==================================" -ForegroundColor Cyan
 Write-Host "Deployment Configuration Check" -ForegroundColor Cyan
