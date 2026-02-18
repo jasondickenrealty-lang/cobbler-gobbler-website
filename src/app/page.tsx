@@ -1,60 +1,112 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function HomePage() {
   return (
     <>
       <Navbar />
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-r from-primary to-accent text-white py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-5xl font-bold mb-4">Welcome to Cobblestone Creamery</h1>
-            <p className="text-xl mb-8">Homemade Ice Cream & Delicious Desserts</p>
-            <Link
-              href="/menu"
-              className="bg-white text-primary px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition inline-block"
-            >
-              View Our Menu
-            </Link>
+        {/* Hero */}
+        <section className="bg-cream">
+          <div className="max-w-3xl mx-auto px-6 py-24 md:py-32 text-center">
+            <h1 className="text-4xl md:text-6xl font-serif text-primary mb-6 leading-tight">
+              Cobblestone Creamery
+            </h1>
+            <p className="text-lg md:text-xl text-dark/70 mb-10 max-w-xl mx-auto">
+              Handcrafted ice cream and classic cobblers, made fresh daily
+              with premium ingredients. Family owned since 2010.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/menu"
+                className="bg-primary text-white px-8 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
+              >
+                View Our Menu
+              </Link>
+              <Link
+                href="/order"
+                className="bg-gold text-white px-8 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
+              >
+                Order Online
+              </Link>
+            </div>
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="text-4xl mb-4">🍦</div>
-                <h3 className="text-xl font-semibold mb-2">Fresh Daily</h3>
-                <p className="text-gray-600">Made fresh every day with premium ingredients</p>
+        {/* What We Do */}
+        <section className="bg-white">
+          <div className="max-w-5xl mx-auto px-6 py-20 md:py-28">
+            <h2 className="text-3xl md:text-4xl font-serif text-primary text-center mb-16">
+              What Makes Us Special
+            </h2>
+            <div className="grid md:grid-cols-3 gap-12">
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-cream mx-auto mb-5 flex items-center justify-center">
+                  <span className="text-gold text-lg font-serif">01</span>
+                </div>
+                <h3 className="font-serif text-xl text-primary mb-3">Fresh Daily</h3>
+                <p className="text-dark/60 leading-relaxed">
+                  Every batch is crafted from scratch each morning using premium,
+                  locally sourced ingredients.
+                </p>
               </div>
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="text-4xl mb-4">🥧</div>
-                <h3 className="text-xl font-semibold mb-2">Classic Cobblers</h3>
-                <p className="text-gray-600">Traditional recipes passed down for generations</p>
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-cream mx-auto mb-5 flex items-center justify-center">
+                  <span className="text-gold text-lg font-serif">02</span>
+                </div>
+                <h3 className="font-serif text-xl text-primary mb-3">Classic Cobblers</h3>
+                <p className="text-dark/60 leading-relaxed">
+                  Traditional recipes passed down through generations,
+                  baked fresh with seasonal fruits and buttery crusts.
+                </p>
               </div>
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="text-4xl mb-4">⭐</div>
-                <h3 className="text-xl font-semibold mb-2">Family Owned</h3>
-                <p className="text-gray-600">Locally owned and operated with love</p>
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-cream mx-auto mb-5 flex items-center justify-center">
+                  <span className="text-gold text-lg font-serif">03</span>
+                </div>
+                <h3 className="font-serif text-xl text-primary mb-3">Family Owned</h3>
+                <p className="text-dark/60 leading-relaxed">
+                  Locally owned and operated with love. We believe great food
+                  brings people together.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Call to Action */}
-        <section className="bg-secondary py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold mb-4">Visit Us Today!</h2>
-            <p className="text-lg mb-6">Experience the taste of homemade goodness</p>
+        {/* Story Teaser */}
+        <section className="bg-cream">
+          <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
+            <h2 className="text-3xl md:text-4xl font-serif text-primary mb-6">Our Story</h2>
+            <p className="text-dark/60 leading-relaxed mb-8 text-lg">
+              What started as a small family dream in 2010 has grown into a beloved
+              local destination. We pour our hearts into every scoop and every cobbler,
+              using only the finest ingredients to create treats worth sharing.
+            </p>
             <Link
-              href="/location"
-              className="bg-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-90 transition inline-block"
+              href="/about"
+              className="inline-block text-sm font-medium tracking-wide uppercase text-primary border-b-2 border-gold pb-1 hover:text-gold transition-colors"
             >
-              Get Directions
+              Read Our Full Story
+            </Link>
+          </div>
+        </section>
+
+        {/* Order CTA */}
+        <section className="bg-primary">
+          <div className="max-w-3xl mx-auto px-6 py-20 md:py-24 text-center">
+            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              Skip the Line
+            </h2>
+            <p className="text-white/70 text-lg mb-8">
+              Order ahead for pickup or delivery and have your favorites ready when you arrive.
+            </p>
+            <Link
+              href="/order"
+              className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
+            >
+              Order Online
             </Link>
           </div>
         </section>

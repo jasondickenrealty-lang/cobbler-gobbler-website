@@ -19,6 +19,21 @@ interface BusinessInfo {
   };
 }
 
+const FALLBACK: BusinessInfo = {
+  name: 'Cobblestone Creamery',
+  address: '123 Main Street',
+  city: 'Sweetville',
+  state: 'ST',
+  zip: '12345',
+  phone: '(555) 123-4567',
+  email: 'info@cobblestonecreamery.com',
+  hours: {
+    'Monday - Thursday': '11am - 9pm',
+    'Friday - Saturday': '11am - 10pm',
+    'Sunday': '12pm - 8pm',
+  },
+};
+
 export default function LocationPage() {
   const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,48 +43,13 @@ export default function LocationPage() {
       try {
         const docRef = doc(db, 'settings', 'business');
         const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-          setBusinessInfo(docSnap.data() as BusinessInfo);
-        } else {
-          // Fallback data if not set in Firestore
-          setBusinessInfo({
-            name: 'Cobblestone Creamery',
-            address: '123 Main Street',
-            city: 'Sweetville',
-            state: 'ST',
-            zip: '12345',
-            phone: '(555) 123-4567',
-            email: 'info@cobblestonecreamery.com',
-            hours: {
-              'Monday - Thursday': '11am - 9pm',
-              'Friday - Saturday': '11am - 10pm',
-              'Sunday': '12pm - 8pm',
-            },
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching business info:', error);
-        // Use fallback data
-        setBusinessInfo({
-          name: 'Cobblestone Creamery',
-          address: '123 Main Street',
-          city: 'Sweetville',
-          state: 'ST',
-          zip: '12345',
-          phone: '(555) 123-4567',
-          email: 'info@cobblestonecreamery.com',
-          hours: {
-            'Monday - Thursday': '11am - 9pm',
-            'Friday - Saturday': '11am - 10pm',
-            'Sunday': '12pm - 8pm',
-          },
-        });
+        setBusinessInfo(docSnap.exists() ? (docSnap.data() as BusinessInfo) : FALLBACK);
+      } catch {
+        setBusinessInfo(FALLBACK);
       } finally {
         setLoading(false);
       }
     };
-
     fetchBusinessInfo();
   }, []);
 
@@ -77,11 +57,9 @@ export default function LocationPage() {
     return (
       <>
         <Navbar />
-        <main className="flex-1 py-12">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center py-12">
-              <p className="text-xl text-gray-600">Loading...</p>
-            </div>
+        <main className="flex-1">
+          <div className="max-w-4xl mx-auto px-6 py-20 text-center">
+            <p className="text-dark/40">Loading...</p>
           </div>
         </main>
         <Footer />
@@ -92,56 +70,72 @@ export default function LocationPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-center mb-12 text-primary">Visit Us</h1>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Location */}
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold mb-4 text-accent">📍 Location</h2>
-              <address className="not-italic text-gray-700 space-y-2">
-                <p className="font-semibold">{businessInfo?.name}</p>
-                <p>{businessInfo?.address}</p>
-                <p>{businessInfo?.city}, {businessInfo?.state} {businessInfo?.zip}</p>
-                <p className="mt-4">
-                  <a href={`tel:${businessInfo?.phone}`} className="text-primary hover:underline">
-                    📞 {businessInfo?.phone}
-                  </a>
-                </p>
-                <p>
-                  <a href={`mailto:${businessInfo?.email}`} className="text-primary hover:underline">
-                    ✉️ {businessInfo?.email}
-                  </a>
-                </p>
-              </address>
-            </div>
+      <main className="flex-1">
+        {/* Header */}
+        <section className="bg-cream">
+          <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
+            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Visit Us</h1>
+            <p className="text-dark/60 text-lg">
+              We&apos;d love to see you. Stop by for a scoop or place an order ahead.
+            </p>
+          </div>
+        </section>
 
-            {/* Hours */}
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold mb-4 text-accent">🕒 Hours</h2>
-              <div className="space-y-3 text-gray-700">
-                {businessInfo?.hours && Object.entries(businessInfo.hours).map(([day, hours]) => (
-                  <div key={day} className="flex justify-between">
-                    <span className="font-medium">{day}</span>
-                    <span>{hours}</span>
+        {/* Info */}
+        <section className="bg-white">
+          <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
+            <div className="grid md:grid-cols-2 gap-16">
+              {/* Location */}
+              <div>
+                <h2 className="font-serif text-2xl text-primary mb-2">Location</h2>
+                <div className="w-10 h-0.5 bg-gold mb-6"></div>
+                <address className="not-italic text-dark/70 space-y-3">
+                  <p className="font-medium text-dark">{businessInfo?.name}</p>
+                  <p>{businessInfo?.address}</p>
+                  <p>{businessInfo?.city}, {businessInfo?.state} {businessInfo?.zip}</p>
+                  <div className="pt-4 space-y-2">
+                    <p>
+                      <a href={`tel:${businessInfo?.phone?.replace(/\D/g, '')}`} className="text-primary hover:text-gold transition-colors">
+                        {businessInfo?.phone}
+                      </a>
+                    </p>
+                    <p>
+                      <a href={`mailto:${businessInfo?.email}`} className="text-primary hover:text-gold transition-colors">
+                        {businessInfo?.email}
+                      </a>
+                    </p>
                   </div>
-                ))}
-                <div className="mt-6 p-4 bg-secondary rounded text-center">
-                  <p className="font-semibold">Open Daily!</p>
+                </address>
+              </div>
+
+              {/* Hours */}
+              <div>
+                <h2 className="font-serif text-2xl text-primary mb-2">Hours</h2>
+                <div className="w-10 h-0.5 bg-gold mb-6"></div>
+                <div className="space-y-3">
+                  {businessInfo?.hours && Object.entries(businessInfo.hours).map(([day, hours]) => (
+                    <div key={day} className="flex justify-between text-dark/70">
+                      <span className="font-medium text-dark">{day}</span>
+                      <span>{hours}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-8 bg-cream rounded px-5 py-4 text-center">
+                  <p className="text-primary font-serif">Open 7 days a week</p>
                 </div>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Map Placeholder */}
-          <div className="mt-8 bg-white p-8 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-4 text-accent">Get Directions</h2>
-            <div className="bg-gray-200 h-64 rounded flex items-center justify-center">
-              <p className="text-gray-500">Map integration placeholder</p>
+        {/* Map placeholder */}
+        <section className="bg-cream">
+          <div className="max-w-4xl mx-auto px-6 py-16">
+            <div className="bg-white rounded h-64 flex items-center justify-center border border-dark/5">
+              <p className="text-dark/30 text-sm">Map coming soon</p>
             </div>
           </div>
-        </div>
+        </section>
       </main>
       <Footer />
     </>

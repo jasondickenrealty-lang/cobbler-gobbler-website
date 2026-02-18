@@ -1,10 +1,52 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-8 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <p className="text-lg font-semibold">Cobblestone Creamery</p>
-          <p className="text-sm mt-2">© {new Date().getFullYear()} All rights reserved.</p>
+    <footer className="bg-primary text-white/90 mt-auto">
+      <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          {/* Brand */}
+          <div>
+            <h3 className="font-serif text-xl text-white mb-3">Cobblestone Creamery</h3>
+            <p className="text-sm text-white/60 leading-relaxed">
+              Handcrafted ice cream and classic cobblers made fresh daily.
+              Family owned and operated since 2010.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Quick Links</h4>
+            <div className="space-y-2">
+              <Link href="/menu" className="block text-sm text-white/60 hover:text-white transition-colors">Menu</Link>
+              <Link href="/order" className="block text-sm text-white/60 hover:text-white transition-colors">Order Online</Link>
+              <Link href="/about" className="block text-sm text-white/60 hover:text-white transition-colors">Our Story</Link>
+              <Link href="/location" className="block text-sm text-white/60 hover:text-white transition-colors">Visit Us</Link>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Get in Touch</h4>
+            <div className="space-y-2 text-sm text-white/60">
+              <p>123 Main Street, Sweetville, ST 12345</p>
+              <p>
+                <a href="tel:5551234567" className="hover:text-white transition-colors">(555) 123-4567</a>
+              </p>
+              <p>
+                <a href="mailto:hello@cobblestonecreamery.com" className="hover:text-white transition-colors">hello@cobblestonecreamery.com</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-white/40">
+            &copy; {new Date().getFullYear()} Cobblestone Creamery. All rights reserved.
+          </p>
+          <Link href="/employee/login" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+            Employee Portal
+          </Link>
         </div>
       </div>
     </footer>
