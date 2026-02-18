@@ -66,12 +66,12 @@ export default function MenuPage() {
             <p className="text-dark/60 text-lg mb-8">
               Everything is made fresh daily with premium ingredients.
             </p>
-            <Link
+            <a
               href="/order"
               className="inline-block bg-gold text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
             >
               Order for Pickup
-            </Link>
+            </a>
           </div>
         </section>
 

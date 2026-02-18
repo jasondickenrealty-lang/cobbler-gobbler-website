@@ -24,12 +24,12 @@ export default function HomePage() {
               >
                 View Our Menu
               </Link>
-              <Link
+              <a
                 href="/order"
                 className="bg-gold text-white px-8 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
                 Order Online
-              </Link>
+              </a>
             </div>
           </div>
         </section>
@@ -102,12 +102,12 @@ export default function HomePage() {
             <p className="text-white/70 text-lg mb-8">
               Order ahead for pickup or delivery and have your favorites ready when you arrive.
             </p>
-            <Link
+            <a
               href="/order"
               className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
             >
               Order Online
-            </Link>
+            </a>
           </div>
         </section>
       </main>

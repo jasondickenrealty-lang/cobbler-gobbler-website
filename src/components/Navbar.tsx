@@ -41,12 +41,12 @@ export default function Navbar() {
 
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-4">
-            <Link
+            <a
               href="/order"
               className="hidden md:inline-block bg-gold text-white text-sm font-medium tracking-wide px-5 py-2 rounded transition-colors hover:bg-gold/90"
             >
               Order Online
-            </Link>
+            </a>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden p-1"
@@ -79,13 +79,13 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
+          <a
             href="/order"
             onClick={() => setMobileOpen(false)}
             className="block mt-2 bg-gold text-white text-sm font-medium tracking-wide text-center px-5 py-2.5 rounded transition-colors hover:bg-gold/90"
           >
             Order Online
-          </Link>
+          </a>
         </div>
       )}
     </nav>

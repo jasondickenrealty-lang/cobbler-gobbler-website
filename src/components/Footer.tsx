@@ -19,7 +19,7 @@ export default function Footer() {
             <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Quick Links</h4>
             <div className="space-y-2">
               <Link href="/menu" className="block text-sm text-white/60 hover:text-white transition-colors">Menu</Link>
-              <Link href="/order" className="block text-sm text-white/60 hover:text-white transition-colors">Order Online</Link>
+              <a href="/order" className="block text-sm text-white/60 hover:text-white transition-colors">Order Online</a>
               <Link href="/about" className="block text-sm text-white/60 hover:text-white transition-colors">Our Story</Link>
               <Link href="/location" className="block text-sm text-white/60 hover:text-white transition-colors">Visit Us</Link>
             </div>
