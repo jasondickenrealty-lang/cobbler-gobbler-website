@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="816" height="1056" viewBox="0 0 816 1056" fill="none">
+  <rect width="816" height="1056" fill="white"/>
+  <text x="408" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" fill="black">Cobblestone Creamery</text>
+  <text x="408" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" fill="black">Smiling Sundae</text>
+
+  <ellipse cx="408" cy="580" rx="190" ry="110" stroke="black" stroke-width="8" fill="white"/>
+  <circle cx="340" cy="450" r="90" stroke="black" stroke-width="8"/>
+  <circle cx="476" cy="450" r="90" stroke="black" stroke-width="8"/>
+  <circle cx="408" cy="360" r="90" stroke="black" stroke-width="8"/>
+
+  <circle cx="375" cy="450" r="8" fill="black"/>
+  <circle cx="441" cy="450" r="8" fill="black"/>
+  <path d="M360 500 Q408 540 456 500" stroke="black" stroke-width="7" fill="none"/>
+
+  <line x1="270" y1="640" x2="546" y2="640" stroke="black" stroke-width="8"/>
+  <line x1="290" y1="690" x2="526" y2="690" stroke="black" stroke-width="8"/>
+
+  <text x="408" y="960" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="black">Bring this in for a FREE kids scoop!</text>
+</svg>

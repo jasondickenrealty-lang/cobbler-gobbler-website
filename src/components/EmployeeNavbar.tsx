@@ -8,6 +8,7 @@ const employeeLinks = [
   { href: '/employee/dashboard', label: 'Dashboard' },
   { href: '/employee/schedule', label: 'Schedule' },
   { href: '/employee/announcements', label: 'Announcements' },
+  { href: '/employee/coloring-pages', label: 'Coloring Pages' },
 ];
 
 export default function EmployeeNavbar() {

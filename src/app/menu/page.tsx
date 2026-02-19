@@ -67,7 +67,7 @@ export default function MenuPage() {
               Everything is made fresh daily with premium ingredients.
             </p>
             <a
-              href="/order"
+              href="https://order.cobblestonecreamery.com"
               className="inline-block bg-gold text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
             >
               Order for Pickup

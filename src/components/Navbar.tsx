@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/menu', label: 'Menu' },
+  { href: '/free-kids-scoop', label: 'FREE KIDS SCOOP' },
   { href: '/about', label: 'Our Story' },
   { href: '/location', label: 'Visit Us' },
 ];
@@ -42,7 +43,7 @@ export default function Navbar() {
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-4">
             <a
-              href="/order"
+              href="https://order.cobblestonecreamery.com"
               className="hidden md:inline-block bg-gold text-white text-sm font-medium tracking-wide px-5 py-2 rounded transition-colors hover:bg-gold/90"
             >
               Order Online
@@ -80,7 +81,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="/order"
+            href="https://order.cobblestonecreamery.com"
             onClick={() => setMobileOpen(false)}
             className="block mt-2 bg-gold text-white text-sm font-medium tracking-wide text-center px-5 py-2.5 rounded transition-colors hover:bg-gold/90"
           >

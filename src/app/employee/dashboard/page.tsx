@@ -35,6 +35,9 @@ export default function DashboardPage() {
                 <a href="/employee/announcements" className="block p-3 bg-accent text-white rounded hover:bg-opacity-90 transition text-center">
                   Announcements
                 </a>
+                <a href="/employee/coloring-pages" className="block p-3 bg-primary text-white rounded hover:bg-opacity-90 transition text-center">
+                  Manage Coloring Pages
+                </a>
               </div>
             </div>
 
