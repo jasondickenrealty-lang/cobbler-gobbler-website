@@ -44,9 +44,17 @@ export default function Footer() {
           <p className="text-xs text-white/40">
             &copy; {new Date().getFullYear()} Cobblestone Creamery. All rights reserved.
           </p>
-          <Link href="/employee/login" className="text-xs text-white/40 hover:text-white/60 transition-colors">
-            Employee Portal
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+              Terms &amp; Conditions
+            </Link>
+            <Link href="/employee/login" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+              Employee Portal
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
