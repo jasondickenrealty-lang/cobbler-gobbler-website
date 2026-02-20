@@ -7,13 +7,34 @@ export default function HomePage() {
     <>
       <Navbar />
       <main className="flex-1">
-        {/* Hero */}
-        <section className="bg-cream">
-          <div className="max-w-3xl mx-auto px-6 py-24 md:py-32 text-center">
-            <h1 className="text-4xl md:text-6xl font-serif text-primary mb-6 leading-tight">
+        {/* Hero with video background */}
+        <section className="relative overflow-hidden min-h-[80vh] flex items-center">
+          {/* Video background */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            poster="/hero-poster.jpg"
+          >
+            <source src="/hero-video.mp4" type="video/mp4" />
+          </video>
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-black/50" />
+
+          {/* Content */}
+          <div className="relative z-10 max-w-3xl mx-auto px-6 py-24 md:py-32 text-center">
+            {/* Logo */}
+            <img
+              src="/logo.png"
+              alt="Cobblestone Creamery logo"
+              className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-8 object-contain"
+            />
+            <h1 className="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight drop-shadow-lg">
               Cobblestone Creamery
             </h1>
-            <p className="text-lg md:text-xl text-dark/70 mb-10 max-w-xl mx-auto">
+            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-xl mx-auto drop-shadow">
               Handcrafted ice cream and classic cobblers, made fresh daily
               with premium ingredients. Family owned since 2010.
             </p>

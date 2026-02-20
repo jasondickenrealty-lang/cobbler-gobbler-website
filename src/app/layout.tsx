@@ -9,6 +9,9 @@ const lora = Lora({ subsets: ['latin'], variable: '--font-lora', weight: ['400',
 export const metadata: Metadata = {
   title: 'Cobblestone Creamery',
   description: 'Handcrafted ice cream and classic cobblers made fresh daily. Family owned since 2010.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({

@@ -4,12 +4,15 @@ import { FormEvent, useEffect, useState } from 'react';
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import EmployeeNavbar from '@/components/EmployeeNavbar';
 import { useAuth } from '@/contexts/AuthContext';
@@ -19,6 +22,8 @@ interface UploadedColoringPage {
   id: string;
   title: string;
   downloadUrl: string;
+  storagePath?: string;
+  active?: boolean;
 }
 
 const allowedRoles = new Set(['manager', 'owner', 'admin']);
@@ -31,6 +36,7 @@ export default function EmployeeColoringPagesPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [pages, setPages] = useState<UploadedColoringPage[]>([]);
+  const [processingId, setProcessingId] = useState<string | null>(null);
 
   const canManage = !!userData?.role && allowedRoles.has(userData.role);
 
@@ -41,6 +47,58 @@ export default function EmployeeColoringPagesPage() {
       .map((doc) => ({ id: doc.id, ...doc.data() }) as UploadedColoringPage)
       .filter((page) => !!page.downloadUrl);
     setPages(items);
+  };
+
+  const handleTogglePublish = async (page: UploadedColoringPage) => {
+    if (!canManage) {
+      setError('Only managers, owners, or admins can manage coloring pages.');
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
+    setProcessingId(page.id);
+
+    try {
+      await updateDoc(doc(db, 'coloringPages', page.id), {
+        active: page.active === false,
+      });
+      setSuccess(page.active === false ? 'Coloring page published.' : 'Coloring page unpublished.');
+      await loadPages();
+    } catch (toggleError) {
+      console.error('Error updating coloring page status:', toggleError);
+      setError('Unable to update coloring page status.');
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const handleDelete = async (page: UploadedColoringPage) => {
+    if (!canManage) {
+      setError('Only managers, owners, or admins can delete coloring pages.');
+      return;
+    }
+
+    const confirmed = window.confirm(`Delete "${page.title}"? This cannot be undone.`);
+    if (!confirmed) return;
+
+    setError(null);
+    setSuccess(null);
+    setProcessingId(page.id);
+
+    try {
+      if (page.storagePath) {
+        await deleteObject(ref(storage, page.storagePath));
+      }
+      await deleteDoc(doc(db, 'coloringPages', page.id));
+      setSuccess('Coloring page deleted.');
+      await loadPages();
+    } catch (deleteError) {
+      console.error('Error deleting coloring page:', deleteError);
+      setError('Unable to delete this coloring page.');
+    } finally {
+      setProcessingId(null);
+    }
   };
 
   useEffect(() => {
@@ -182,15 +240,36 @@ export default function EmployeeColoringPagesPage() {
               <ul className="space-y-3">
                 {pages.map((page) => (
                   <li key={page.id} className="flex items-center justify-between gap-4 border-b border-dark/10 pb-3">
-                    <span className="text-dark">{page.title}</span>
-                    <a
-                      href={page.downloadUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-primary font-medium hover:underline"
-                    >
-                      View File
-                    </a>
+                    <div>
+                      <p className="text-dark">{page.title}</p>
+                      <p className="text-xs text-dark/50">{page.active === false ? 'Unpublished' : 'Published'}</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <a
+                        href={page.downloadUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary font-medium hover:underline"
+                      >
+                        View File
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleTogglePublish(page)}
+                        disabled={!canManage || processingId === page.id}
+                        className="text-sm text-primary hover:underline disabled:opacity-50"
+                      >
+                        {page.active === false ? 'Republish' : 'Unpublish'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(page)}
+                        disabled={!canManage || processingId === page.id}
+                        className="text-sm text-red-700 hover:underline disabled:opacity-50"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
