@@ -19,7 +19,7 @@ export default function Footer() {
             <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Quick Links</h4>
             <div className="space-y-2">
               <Link href="/menu" className="block text-sm text-white/60 hover:text-white transition-colors">Menu</Link>
-              <a href="https://order.cobblestonecreamery.com" className="block text-sm text-white/60 hover:text-white transition-colors">Order Online</a>
+              <a href="https://order.cobblestonecreamery.com/auth" className="block text-sm text-white/60 hover:text-white transition-colors">Order Online</a>
               <Link href="/about" className="block text-sm text-white/60 hover:text-white transition-colors">Our Story</Link>
               <Link href="/location" className="block text-sm text-white/60 hover:text-white transition-colors">Visit Us</Link>
             </div>
@@ -29,7 +29,7 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Get in Touch</h4>
             <div className="space-y-2 text-sm text-white/60">
-              <p>123 Main Street, Sweetville, ST 12345</p>
+              <p>900 Main Street Evanville Indiana 47708</p>
               <p>
                 <a href="tel:5551234567" className="hover:text-white transition-colors">(555) 123-4567</a>
               </p>

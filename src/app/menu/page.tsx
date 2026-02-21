@@ -17,10 +17,26 @@ interface MenuItem {
   imageUrl?: string;
 }
 
+interface ModifierCategory {
+  id: string;
+  name: string;
+  displayOrder?: number;
+}
+
+interface Modifier {
+  id: string;
+  name: string;
+  price: number;
+  modifierCategoryId: string;
+  isActive?: boolean;
+}
+
 export default function MenuPage() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<string[]>([]);
+  const [modifierCategories, setModifierCategories] = useState<ModifierCategory[]>([]);
+  const [modifiers, setModifiers] = useState<Modifier[]>([]);
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -41,6 +57,16 @@ export default function MenuPage() {
         setMenuItems(items);
         const uniqueCategories = [...new Set(items.map(item => item.category))];
         setCategories(uniqueCategories);
+
+        // Fetch modifier categories (toppings, flavors, etc.)
+        const mcSnapshot = await getDocs(collection(db, 'modifierCategories'));
+        const mcData = mcSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as ModifierCategory[];
+        setModifierCategories(mcData);
+
+        // Fetch modifiers
+        const modSnapshot = await getDocs(query(collection(db, 'modifiers'), where('isActive', '!=', false)));
+        const modData = modSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Modifier[];
+        setModifiers(modData);
       } catch (error) {
         console.error('Error fetching menu:', error);
       } finally {
@@ -67,7 +93,7 @@ export default function MenuPage() {
               Everything is made fresh daily with premium ingredients.
             </p>
             <a
-              href="https://order.cobblestonecreamery.com"
+              href="https://order.cobblestonecreamery.com/auth"
               className="inline-block bg-gold text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
             >
               Order for Pickup
@@ -118,6 +144,43 @@ export default function MenuPage() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {/* Toppings & Flavors Section */}
+            {modifierCategories.length > 0 && (
+              <div className="mt-20">
+                <div className="text-center mb-10">
+                  <h2 className="font-serif text-3xl md:text-4xl text-primary">Current Toppings & Flavors</h2>
+                  <div className="w-12 h-0.5 bg-gold mt-3 mx-auto"></div>
+                  <p className="text-dark/50 mt-4">Our selection rotates monthly — here&apos;s what&apos;s available now!</p>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  {modifierCategories.map((mc) => {
+                    const categoryMods = modifiers.filter(m => m.modifierCategoryId === mc.id);
+                    if (categoryMods.length === 0) return null;
+
+                    return (
+                      <div key={mc.id} className="bg-cream rounded-xl p-6">
+                        <h3 className="font-serif text-xl text-primary mb-1">{mc.name}</h3>
+                        <div className="w-8 h-0.5 bg-gold mb-4"></div>
+                        <div className="flex flex-wrap gap-2">
+                          {categoryMods.map((mod) => (
+                            <span
+                              key={mod.id}
+                              className="inline-flex items-center gap-1.5 bg-white text-dark text-sm px-3 py-1.5 rounded-full border border-gold/30"
+                            >
+                              {mod.name}
+                              {mod.price > 0 && (
+                                <span className="text-gold text-xs font-medium">+${mod.price.toFixed(2)}</span>
+                              )}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>

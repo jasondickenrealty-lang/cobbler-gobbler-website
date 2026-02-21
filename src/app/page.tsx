@@ -16,7 +16,6 @@ export default function HomePage() {
             loop
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
-            poster="/hero-poster.jpg"
           >
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
@@ -46,7 +45,7 @@ export default function HomePage() {
                 View Our Menu
               </Link>
               <a
-                href="https://order.cobblestonecreamery.com"
+                href="https://order.cobblestonecreamery.com/auth"
                 className="bg-gold text-white px-8 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
                 Order Online
@@ -124,7 +123,7 @@ export default function HomePage() {
               Order ahead for pickup or delivery and have your favorites ready when you arrive.
             </p>
             <a
-              href="https://order.cobblestonecreamery.com"
+              href="https://order.cobblestonecreamery.com/auth"
               className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
             >
               Order Online
