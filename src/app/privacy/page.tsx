@@ -78,8 +78,8 @@ export default function PrivacyPage() {
                   hello@cobblestonecreamery.com
                 </a>{' '}
                 or{' '}
-                <a href="tel:5551234567" className="text-primary hover:text-gold transition-colors">
-                  (555) 123-4567
+                <a href="tel:8122053322" className="text-primary hover:text-gold transition-colors">
+                  (812) 205-3322
                 </a>.
               </p>
             </div>
@@ -135,15 +135,15 @@ export default function PrivacyPage() {
               </p>
               <div className="mt-4 bg-cream rounded px-6 py-5">
                 <p className="font-medium text-dark">Cobblestone Creamery</p>
-                <p>123 Main Street, Sweetville, ST 12345</p>
+                <p>900 Main Street, Evansville, Indiana 47708</p>
                 <p>
                   <a href="mailto:hello@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
                     hello@cobblestonecreamery.com
                   </a>
                 </p>
                 <p>
-                  <a href="tel:5551234567" className="text-primary hover:text-gold transition-colors">
-                    (555) 123-4567
+                  <a href="tel:8122053322" className="text-primary hover:text-gold transition-colors">
+                    (812) 205-3322
                   </a>
                 </p>
               </div>

@@ -21,11 +21,11 @@ interface BusinessInfo {
 
 const FALLBACK: BusinessInfo = {
   name: 'Cobblestone Creamery',
-  address: '123 Main Street',
-  city: 'Sweetville',
-  state: 'ST',
-  zip: '12345',
-  phone: '(555) 123-4567',
+  address: '900 Main Street',
+  city: 'Evansville',
+  state: 'Indiana',
+  zip: '47708',
+  phone: '(812) 205-3322',
   email: 'info@cobblestonecreamery.com',
   hours: {
     'Monday - Thursday': '11am - 9pm',

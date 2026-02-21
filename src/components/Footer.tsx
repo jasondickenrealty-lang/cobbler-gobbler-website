@@ -29,9 +29,9 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Get in Touch</h4>
             <div className="space-y-2 text-sm text-white/60">
-              <p>900 Main Street Evanville Indiana 47708</p>
+              <p>900 Main Street, Evansville, Indiana 47708</p>
               <p>
-                <a href="tel:5551234567" className="hover:text-white transition-colors">(555) 123-4567</a>
+                <a href="tel:8122053322" className="hover:text-white transition-colors">(812) 205-3322</a>
               </p>
               <p>
                 <a href="mailto:hello@cobblestonecreamery.com" className="hover:text-white transition-colors">hello@cobblestonecreamery.com</a>
