@@ -28,7 +28,7 @@ export default function HomePage() {
             <img
               src="/logo.png"
               alt="Cobblestone Creamery logo"
-              className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-8 object-contain"
+              className="w-64 h-64 md:w-80 md:h-80 mx-auto mb-8 object-contain"
             />
             <h1 className="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight drop-shadow-lg">
               Cobblestone Creamery
