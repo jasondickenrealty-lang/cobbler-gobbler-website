@@ -32,11 +32,14 @@ interface Modifier {
 }
 
 const FEATURED_CONES = [
+  { id: 'superman', name: 'Superman', image: '/menu-cones/superman.png' },
+  { id: 'butter-pecan', name: 'Butter Pecan', image: '/menu-cones/butter-pecan.jpeg' },
+  { id: 'chocolate', name: 'Chocolate', image: '/menu-cones/chocolate.jpeg' },
+  { id: 'chocolate-chip-cookie-dough', name: 'Chocolate Chip Cookie Dough', image: '/menu-cones/chocolate-chip-cookie-dough.jpeg' },
   { id: 'vanilla', name: 'Vanilla', image: '/menu-cones/vanilla.jpg' },
   { id: 'strawberry', name: 'Strawberry', image: '/menu-cones/strawberry.jpg' },
   { id: 'oreo', name: 'Oreo', image: '/menu-cones/oreo.jpg' },
-  { id: 'mint-choc-chip', name: 'Mint Chocolate Chip', image: '/menu-cones/mint-choc-chip.jpg' },
-  { id: 'rainbow', name: 'Cotton Candy Explosion', image: '/menu-cones/rainbow.jpg' },
+  { id: 'mint-choc-chip', name: 'Mint Chocolate Chip', image: '/menu-cones/mint_chocolate_chip.jpeg' },
 ];
 
 export default function MenuPage() {
@@ -124,7 +127,7 @@ export default function MenuPage() {
                     alt={`${cone.name} cone`}
                     width={231}
                     height={432}
-                    className="w-full h-auto max-w-[180px] drop-shadow-sm"
+                    className="w-[180px] h-[260px] object-contain mx-auto drop-shadow-sm"
                   />
                   <figcaption className="mt-3 text-sm text-dark/70">{cone.name}</figcaption>
                 </figure>

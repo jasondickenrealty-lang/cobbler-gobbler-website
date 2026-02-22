@@ -54,7 +54,7 @@ Visit `http://localhost:3000`
 
 ## Project Structure
 
-```
+```text
 website/
 ├── src/
 │   ├── app/                    # App Router pages
@@ -85,6 +85,7 @@ website/
 ## Firestore Collections
 
 ### users
+
 ```typescript
 {
   role: 'owner' | 'manager' | 'employee',
@@ -94,6 +95,7 @@ website/
 ```
 
 ### schedules
+
 ```typescript
 {
   employeeId: string,
@@ -105,6 +107,7 @@ website/
 ```
 
 ### announcements
+
 ```typescript
 {
   title: string,
@@ -146,6 +149,7 @@ vercel
 ### 3. Add Environment Variables
 
 In Vercel Dashboard:
+
 1. Go to Project Settings
 2. Select "Environment Variables"
 3. Add all NEXT_PUBLIC_FIREBASE_* variables
@@ -157,15 +161,39 @@ In Vercel Dashboard:
 vercel --prod
 ```
 
+### Safer Deployment Flow (Recommended)
+
+Use this to avoid accidental production deploys and reduce hitting Vercel daily limits:
+
+```bash
+cd website
+npm run deploy:safe
+```
+
+What it does:
+
+- Runs a full production build first (`npm run check:prod`)
+- Prompts for confirmation before production deploy
+- Deploys only after you explicitly confirm
+
+For CI or intentional direct deploys:
+
+```bash
+cd website
+npm run deploy:prod
+```
+
 ## Features
 
 ### Public Pages
+
 - Homepage with hero and features
 - Menu with categories
 - About page
 - Hours & Location page
 
 ### Employee Portal
+
 - Firebase Authentication
 - Role-based access control
 - Protected routes

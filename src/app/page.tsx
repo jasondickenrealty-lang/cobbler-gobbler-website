@@ -113,6 +113,30 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Monthly Game Promo */}
+        <section className="bg-gradient-to-br from-primary to-dark overflow-hidden relative">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-4 left-8 text-6xl">&#127922;</div>
+            <div className="absolute bottom-4 right-12 text-6xl">&#127881;</div>
+            <div className="absolute top-1/2 left-1/3 text-4xl">&#11088;</div>
+          </div>
+          <div className="relative max-w-3xl mx-auto px-6 py-16 md:py-20 text-center">
+            <p className="text-gold uppercase tracking-widest text-sm font-medium mb-3">Monthly Game</p>
+            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              Play & Win!
+            </h2>
+            <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">
+              Every order comes with a chance to play our monthly game. Win discounts, free treats, and bonus loyalty points!
+            </p>
+            <a
+              href="https://order.cobblestonecreamery.com"
+              className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
+            >
+              Order Now to Play
+            </a>
+          </div>
+        </section>
+
         {/* Order CTA */}
         <section className="bg-primary">
           <div className="max-w-3xl mx-auto px-6 py-20 md:py-24 text-center">
