@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { ORDER_ONLINE_URL } from '@/lib/links';
 
 export default function HomePage() {
   return (
@@ -45,7 +46,7 @@ export default function HomePage() {
                 View Our Menu
               </Link>
               <a
-                href="https://order.cobblestonecreamery.com/auth"
+                href={ORDER_ONLINE_URL}
                 className="bg-gold text-white px-8 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
                 Order Online
@@ -129,7 +130,7 @@ export default function HomePage() {
               Every order comes with a chance to play our monthly game. Win discounts, free treats, and bonus loyalty points!
             </p>
             <a
-              href="https://order.cobblestonecreamery.com"
+              href={ORDER_ONLINE_URL}
               className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
             >
               Order Now to Play
@@ -147,7 +148,7 @@ export default function HomePage() {
               Order ahead for pickup or delivery and have your favorites ready when you arrive.
             </p>
             <a
-              href="https://order.cobblestonecreamery.com/auth"
+              href={ORDER_ONLINE_URL}
               className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
             >
               Order Online

@@ -74,8 +74,8 @@ export default function PrivacyPage() {
                 <span className="font-medium text-dark">Help:</span> For help or questions about our SMS
                 program, text <strong>HELP</strong> to the number from which you received the message, or
                 contact us at{' '}
-                <a href="mailto:hello@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
-                  hello@cobblestonecreamery.com
+                <a href="mailto:info@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
+                  info@cobblestonecreamery.com
                 </a>{' '}
                 or{' '}
                 <a href="tel:8122053322" className="text-primary hover:text-gold transition-colors">
@@ -137,8 +137,8 @@ export default function PrivacyPage() {
                 <p className="font-medium text-dark">Cobblestone Creamery</p>
                 <p>900 Main Street, Evansville, Indiana 47708</p>
                 <p>
-                  <a href="mailto:hello@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
-                    hello@cobblestonecreamery.com
+                  <a href="mailto:info@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
+                    info@cobblestonecreamery.com
                   </a>
                 </p>
                 <p>

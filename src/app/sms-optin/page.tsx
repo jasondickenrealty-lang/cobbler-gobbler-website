@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { ORDER_ONLINE_URL } from '@/lib/links';
 
 export default function SmsOptInPage() {
   return (
@@ -20,8 +21,8 @@ export default function SmsOptInPage() {
               <h2 className="font-serif text-2xl text-primary mb-4">How Users Opt In</h2>
               <p className="mb-6">
                 During account creation on our online ordering platform at{' '}
-                <a href="https://order.cobblestonecreamery.com/auth" className="text-primary hover:text-gold transition-colors font-medium">
-                  order.cobblestonecreamery.com
+                <a href={ORDER_ONLINE_URL} className="text-primary hover:text-gold transition-colors font-medium">
+                  localhost:3001/auth
                 </a>, customers are presented with an optional SMS consent checkbox. The checkbox is unchecked by
                 default and must be actively selected by the user. Consent is not required to make a purchase.
               </p>
@@ -29,7 +30,7 @@ export default function SmsOptInPage() {
               {/* Screenshot mockup of the signup form */}
               <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                 <div className="bg-primary px-6 py-3">
-                  <span className="text-white font-serif text-sm">order.cobblestonecreamery.com/auth</span>
+                  <span className="text-white font-serif text-sm">localhost:3001/auth</span>
                 </div>
                 <div className="bg-white p-8 max-w-md mx-auto">
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Cobblestone Creamery Account</h3>
@@ -130,8 +131,8 @@ export default function SmsOptInPage() {
                 <p className="font-medium text-dark">Cobblestone Creamery</p>
                 <p>900 Main Street, Evansville, Indiana 47708</p>
                 <p>
-                  <a href="mailto:hello@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
-                    hello@cobblestonecreamery.com
+                  <a href="mailto:info@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
+                    info@cobblestonecreamery.com
                   </a>
                 </p>
                 <p>

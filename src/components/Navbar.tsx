@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { ORDER_ONLINE_URL } from '@/lib/links';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -43,7 +44,7 @@ export default function Navbar() {
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-4">
             <a
-              href="https://order.cobblestonecreamery.com/auth"
+              href={ORDER_ONLINE_URL}
               className="hidden md:inline-block bg-gold text-white text-sm font-medium tracking-wide px-5 py-2 rounded transition-colors hover:bg-gold/90"
             >
               Order Online
@@ -81,7 +82,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="https://order.cobblestonecreamery.com/auth"
+            href={ORDER_ONLINE_URL}
             onClick={() => setMobileOpen(false)}
             className="block mt-2 bg-gold text-white text-sm font-medium tracking-wide text-center px-5 py-2.5 rounded transition-colors hover:bg-gold/90"
           >

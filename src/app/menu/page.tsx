@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { ORDER_ONLINE_URL } from '@/lib/links';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
@@ -104,7 +105,7 @@ export default function MenuPage() {
               Everything is made fresh daily with premium ingredients.
             </p>
             <a
-              href="https://order.cobblestonecreamery.com/auth"
+              href={ORDER_ONLINE_URL}
               className="inline-block bg-gold text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
             >
               Order for Pickup
