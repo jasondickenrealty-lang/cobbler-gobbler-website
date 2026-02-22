@@ -5,7 +5,7 @@ import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import Link from 'next/link';
+import Image from 'next/image';
 
 interface MenuItem {
   id: string;
@@ -30,6 +30,14 @@ interface Modifier {
   modifierCategoryId: string;
   isActive?: boolean;
 }
+
+const FEATURED_CONES = [
+  { id: 'vanilla', name: 'Vanilla', image: '/menu-cones/vanilla.jpg' },
+  { id: 'strawberry', name: 'Strawberry', image: '/menu-cones/strawberry.jpg' },
+  { id: 'oreo', name: 'Oreo', image: '/menu-cones/oreo.jpg' },
+  { id: 'mint-choc-chip', name: 'Mint Chocolate Chip', image: '/menu-cones/mint-choc-chip.jpg' },
+  { id: 'rainbow', name: 'Cotton Candy Explosion', image: '/menu-cones/rainbow.jpg' },
+];
 
 export default function MenuPage() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -98,6 +106,30 @@ export default function MenuPage() {
             >
               Order for Pickup
             </a>
+          </div>
+        </section>
+
+        {/* Featured Cones */}
+        <section className="bg-cream/30 border-y border-gold/20">
+          <div className="max-w-6xl mx-auto px-6 py-14 md:py-16">
+            <div className="text-center mb-10">
+              <h2 className="font-serif text-3xl md:text-4xl text-primary">Featured Cones</h2>
+              <div className="w-12 h-0.5 bg-gold mt-3 mx-auto"></div>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 place-items-center">
+              {FEATURED_CONES.map((cone) => (
+                <figure key={cone.id} className="text-center">
+                  <Image
+                    src={cone.image}
+                    alt={`${cone.name} cone`}
+                    width={231}
+                    height={432}
+                    className="w-full h-auto max-w-[180px] drop-shadow-sm"
+                  />
+                  <figcaption className="mt-3 text-sm text-dark/70">{cone.name}</figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </section>
 
