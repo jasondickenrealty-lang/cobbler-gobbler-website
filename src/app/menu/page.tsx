@@ -93,6 +93,14 @@ export default function MenuPage() {
     return menuItems.filter(item => item.category === category);
   };
 
+  const getCategoryAnchorId = (category: string) => {
+    const slug = category
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    return `category-${slug}`;
+  };
+
   return (
     <>
       <Navbar />
@@ -139,7 +147,7 @@ export default function MenuPage() {
 
         {/* Menu Items */}
         <section className="bg-white">
-          <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
+          <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
             {loading ? (
               <div className="text-center py-12">
                 <p className="text-dark/40">Loading menu...</p>
@@ -149,37 +157,74 @@ export default function MenuPage() {
                 <p className="text-dark/40">Menu items coming soon!</p>
               </div>
             ) : (
-              <div className="space-y-16">
-                {categories.map((category) => (
-                  <div key={category}>
-                    <div className="mb-8">
-                      <h2 className="font-serif text-2xl md:text-3xl text-primary capitalize">{category}</h2>
-                      <div className="w-12 h-0.5 bg-gold mt-3"></div>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
-                      {getItemsByCategory(category).map((item) => (
-                        <div key={item.id} className="group">
-                          {item.imageUrl && (
-                            <img
-                              src={item.imageUrl}
-                              alt={item.name}
-                              className="w-full h-48 object-cover rounded mb-4"
-                            />
-                          )}
-                          <div className="flex justify-between items-baseline gap-4">
-                            <h3 className="font-medium text-dark">{item.name}</h3>
-                            <span className="text-gold font-serif text-lg flex-shrink-0">
-                              ${item.price.toFixed(2)}
-                            </span>
-                          </div>
-                          {item.description && (
-                            <p className="text-dark/50 text-sm mt-1 leading-relaxed">{item.description}</p>
-                          )}
-                        </div>
+              <div className="lg:grid lg:grid-cols-[240px,1fr] lg:gap-12">
+                <aside className="hidden lg:block">
+                  <div className="sticky top-24 rounded-xl border border-gold/20 bg-cream/40 p-5">
+                    <h2 className="font-serif text-xl text-primary">Categories</h2>
+                    <div className="w-10 h-0.5 bg-gold mt-2 mb-4"></div>
+                    <nav className="space-y-2">
+                      {categories.map((category) => (
+                        <a
+                          key={category}
+                          href={`#${getCategoryAnchorId(category)}`}
+                          className="block text-sm uppercase tracking-wide text-dark/70 hover:text-primary transition-colors"
+                        >
+                          {category}
+                        </a>
+                      ))}
+                    </nav>
+                  </div>
+                </aside>
+
+                <div>
+                  <div className="lg:hidden mb-8">
+                    <h2 className="font-serif text-xl text-primary mb-3">Categories</h2>
+                    <div className="flex flex-wrap gap-2">
+                      {categories.map((category) => (
+                        <a
+                          key={category}
+                          href={`#${getCategoryAnchorId(category)}`}
+                          className="inline-block rounded-full border border-gold/30 px-3 py-1.5 text-xs uppercase tracking-wide text-dark/70 hover:text-primary hover:border-gold transition-colors"
+                        >
+                          {category}
+                        </a>
                       ))}
                     </div>
                   </div>
-                ))}
+
+                  <div className="space-y-16">
+                    {categories.map((category) => (
+                      <div key={category} id={getCategoryAnchorId(category)} className="scroll-mt-24">
+                        <div className="mb-8">
+                          <h2 className="font-serif text-2xl md:text-3xl text-primary capitalize">{category}</h2>
+                          <div className="w-12 h-0.5 bg-gold mt-3"></div>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+                          {getItemsByCategory(category).map((item) => (
+                            <div key={item.id} className="group">
+                              {item.imageUrl && (
+                                <img
+                                  src={item.imageUrl}
+                                  alt={item.name}
+                                  className="w-full h-48 object-cover rounded mb-4"
+                                />
+                              )}
+                              <div className="flex justify-between items-baseline gap-4">
+                                <h3 className="font-medium text-dark">{item.name}</h3>
+                                <span className="text-gold font-serif text-lg flex-shrink-0">
+                                  ${item.price.toFixed(2)}
+                                </span>
+                              </div>
+                              {item.description && (
+                                <p className="text-dark/50 text-sm mt-1 leading-relaxed">{item.description}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
 

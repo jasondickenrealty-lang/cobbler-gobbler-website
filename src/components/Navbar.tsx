@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ORDER_ONLINE_URL } from '@/lib/links';
+import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL } from '@/lib/links';
 
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/menu', label: 'Menu' },
   { href: '/free-kids-scoop', label: 'FREE KIDS SCOOP' },
+  { href: FREE_GAME_PLAY_URL, label: 'FREE GAME PLAY', external: true },
   { href: '/about', label: 'Our Story' },
   { href: '/location', label: 'Visit Us' },
 ];
@@ -29,15 +30,25 @@ export default function Navbar() {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm tracking-wide uppercase transition-colors hover:text-gold ${
-                  pathname === link.href ? 'text-gold' : 'text-white/90'
-                }`}
-              >
-                {link.label}
-              </Link>
+              link.external ? (
+                <a
+                  key={`${link.label}-${link.href}`}
+                  href={link.href}
+                  className="text-sm tracking-wide uppercase transition-colors hover:text-gold text-white/90"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm tracking-wide uppercase transition-colors hover:text-gold ${
+                    pathname === link.href ? 'text-gold' : 'text-white/90'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
             ))}
           </div>
 
@@ -70,16 +81,27 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-white/10 px-6 pb-4">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className={`block py-3 text-sm tracking-wide uppercase transition-colors hover:text-gold ${
-                pathname === link.href ? 'text-gold' : 'text-white/80'
-              }`}
-            >
-              {link.label}
-            </Link>
+            link.external ? (
+              <a
+                key={`${link.label}-${link.href}`}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="block py-3 text-sm tracking-wide uppercase transition-colors hover:text-gold text-white/80"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className={`block py-3 text-sm tracking-wide uppercase transition-colors hover:text-gold ${
+                  pathname === link.href ? 'text-gold' : 'text-white/80'
+                }`}
+              >
+                {link.label}
+              </Link>
+            )
           ))}
           <a
             href={ORDER_ONLINE_URL}
