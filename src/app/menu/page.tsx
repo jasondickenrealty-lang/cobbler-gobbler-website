@@ -42,6 +42,7 @@ const FEATURED_CONES = [
   { id: 'oreo', name: 'Oreo', image: '/menu-cones/oreo.jpg' },
   { id: 'mint-choc-chip', name: 'Mint Chocolate Chip', image: '/menu-cones/mint_chocolate_chip.jpeg' },
 ];
+const FULL_MENU_PDF_URL = '/menu/cobblestone-full-menu.pdf';
 
 export default function MenuPage() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -112,12 +113,21 @@ export default function MenuPage() {
             <p className="text-dark/60 text-lg mb-8">
               Everything is made fresh daily with premium ingredients.
             </p>
-            <a
-              href={ORDER_ONLINE_URL}
-              className="inline-block bg-gold text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
-            >
-              Order for Pickup
-            </a>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href={ORDER_ONLINE_URL}
+                className="inline-block bg-gold text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
+              >
+                Order for Pickup
+              </a>
+              <a
+                href={FULL_MENU_PDF_URL}
+                download
+                className="inline-block border border-primary text-primary px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary hover:text-white transition-colors"
+              >
+                Download Full Menu (PDF)
+              </a>
+            </div>
           </div>
         </section>
 

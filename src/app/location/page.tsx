@@ -35,8 +35,7 @@ const FALLBACK: BusinessInfo = {
 };
 
 export default function LocationPage() {
-  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [businessInfo, setBusinessInfo] = useState<BusinessInfo>(FALLBACK);
 
   useEffect(() => {
     let isMounted = true;
@@ -48,9 +47,6 @@ export default function LocationPage() {
           !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
 
         if (!hasFirebaseConfig) {
-          if (isMounted) {
-            setBusinessInfo(FALLBACK);
-          }
           return;
         }
 
@@ -63,16 +59,11 @@ export default function LocationPage() {
         const docSnap = await getDoc(docRef);
 
         if (!isMounted) return;
-        setBusinessInfo(docSnap.exists() ? (docSnap.data() as BusinessInfo) : FALLBACK);
-      } catch {
-        if (isMounted) {
-          setBusinessInfo(FALLBACK);
+        if (docSnap.exists()) {
+          const data = docSnap.data() as Partial<BusinessInfo>;
+          setBusinessInfo((prev) => ({ ...prev, ...data }));
         }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
+      } catch {}
     };
 
     fetchBusinessInfo();
@@ -82,19 +73,11 @@ export default function LocationPage() {
     };
   }, []);
 
-  if (loading) {
-    return (
-      <>
-        <Navbar />
-        <main className="flex-1">
-          <div className="max-w-4xl mx-auto px-6 py-20 text-center">
-            <p className="text-dark/40">Loading...</p>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
+  const mapQuery = encodeURIComponent(
+    `${businessInfo.address}, ${businessInfo.city}, ${businessInfo.state} ${businessInfo.zip}`
+  );
+  const googleMapsEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
+  const googleMapsOpenUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
   return (
     <>
@@ -119,18 +102,18 @@ export default function LocationPage() {
                 <h2 className="font-serif text-2xl text-primary mb-2">Location</h2>
                 <div className="w-10 h-0.5 bg-gold mb-6"></div>
                 <address className="not-italic text-dark/70 space-y-3">
-                  <p className="font-medium text-dark">{businessInfo?.name}</p>
-                  <p>{businessInfo?.address}</p>
-                  <p>{businessInfo?.city}, {businessInfo?.state} {businessInfo?.zip}</p>
+                  <p className="font-medium text-dark">{businessInfo.name}</p>
+                  <p>{businessInfo.address}</p>
+                  <p>{businessInfo.city}, {businessInfo.state} {businessInfo.zip}</p>
                   <div className="pt-4 space-y-2">
                     <p>
-                      <a href={`tel:${businessInfo?.phone?.replace(/\D/g, '')}`} className="text-primary hover:text-gold transition-colors">
-                        {businessInfo?.phone}
+                      <a href={`tel:${businessInfo.phone.replace(/\D/g, '')}`} className="text-primary hover:text-gold transition-colors">
+                        {businessInfo.phone}
                       </a>
                     </p>
                     <p>
-                      <a href={`mailto:${VISIT_US_EMAIL}`} className="text-primary hover:text-gold transition-colors">
-                        {VISIT_US_EMAIL}
+                      <a href={`mailto:${businessInfo.email || VISIT_US_EMAIL}`} className="text-primary hover:text-gold transition-colors">
+                        {businessInfo.email || VISIT_US_EMAIL}
                       </a>
                     </p>
                   </div>
@@ -142,7 +125,7 @@ export default function LocationPage() {
                 <h2 className="font-serif text-2xl text-primary mb-2">Hours</h2>
                 <div className="w-10 h-0.5 bg-gold mb-6"></div>
                 <div className="space-y-3">
-                  {businessInfo?.hours && Object.entries(businessInfo.hours).map(([day, hours]) => (
+                  {businessInfo.hours && Object.entries(businessInfo.hours).map(([day, hours]) => (
                     <div key={day} className="flex justify-between text-dark/70">
                       <span className="font-medium text-dark">{day}</span>
                       <span>{hours}</span>
@@ -157,11 +140,27 @@ export default function LocationPage() {
           </div>
         </section>
 
-        {/* Map placeholder */}
+        {/* Map */}
         <section className="bg-cream">
           <div className="max-w-4xl mx-auto px-6 py-16">
-            <div className="bg-white rounded h-64 flex items-center justify-center border border-dark/5">
-              <p className="text-dark/30 text-sm">Map coming soon</p>
+            <div className="bg-white rounded border border-dark/5 overflow-hidden">
+              <iframe
+                title="Cobblestone Creamery location map"
+                src={googleMapsEmbedUrl}
+                className="w-full h-72 md:h-96"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <div className="mt-4 text-center">
+              <a
+                href={googleMapsOpenUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-sm font-medium tracking-wide uppercase text-primary border-b-2 border-gold pb-1 hover:text-gold transition-colors"
+              >
+                Open in Google Maps
+              </a>
             </div>
           </div>
         </section>
