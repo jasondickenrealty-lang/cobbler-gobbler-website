@@ -24,6 +24,7 @@ interface UploadedColoringPage {
   downloadUrl: string;
   storagePath?: string;
   active?: boolean;
+  downloadCount?: number;
 }
 
 const allowedRoles = new Set(['manager', 'owner', 'admin']);
@@ -44,7 +45,14 @@ export default function EmployeeColoringPagesPage() {
     const q = query(collection(db, 'coloringPages'), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
     const items = snapshot.docs
-      .map((doc) => ({ id: doc.id, ...doc.data() }) as UploadedColoringPage)
+      .map((doc) => {
+        const data = doc.data() as Omit<UploadedColoringPage, 'id'>;
+        return {
+          id: doc.id,
+          ...data,
+          downloadCount: typeof data.downloadCount === 'number' ? data.downloadCount : 0,
+        } as UploadedColoringPage;
+      })
       .filter((page) => !!page.downloadUrl);
     setPages(items);
   };
@@ -156,6 +164,7 @@ export default function EmployeeColoringPagesPage() {
         storagePath,
         fileName: file.name,
         active: true,
+        downloadCount: 0,
         createdAt: serverTimestamp(),
       });
 
@@ -242,7 +251,9 @@ export default function EmployeeColoringPagesPage() {
                   <li key={page.id} className="flex items-center justify-between gap-4 border-b border-dark/10 pb-3">
                     <div>
                       <p className="text-dark">{page.title}</p>
-                      <p className="text-xs text-dark/50">{page.active === false ? 'Unpublished' : 'Published'}</p>
+                      <p className="text-xs text-dark/50">
+                        {page.active === false ? 'Unpublished' : 'Published'} | {(page.downloadCount ?? 0).toLocaleString()} {(page.downloadCount ?? 0) === 1 ? 'download' : 'downloads'}
+                      </p>
                     </div>
                     <div className="flex items-center gap-4">
                       <a

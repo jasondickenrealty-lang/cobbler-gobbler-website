@@ -1,14 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { db } from '@/lib/firebase';
 
 interface ColoringPage {
   id: string;
   title: string;
   downloadUrl: string;
   active?: boolean;
+  downloadCount?: number;
 }
 
 const FIRESTORE_API = `https://firestore.googleapis.com/v1/projects/cobblestone-pos/databases/(default)/documents/coloringPages`;
@@ -22,8 +25,11 @@ function parseFirestoreDoc(doc: Record<string, unknown>): ColoringPage | null {
   const title = (fields.title?.stringValue as string) || '';
   const downloadUrl = (fields.downloadUrl?.stringValue as string) || '';
   const active = fields.active?.booleanValue !== false;
+  const rawDownloadCount = (fields.downloadCount?.integerValue ?? fields.downloadCount?.doubleValue) as string | number | undefined;
+  const parsedCount = Number(rawDownloadCount ?? 0);
+  const downloadCount = Number.isFinite(parsedCount) ? parsedCount : 0;
   if (!downloadUrl || !active) return null;
-  return { id, title, downloadUrl, active };
+  return { id, title, downloadUrl, active, downloadCount };
 }
 
 async function downloadFile(url: string, title: string) {
@@ -42,6 +48,17 @@ async function downloadFile(url: string, title: string) {
     URL.revokeObjectURL(blobUrl);
   } catch {
     window.open(url, '_blank');
+  }
+}
+
+async function trackDownload(pageId: string) {
+  try {
+    await updateDoc(doc(db, 'coloringPages', pageId), {
+      downloadCount: increment(1),
+      lastDownloadedAt: serverTimestamp(),
+    });
+  } catch (error) {
+    console.warn('Failed to track coloring page download:', error);
   }
 }
 
@@ -68,6 +85,11 @@ export default function FreeKidsScoopPage() {
 
     fetchPages();
   }, []);
+
+  const handleDownload = (page: ColoringPage) => {
+    void trackDownload(page.id);
+    void downloadFile(page.downloadUrl, page.title);
+  };
 
   return (
     <>
@@ -112,7 +134,7 @@ export default function FreeKidsScoopPage() {
                       </p>
                       <button
                         type="button"
-                        onClick={() => downloadFile(page.downloadUrl, page.title)}
+                        onClick={() => handleDownload(page)}
                         className="inline-block text-center bg-gold text-white px-5 py-2.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors cursor-pointer"
                       >
                         Download
