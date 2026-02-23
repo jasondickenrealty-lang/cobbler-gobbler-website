@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -19,6 +17,8 @@ interface BusinessInfo {
   };
 }
 
+const VISIT_US_EMAIL = 'hello@cobblestonecremery.com';
+
 const FALLBACK: BusinessInfo = {
   name: 'Cobblestone Creamery',
   address: '900 Main Street',
@@ -26,7 +26,7 @@ const FALLBACK: BusinessInfo = {
   state: 'Indiana',
   zip: '47708',
   phone: '(812) 205-3322',
-  email: 'info@cobblestonecreamery.com',
+  email: VISIT_US_EMAIL,
   hours: {
     'Monday - Thursday': '11am - 9pm',
     'Friday - Saturday': '11am - 10pm',
@@ -39,18 +39,47 @@ export default function LocationPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchBusinessInfo = async () => {
       try {
+        const hasFirebaseConfig =
+          !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
+          !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+
+        if (!hasFirebaseConfig) {
+          if (isMounted) {
+            setBusinessInfo(FALLBACK);
+          }
+          return;
+        }
+
+        const [{ doc, getDoc }, { db }] = await Promise.all([
+          import('firebase/firestore'),
+          import('@/lib/firebase'),
+        ]);
+
         const docRef = doc(db, 'settings', 'business');
         const docSnap = await getDoc(docRef);
+
+        if (!isMounted) return;
         setBusinessInfo(docSnap.exists() ? (docSnap.data() as BusinessInfo) : FALLBACK);
       } catch {
-        setBusinessInfo(FALLBACK);
+        if (isMounted) {
+          setBusinessInfo(FALLBACK);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
+
     fetchBusinessInfo();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (loading) {
@@ -100,8 +129,8 @@ export default function LocationPage() {
                       </a>
                     </p>
                     <p>
-                      <a href={`mailto:${businessInfo?.email}`} className="text-primary hover:text-gold transition-colors">
-                        {businessInfo?.email}
+                      <a href={`mailto:${VISIT_US_EMAIL}`} className="text-primary hover:text-gold transition-colors">
+                        {VISIT_US_EMAIL}
                       </a>
                     </p>
                   </div>

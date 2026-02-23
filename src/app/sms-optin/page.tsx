@@ -22,7 +22,7 @@ export default function SmsOptInPage() {
               <p className="mb-6">
                 During account creation on our online ordering platform at{' '}
                 <a href={ORDER_ONLINE_URL} className="text-primary hover:text-gold transition-colors font-medium">
-                  localhost:3001/auth
+                  order.cobblestonecreamery.com
                 </a>, customers are presented with an optional SMS consent checkbox. The checkbox is unchecked by
                 default and must be actively selected by the user. Consent is not required to make a purchase.
               </p>
@@ -30,7 +30,7 @@ export default function SmsOptInPage() {
               {/* Screenshot mockup of the signup form */}
               <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                 <div className="bg-primary px-6 py-3">
-                  <span className="text-white font-serif text-sm">localhost:3001/auth</span>
+                  <span className="text-white font-serif text-sm">order.cobblestonecreamery.com</span>
                 </div>
                 <div className="bg-white p-8 max-w-md mx-auto">
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Cobblestone Creamery Account</h3>

@@ -1,5 +1,5 @@
 export const ORDER_ONLINE_URL =
-  process.env.NEXT_PUBLIC_ORDER_ONLINE_URL || 'http://localhost:3001/auth';
+  process.env.NEXT_PUBLIC_ORDER_ONLINE_URL || 'https://order.cobblestonecreamery.com/auth';
 
 const normalizedOrderOnlineUrl = ORDER_ONLINE_URL.replace(/\/+$/, '');
 
