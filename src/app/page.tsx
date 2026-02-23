@@ -43,7 +43,7 @@ export default function HomePage() {
                 href="/menu"
                 className="bg-primary text-white px-8 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
               >
-                View Our Menu
+                Monthly Flavors
               </Link>
               <a
                 href={ORDER_ONLINE_URL}

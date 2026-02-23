@@ -7,7 +7,7 @@ import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL } from '@/lib/links';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/menu', label: 'Menu' },
+  { href: '/menu', label: 'Monthly Flavors' },
   { href: '/free-kids-scoop', label: 'FREE KIDS SCOOP' },
   { href: FREE_GAME_PLAY_URL, label: 'FREE GAME PLAY', external: true },
   { href: '/about', label: 'Our Story' },

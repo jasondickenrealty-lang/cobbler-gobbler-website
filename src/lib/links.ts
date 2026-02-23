@@ -4,5 +4,5 @@ export const ORDER_ONLINE_URL =
 const normalizedOrderOnlineUrl = ORDER_ONLINE_URL.replace(/\/+$/, '');
 
 export const FREE_GAME_PLAY_URL = normalizedOrderOnlineUrl.endsWith('/auth')
-  ? normalizedOrderOnlineUrl
-  : `${normalizedOrderOnlineUrl}/auth`;
+  ? normalizedOrderOnlineUrl.replace(/\/auth$/, '')
+  : normalizedOrderOnlineUrl;
