@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { ORDER_ONLINE_URL } from '@/lib/links';
 import Navbar from '@/components/Navbar';
@@ -16,6 +16,8 @@ interface MenuItem {
   category: string;
   available: boolean;
   imageUrl?: string;
+  displayOrder?: number;
+  categoryOrder?: number;
 }
 
 interface ModifierCategory {
@@ -56,9 +58,7 @@ export default function MenuPage() {
       try {
         const q = query(
           collection(db, 'menu'),
-          where('available', '==', true),
-          orderBy('category'),
-          orderBy('name')
+          where('available', '==', true)
         );
 
         const querySnapshot = await getDocs(q);
@@ -67,13 +67,41 @@ export default function MenuPage() {
           ...doc.data()
         })) as MenuItem[];
 
+        // Sort items by displayOrder (if set), then by name as fallback
+        items.sort((a, b) => {
+          // First sort by category order
+          const catOrderA = a.categoryOrder ?? 999;
+          const catOrderB = b.categoryOrder ?? 999;
+          if (catOrderA !== catOrderB) return catOrderA - catOrderB;
+
+          // Then by category name as tiebreaker
+          const catCompare = a.category.localeCompare(b.category);
+          if (catCompare !== 0) return catCompare;
+
+          // Then by item displayOrder within category
+          const orderA = a.displayOrder ?? 999;
+          const orderB = b.displayOrder ?? 999;
+          if (orderA !== orderB) return orderA - orderB;
+
+          // Finally by name
+          return a.name.localeCompare(b.name);
+        });
+
         setMenuItems(items);
-        const uniqueCategories = [...new Set(items.map(item => item.category))];
+
+        // Build ordered unique categories preserving the sort order
+        const uniqueCategories: string[] = [];
+        for (const item of items) {
+          if (!uniqueCategories.includes(item.category)) {
+            uniqueCategories.push(item.category);
+          }
+        }
         setCategories(uniqueCategories);
 
         // Fetch modifier categories (toppings, flavors, etc.)
         const mcSnapshot = await getDocs(collection(db, 'modifierCategories'));
         const mcData = mcSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as ModifierCategory[];
+        mcData.sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999));
         setModifierCategories(mcData);
 
         // Fetch modifiers
