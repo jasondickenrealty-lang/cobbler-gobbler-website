@@ -27,67 +27,13 @@ export default function SmsOptInPage() {
                 default and must be actively selected by the user. Consent is not required to make a purchase.
               </p>
 
-              {/* Screenshot mockup of the signup form */}
+              {/* DO NOT DELETE: This image is required for SMS compliance and must remain accessible at /assets/cobblestone-sms-optin.png */}
               <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-                <div className="bg-primary px-6 py-3">
-                  <span className="text-white font-serif text-sm">order.cobblestonecreamery.com</span>
-                </div>
-                <div className="bg-white p-8 max-w-md mx-auto">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Cobblestone Creamery Account</h3>
-
-                  <div className="flex gap-2 mb-6">
-                    <span className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded text-sm">Log In</span>
-                    <span className="px-3 py-1.5 bg-gray-900 text-white rounded text-sm">Create Account</span>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-1">Full Name</label>
-                      <div className="border border-gray-300 rounded px-3 py-2 bg-gray-50 text-gray-400 text-sm">&nbsp;</div>
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-1">Phone Number</label>
-                      <div className="border border-gray-300 rounded px-3 py-2 bg-gray-50 text-gray-400 text-sm">(812) 205-3322</div>
-                    </div>
-
-                    {/* SMS Consent - highlighted */}
-                    <div className="border-2 border-gold rounded-lg p-4 bg-gold/5">
-                      <p className="text-sm font-bold text-gray-800 mb-2">
-                        Stay in the Scoop with Cobblestone Creamery!
-                      </p>
-                      <div className="flex items-start gap-2 mb-2">
-                        <div className="mt-0.5 w-4 h-4 border-2 border-gray-400 rounded-sm flex-shrink-0" />
-                        <span className="text-sm text-gray-700 leading-relaxed">
-                          Yes, sign me up! I&apos;d like to receive SMS messages from Cobblestone Creamery
-                          about promotions, loyalty rewards, order updates, and special store
-                          announcements.
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500 mb-1">
-                        Message &amp; data rates may apply. Reply STOP at any time to unsubscribe.
-                      </p>
-                      <p className="text-xs text-gray-500 mb-2">
-                        Consent is not a condition of purchase. Your phone number will still be
-                        used for loyalty account access and order lookups.
-                      </p>
-                      <div className="mt-2">
-                        <span className="text-xs font-semibold text-gold uppercase tracking-wide">&#8593; SMS Opt-In checkbox (unchecked by default)</span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-1">Email</label>
-                      <div className="border border-gray-300 rounded px-3 py-2 bg-gray-50 text-gray-400 text-sm">&nbsp;</div>
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-1">Password</label>
-                      <div className="border border-gray-300 rounded px-3 py-2 bg-gray-50 text-gray-400 text-sm">&nbsp;</div>
-                    </div>
-                    <div className="bg-gray-900 text-white text-center py-2.5 rounded text-sm font-medium">
-                      Create Account
-                    </div>
-                  </div>
-                </div>
+                <img
+                  src="/assets/cobblestone-sms-optin.png"
+                  alt="Screenshot of Cobblestone Creamery account creation form showing SMS opt-in checkbox"
+                  className="w-full h-auto"
+                />
               </div>
             </div>
 
