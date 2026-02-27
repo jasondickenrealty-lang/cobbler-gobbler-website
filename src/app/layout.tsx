@@ -14,7 +14,7 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: 'Cobblestone Creamery',
   description:
-    'Handcrafted ice cream and classic cobblers made fresh daily. Family owned since 2010.',
+    'Handcrafted ice cream and classic cobblers made fresh daily. Established in 2026 by two friends.',
   icons: {
     icon: '/favicon.ico',
   },

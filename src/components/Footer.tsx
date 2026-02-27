@@ -11,7 +11,7 @@ export default function Footer() {
             <h3 className="font-serif text-xl text-white mb-3">Cobblestone Creamery</h3>
             <p className="text-sm text-white/60 leading-relaxed">
               Handcrafted ice cream and classic cobblers made fresh daily.
-              Family owned and operated since 2010.
+              Established in 2026 by two friends who love ice cream and community.
             </p>
           </div>
 

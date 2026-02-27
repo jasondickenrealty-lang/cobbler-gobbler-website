@@ -36,7 +36,7 @@ export default function HomePage() {
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-xl mx-auto drop-shadow">
               Handcrafted ice cream and classic cobblers, made fresh daily
-              with premium ingredients. Family owned since 2010.
+              with premium ingredients. Established in 2026 by two friends.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -86,10 +86,10 @@ export default function HomePage() {
                 <div className="w-12 h-12 rounded-full bg-cream mx-auto mb-5 flex items-center justify-center">
                   <span className="text-gold text-lg font-serif">03</span>
                 </div>
-                <h3 className="font-serif text-xl text-primary mb-3">Family Owned</h3>
+                <h3 className="font-serif text-xl text-primary mb-3">Community Rooted</h3>
                 <p className="text-dark/60 leading-relaxed">
-                  Locally owned and operated with love. We believe great food
-                  brings people together.
+                  Built by two friends and shaped by our neighborhood. We believe
+                  great food brings people together.
                 </p>
               </div>
             </div>
@@ -101,9 +101,9 @@ export default function HomePage() {
           <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
             <h2 className="text-3xl md:text-4xl font-serif text-primary mb-6">Our Story</h2>
             <p className="text-dark/60 leading-relaxed mb-8 text-lg">
-              What started as a small family dream in 2010 has grown into a beloved
-              local destination. We pour our hearts into every scoop and every cobbler,
-              using only the finest ingredients to create treats worth sharing.
+              Established in 2026 by two friends with a love of ice cream, cows, and
+              community, Cobblestone Creamery was built to be a welcoming place for
+              great flavor, good company, and moments worth sharing.
             </p>
             <Link
               href="/about"
