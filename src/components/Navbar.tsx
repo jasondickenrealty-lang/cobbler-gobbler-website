@@ -23,7 +23,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="font-serif text-xl tracking-wide">
+          <Link href="/" className="font-serif text-xl tracking-wide mr-8">
             Cobblestone Creamery
           </Link>
 
