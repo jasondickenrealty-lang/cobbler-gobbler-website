@@ -1,14 +1,20 @@
 import type { Metadata } from 'next';
 import { Inter, Lora } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
+import ChatWidget from '@/components/ChatWidget';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const lora = Lora({ subsets: ['latin'], variable: '--font-lora', weight: ['400', '500', '600', '700'] });
+const lora = Lora({
+  subsets: ['latin'],
+  variable: '--font-lora',
+  weight: ['400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
   title: 'Cobblestone Creamery',
-  description: 'Handcrafted ice cream and classic cobblers made fresh daily. Family owned since 2010.',
+  description:
+    'Handcrafted ice cream and classic cobblers made fresh daily. Family owned since 2010.',
   icons: {
     icon: '/favicon.ico',
   },
@@ -24,6 +30,7 @@ export default function RootLayout({
       <body className="font-sans text-dark">
         <AuthProvider>
           {children}
+          <ChatWidget />
         </AuthProvider>
       </body>
     </html>
