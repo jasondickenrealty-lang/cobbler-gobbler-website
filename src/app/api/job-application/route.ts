@@ -26,6 +26,13 @@ function clean(value: unknown, maxLen: number) {
   return String(value || '').trim().slice(0, maxLen);
 }
 
+export async function GET() {
+  return NextResponse.json({
+    ok: true,
+    message: 'Job application endpoint is available. Submit applications with POST.',
+  });
+}
+
 export async function POST(req: Request) {
   try {
     const body = (await req.json().catch(() => ({}))) as JobApplicationPayload;
