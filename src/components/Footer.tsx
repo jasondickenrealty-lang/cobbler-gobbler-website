@@ -22,6 +22,7 @@ export default function Footer() {
               <Link href="/menu" className="block text-sm text-white/60 hover:text-white transition-colors">Monthly Flavors</Link>
               <a href={ORDER_ONLINE_URL} className="block text-sm text-white/60 hover:text-white transition-colors">Order Online</a>
               <Link href="/about" className="block text-sm text-white/60 hover:text-white transition-colors">Our Story</Link>
+              <Link href="/join-our-team" className="block text-sm text-white/60 hover:text-white transition-colors">Join Our Team</Link>
               <Link href="/location" className="block text-sm text-white/60 hover:text-white transition-colors">Visit Us</Link>
             </div>
           </div>
@@ -36,6 +37,16 @@ export default function Footer() {
               </p>
               <p>
                 <a href="mailto:info@cobblestonecreamery.com" className="hover:text-white transition-colors">info@cobblestonecreamery.com</a>
+              </p>
+              <p>
+                <a
+                  href="https://www.facebook.com/profile.php?id=61588303764359"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  Facebook
+                </a>
               </p>
             </div>
           </div>
@@ -52,6 +63,14 @@ export default function Footer() {
             <Link href="/terms" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Terms &amp; Conditions
             </Link>
+            <a
+              href="https://www.facebook.com/profile.php?id=61588303764359"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-white/40 hover:text-white/60 transition-colors"
+            >
+              Facebook
+            </a>
             <Link href="/employee/login" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Employee Portal
             </Link>

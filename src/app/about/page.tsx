@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function AboutPage() {
   return (
@@ -67,12 +68,17 @@ export default function AboutPage() {
         <section className="bg-white">
           <div className="max-w-2xl mx-auto px-6 py-20">
             <h2 className="font-serif text-2xl text-primary mb-6">Join Our Team</h2>
-            <p className="text-dark/70 leading-relaxed">
+            <p className="text-dark/70 leading-relaxed mb-8">
               We&apos;re always looking for friendly, hardworking individuals to join our team.
               If you&apos;re passionate about great food and excellent customer service,
-              we&apos;d love to hear from you. Stop by the shop or reach out to learn about
-              current openings.
+              we&apos;d love to hear from you.
             </p>
+            <Link
+              href="/join-our-team"
+              className="inline-block bg-primary text-white px-7 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
+            >
+              Fill Out Application
+            </Link>
           </div>
         </section>
       </main>

@@ -191,9 +191,7 @@ export default function MenuPage() {
                 <p className="text-dark/40">Loading menu...</p>
               </div>
             ) : menuItems.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-dark/40">Menu items coming soon!</p>
-              </div>
+              null
             ) : (
               <div className="lg:grid lg:grid-cols-[240px,1fr] lg:gap-12">
                 <aside className="hidden lg:block">

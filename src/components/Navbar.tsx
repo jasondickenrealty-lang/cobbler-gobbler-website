@@ -11,6 +11,7 @@ const navLinks = [
   { href: '/free-kids-scoop', label: 'FREE KIDS SCOOP' },
   { href: FREE_GAME_PLAY_URL, label: 'FREE GAME PLAY', external: true },
   { href: '/about', label: 'Our Story' },
+  { href: '/join-our-team', label: 'Join Our Team' },
   { href: '/location', label: 'Visit Us' },
 ];
 
