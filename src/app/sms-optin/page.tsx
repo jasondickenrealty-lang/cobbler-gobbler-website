@@ -41,20 +41,11 @@ export default function SmsOptInPage() {
               <h2 className="font-serif text-2xl text-primary mb-4">Consent Language</h2>
               <div className="bg-cream rounded px-6 py-5">
                 <p className="text-dark font-medium mb-2">Exact opt-in text shown to users:</p>
-                <p className="italic mb-2">
-                  &ldquo;Stay in the Scoop with Cobblestone Creamery!
-                </p>
-                <p className="italic mb-2">
-                  Would you like to receive SMS messages from Cobblestone Creamery
-                  about promotions, loyalty rewards, order updates, and special store
-                  announcements?
-                </p>
-                <p className="italic mb-2">
-                  Message &amp; data rates may apply. Reply STOP at any time to unsubscribe.
-                </p>
                 <p className="italic">
-                  Consent is not a condition of purchase. Your phone number will still be
-                  used for loyalty account access and order lookups.&rdquo;
+                  &ldquo;I agree to receive recurring SMS messages from Cobblestone Creamery
+                  regarding promotions, loyalty rewards, order updates, and store
+                  announcements. Consent is not a condition of purchase. Message and data
+                  rates may apply. Reply STOP to unsubscribe or HELP for help.&rdquo;
                 </p>
               </div>
             </div>
