@@ -43,6 +43,22 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
+      name: 'Do you serve milkshakes in Evansville?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes! Cobblestone Creamery serves thick, handcrafted milkshakes in downtown Evansville, Indiana. Choose from classic flavors or build your own with any of our premium ice cream flavors and mix-ins.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What makes Cobblestone Creamery one of the best ice cream spots in Evansville?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Cobblestone Creamery stands out in Evansville for our daily-made waffle cones, small-batch ice cream with rotating monthly flavors, handcrafted milkshakes, classic cobblers, and a welcoming atmosphere in the heart of downtown Evansville. We use premium ingredients and put care into every scoop.',
+      },
+    },
+    {
+      '@type': 'Question',
       name: 'What are your hours?',
       acceptedAnswer: {
         '@type': 'Answer',
@@ -316,6 +332,27 @@ export default function HomePage() {
                   </a>{' '}
                   and have your favorite ice cream, milkshakes, and desserts ready when
                   you arrive at our downtown Evansville location.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-serif text-lg text-primary mb-2">
+                  Do you serve milkshakes in Evansville?
+                </h3>
+                <p className="text-dark/60 leading-relaxed">
+                  Yes! We serve thick, handcrafted milkshakes in downtown Evansville, Indiana.
+                  Choose from classic flavors or build your own with any of our premium ice cream
+                  flavors and mix-ins.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-serif text-lg text-primary mb-2">
+                  What makes Cobblestone Creamery one of the best ice cream spots in Evansville?
+                </h3>
+                <p className="text-dark/60 leading-relaxed">
+                  We stand out in Evansville for our daily-made waffle cones, small-batch ice cream
+                  with rotating monthly flavors, handcrafted milkshakes, classic cobblers, and a
+                  welcoming atmosphere in the heart of downtown. We use premium ingredients and put
+                  care into every scoop.
                 </p>
               </div>
               <div>

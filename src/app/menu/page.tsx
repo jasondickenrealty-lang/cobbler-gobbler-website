@@ -171,7 +171,7 @@ export default function MenuPage() {
                 <figure key={cone.id} className="text-center">
                   <Image
                     src={cone.image}
-                    alt={`${cone.name} cone`}
+                    alt={`${cone.name} ice cream cone at Cobblestone Creamery Evansville`}
                     width={231}
                     height={432}
                     className="w-[180px] h-[260px] object-contain mx-auto drop-shadow-sm"
@@ -188,7 +188,15 @@ export default function MenuPage() {
           <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
             {loading ? (
               <div className="text-center py-12">
-                <p className="text-dark/40">Loading menu...</p>
+                <div className="max-w-2xl mx-auto">
+                  <h2 className="font-serif text-2xl text-primary mb-4">Our Menu</h2>
+                  <p className="text-dark/60 leading-relaxed mb-4">
+                    At Cobblestone Creamery in downtown Evansville, Indiana, we serve handcrafted ice cream
+                    in fresh waffle cones, bowls, and sundaes. Enjoy our signature milkshakes, classic cobblers,
+                    and rotating monthly flavors — all made with premium ingredients.
+                  </p>
+                  <p className="text-dark/40 text-sm">Loading today&apos;s flavors&hellip;</p>
+                </div>
               </div>
             ) : menuItems.length === 0 ? (
               null

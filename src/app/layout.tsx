@@ -107,6 +107,11 @@ const jsonLd = {
     '@type': 'Menu',
     url: `${SITE_URL}/menu`,
   },
+  areaServed: {
+    '@type': 'City',
+    name: 'Evansville',
+    '@id': 'https://www.wikidata.org/wiki/Q79860',
+  },
   servesCuisine: ['Ice Cream', 'Desserts', 'Cobblers', 'Milkshakes'],
   priceRange: '$',
   sameAs: [
