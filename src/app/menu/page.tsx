@@ -241,8 +241,11 @@ export default function MenuPage() {
                               {item.imageUrl && (
                                 <img
                                   src={item.imageUrl}
-                                  alt={item.name}
+                                  alt={`${item.name} - ${item.category} at Cobblestone Creamery`}
                                   className="w-full h-48 object-cover rounded mb-4"
+                                  loading="lazy"
+                                  width={400}
+                                  height={192}
                                 />
                               )}
                               <div className="flex justify-between items-baseline gap-4">

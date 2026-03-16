@@ -10,8 +10,9 @@ export default function Footer() {
           <div>
             <h3 className="font-serif text-xl text-white mb-3">Cobblestone Creamery</h3>
             <p className="text-sm text-white/60 leading-relaxed">
-              Handcrafted ice cream and classic cobblers made fresh daily.
-              Established in 2026 by two friends who love ice cream and community.
+              Handcrafted ice cream, classic cobblers, and milkshakes made fresh
+              daily in downtown Evansville, Indiana. Established in 2026 by two
+              friends who love ice cream and community.
             </p>
           </div>
 
@@ -19,18 +20,20 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Quick Links</h4>
             <div className="space-y-2">
-              <Link href="/menu" className="block text-sm text-white/60 hover:text-white transition-colors">Monthly Flavors</Link>
-              <a href={ORDER_ONLINE_URL} className="block text-sm text-white/60 hover:text-white transition-colors">Order Online</a>
+              <Link href="/menu" className="block text-sm text-white/60 hover:text-white transition-colors">Monthly Flavors in Evansville</Link>
+              <a href={ORDER_ONLINE_URL} className="block text-sm text-white/60 hover:text-white transition-colors">Order Ice Cream Online</a>
               <Link href="/about" className="block text-sm text-white/60 hover:text-white transition-colors">Our Story</Link>
+              <Link href="/free-kids-scoop" className="block text-sm text-white/60 hover:text-white transition-colors">Free Kids Scoop</Link>
               <Link href="/join-our-team" className="block text-sm text-white/60 hover:text-white transition-colors">Join Our Team</Link>
-              <Link href="/location" className="block text-sm text-white/60 hover:text-white transition-colors">Visit Us</Link>
+              <Link href="/location" className="block text-sm text-white/60 hover:text-white transition-colors">Visit Our Downtown Evansville Shop</Link>
+              <Link href="/ice-cream-evansville-in" className="block text-sm text-white/60 hover:text-white transition-colors">Ice Cream in Evansville, IN</Link>
             </div>
           </div>
 
           {/* Contact */}
           <div>
             <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Get in Touch</h4>
-            <div className="space-y-2 text-sm text-white/60">
+            <address className="not-italic space-y-2 text-sm text-white/60">
               <p>900 Main Street, Evansville, Indiana 47708</p>
               <p>
                 <a href="tel:8122053322" className="hover:text-white transition-colors">(812) 205-3322</a>
@@ -48,7 +51,7 @@ export default function Footer() {
                   Facebook
                 </a>
               </p>
-            </div>
+            </address>
           </div>
         </div>
 

@@ -123,8 +123,9 @@ export default function FreeKidsScoopPage() {
                     <div className="aspect-[3/4] bg-cream/50 overflow-hidden">
                       <img
                         src={page.downloadUrl}
-                        alt={page.title}
+                        alt={`${page.title} - free coloring page from Cobblestone Creamery`}
                         className="w-full h-full object-contain"
+                        loading="lazy"
                       />
                     </div>
                     <div className="p-5 flex flex-col flex-1">

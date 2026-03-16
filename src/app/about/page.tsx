@@ -1,6 +1,23 @@
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Our Story',
+  description:
+    'Learn the story behind Cobblestone Creamery — an ice cream shop in downtown Evansville, IN, founded in 2026 by two friends who love ice cream and community.',
+  alternates: {
+    canonical: 'https://cobblestonecreamery.com/about',
+  },
+  openGraph: {
+    title: 'Our Story | Cobblestone Creamery',
+    description:
+      'Founded in 2026 by two friends with a love of ice cream, cows, and community in Evansville, Indiana.',
+    url: 'https://cobblestonecreamery.com/about',
+    images: [{ url: '/logo.png', alt: 'Cobblestone Creamery story' }],
+  },
+};
 
 export default function AboutPage() {
   return (
@@ -12,7 +29,8 @@ export default function AboutPage() {
           <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
             <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Our Story</h1>
             <p className="text-dark/60 text-lg">
-              Established in 2026 by two friends with a love of ice cream, cows, and community.
+              Established in 2026 by two friends with a love of ice cream, cows, and
+              community — right here in downtown Evansville, Indiana.
             </p>
           </div>
         </section>
@@ -23,8 +41,8 @@ export default function AboutPage() {
             <h2 className="font-serif text-2xl text-primary mb-6">How It All Began</h2>
             <p className="text-dark/70 leading-relaxed mb-6">
               Cobblestone Creamery started in 2026 when two longtime friends decided to turn
-              their shared dream into something real: a neighborhood ice cream shop built on joy,
-              quality, and a little small-town charm.
+              their shared dream into something real: a neighborhood ice cream shop in Evansville
+              built on joy, quality, and a little small-town charm.
             </p>
             <p className="text-dark/70 leading-relaxed">
               Inspired by weekend farm drives, old-fashioned scoop shops, and a serious obsession
