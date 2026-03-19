@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -43,6 +43,7 @@ export default function JoinOurTeamPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const statusRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (field: keyof ApplicationForm, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -67,8 +68,10 @@ export default function JoinOurTeamPage() {
 
       setSubmitted(true);
       setForm(INITIAL_FORM);
+      setTimeout(() => statusRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
     } catch (submitError: any) {
       setError(submitError?.message || 'Failed to submit application.');
+      setTimeout(() => statusRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
     } finally {
       setSubmitting(false);
     }
@@ -90,18 +93,33 @@ export default function JoinOurTeamPage() {
 
         <section className="bg-white">
           <div className="max-w-3xl mx-auto px-6 py-16 md:py-20">
-            {submitted && (
-              <div className="mb-8 rounded border border-green-200 bg-green-50 px-5 py-4 text-green-800">
-                Application submitted successfully. We will review it and reach out if there is a fit.
-              </div>
-            )}
+            <div ref={statusRef}>
+              {submitted && (
+                <div className="mb-8 rounded border border-green-200 bg-green-50 px-5 py-4 text-green-800">
+                  Application submitted successfully! We will review it and reach out if there is a fit.
+                </div>
+              )}
 
-            {error && (
-              <div className="mb-8 rounded border border-red-200 bg-red-50 px-5 py-4 text-red-700">
-                {error}
-              </div>
-            )}
+              {error && (
+                <div className="mb-8 rounded border border-red-200 bg-red-50 px-5 py-4 text-red-700">
+                  {error}
+                </div>
+              )}
+            </div>
 
+            {submitted ? (
+              <div className="text-center py-8">
+                <p className="text-dark/70">Want to submit another application?{' '}
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="text-primary underline hover:no-underline"
+                  >
+                    Click here
+                  </button>
+                </p>
+              </div>
+            ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
@@ -260,6 +278,7 @@ export default function JoinOurTeamPage() {
                 </button>
               </div>
             </form>
+            )}
           </div>
         </section>
       </main>
