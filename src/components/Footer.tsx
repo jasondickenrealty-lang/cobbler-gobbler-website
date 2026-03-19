@@ -24,6 +24,7 @@ export default function Footer() {
               <a href={ORDER_ONLINE_URL} className="block text-sm text-white/60 hover:text-white transition-colors">Order Ice Cream Online</a>
               <Link href="/about" className="block text-sm text-white/60 hover:text-white transition-colors">Our Story</Link>
               <Link href="/free-kids-scoop" className="block text-sm text-white/60 hover:text-white transition-colors">Free Kids Scoop</Link>
+              <Link href="/fundraising" className="block text-sm text-white/60 hover:text-white transition-colors">Fundraising &amp; Donations</Link>
               <Link href="/join-our-team" className="block text-sm text-white/60 hover:text-white transition-colors">Join Our Team</Link>
               <Link href="/location" className="block text-sm text-white/60 hover:text-white transition-colors">Visit Our Downtown Evansville Shop</Link>
               <Link href="/ice-cream-evansville-in" className="block text-sm text-white/60 hover:text-white transition-colors">Ice Cream in Evansville, IN</Link>

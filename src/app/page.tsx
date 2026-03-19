@@ -208,6 +208,49 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Fundraising & Donations */}
+        <section className="bg-white">
+          <div className="max-w-4xl mx-auto px-6 py-20 md:py-28">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-serif text-primary mb-4">
+                  Fundraising &amp; Donations
+                </h2>
+                <p className="text-dark/60 leading-relaxed mb-6">
+                  Partner with Cobblestone Creamery for your next fundraiser! We
+                  support schools, churches, sports teams, and local organizations
+                  throughout Evansville. Host a fundraising night or request a
+                  donation for your event.
+                </p>
+                <Link
+                  href="/fundraising"
+                  className="inline-block bg-primary text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
+                >
+                  Learn More
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div className="bg-cream rounded-lg p-5">
+                  <span className="text-2xl block mb-2">&#127979;</span>
+                  <p className="text-dark/70 text-sm font-medium">Schools</p>
+                </div>
+                <div className="bg-cream rounded-lg p-5">
+                  <span className="text-2xl block mb-2">&#9917;</span>
+                  <p className="text-dark/70 text-sm font-medium">Sports Teams</p>
+                </div>
+                <div className="bg-cream rounded-lg p-5">
+                  <span className="text-2xl block mb-2">&#9962;</span>
+                  <p className="text-dark/70 text-sm font-medium">Churches</p>
+                </div>
+                <div className="bg-cream rounded-lg p-5">
+                  <span className="text-2xl block mb-2">&#128153;</span>
+                  <p className="text-dark/70 text-sm font-medium">Nonprofits</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Monthly Game Promo */}
         <section className="bg-gradient-to-br from-primary to-dark overflow-hidden relative">
           <div className="absolute inset-0 opacity-10">
