@@ -1,21 +1,23 @@
 import { NextResponse } from 'next/server';
-import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export const runtime = 'nodejs';
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-};
+const ALLOWED_ORIGINS = [
+  'https://cobblestonecreamery.com',
+  'https://www.cobblestonecreamery.com',
+  'http://localhost:3000',
+  'http://localhost:3001',
+];
 
-function getDb() {
-  const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-  return getFirestore(app);
+/** Strip HTML tags and limit length for safe URL inclusion */
+function sanitizePageName(raw: string): string {
+  return raw
+    .replace(/<[^>]*>/g, '')
+    .replace(/[^\w\s\-.,'&()]/g, '')
+    .trim()
+    .slice(0, 100);
 }
 
 const FB_GRAPH = 'https://graph.facebook.com/v21.0';
@@ -57,10 +59,7 @@ export async function GET(req: Request) {
 
   if (!appId || !appSecret) {
     return NextResponse.json(
-      {
-        error: 'Facebook app credentials not configured on server',
-        redirectUri,
-      },
+      { error: 'Facebook app credentials not configured on server' },
       { status: 500 },
     );
   }
@@ -146,8 +145,15 @@ export async function GET(req: Request) {
       );
     }
 
+    // Validate redirect origin
+    if (!ALLOWED_ORIGINS.includes(requestOrigin)) {
+      return NextResponse.json(
+        { error: 'Invalid request origin' },
+        { status: 403 },
+      );
+    }
+
     // Step 6: Store in Firestore
-    const db = getDb();
     const pages = pagesData.data.map((page: { id: string; name: string; access_token: string; category: string }) => ({
       pageId: page.id,
       pageName: page.name,
@@ -176,7 +182,7 @@ export async function GET(req: Request) {
     const successUrl = new URL('/auth/facebook/success', requestOrigin);
     successUrl.searchParams.set('ok', '1');
     successUrl.searchParams.set('pageId', primaryPage.pageId);
-    successUrl.searchParams.set('pageName', primaryPage.pageName);
+    successUrl.searchParams.set('pageName', sanitizePageName(primaryPage.pageName));
     successUrl.searchParams.set('pagesCount', String(pages.length));
     return NextResponse.redirect(successUrl.toString());
   } catch (err: unknown) {

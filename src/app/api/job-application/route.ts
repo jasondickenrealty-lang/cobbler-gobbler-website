@@ -15,6 +15,25 @@ type JobApplicationPayload = {
   additionalInfo?: string;
 };
 
+const ALLOWED_POSITIONS = [
+  'Team Member',
+  'Shift Leader',
+  'Assistant Manager',
+  'Manager',
+  'Kitchen Staff',
+  'Barista',
+  'Cashier',
+  'Other',
+];
+
+const US_PHONE_REGEX = /^\+?1?\s*\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4}$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+const HTML_TAG_REGEX = /<[^>]*>/;
+
+function containsHtml(value: string): boolean {
+  return HTML_TAG_REGEX.test(value);
+}
+
 const DEFAULT_API_BASE =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:5401/cobblestone-pos/us-central1/api'
@@ -35,6 +54,17 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    // CSRF protection: validate that the request origin matches the host
+    const origin = req.headers.get('origin');
+    const referer = req.headers.get('referer');
+    const host = req.headers.get('host');
+    if (origin && host && !origin.includes(host)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    if (!origin && referer && host && !referer.includes(host)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const body = (await req.json().catch(() => ({}))) as JobApplicationPayload;
 
     const payload = {
@@ -65,9 +95,28 @@ export async function POST(req: Request) {
       );
     }
 
-    const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email);
-    if (!emailIsValid) {
+    // Validate email with a more robust regex
+    if (!EMAIL_REGEX.test(payload.email)) {
       return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
+    }
+
+    // Validate US phone number format
+    if (!US_PHONE_REGEX.test(payload.phone)) {
+      return NextResponse.json({ error: 'Please enter a valid US phone number.' }, { status: 400 });
+    }
+
+    // Validate position against whitelist
+    if (!ALLOWED_POSITIONS.some((p) => p.toLowerCase() === payload.position.toLowerCase())) {
+      return NextResponse.json({ error: 'Please select a valid position.' }, { status: 400 });
+    }
+
+    // Check required text fields for HTML tags (basic XSS prevention)
+    const textFields = [
+      payload.firstName, payload.lastName, payload.availability,
+      payload.experience, payload.whyJoin, payload.additionalInfo,
+    ].filter(Boolean);
+    if (textFields.some((field) => containsHtml(field))) {
+      return NextResponse.json({ error: 'Input must not contain HTML tags.' }, { status: 400 });
     }
 
     const abortController = new AbortController();
@@ -91,10 +140,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, id: result?.id || null });
   } catch (error: any) {
-    const message =
-      error?.name === 'AbortError'
-        ? 'Application request timed out.'
-        : error?.message || 'Failed to submit application.';
-    return NextResponse.json({ error: message }, { status: 502 });
+    console.error('Job application error:', error?.name === 'AbortError' ? 'Request timed out' : error?.message || 'Unknown error');
+    return NextResponse.json({ error: 'Failed to submit application. Please try again later.' }, { status: 502 });
   }
 }

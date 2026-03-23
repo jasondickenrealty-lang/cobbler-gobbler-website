@@ -1,0 +1,47 @@
+.schedule-grid {
+  min-height: 400px;
+}
+
+.schedule-labels-column {
+  width: 180px;
+}
+
+.schedule-header-cell {
+  height: 48px;
+}
+
+.schedule-row {
+  height: 56px;
+}
+
+.schedule-time-header {
+  width: 1440px;
+  height: 48px;
+}
+
+.schedule-time-slot {
+  width: 80px;
+}
+
+.schedule-employee-row {
+  height: 56px;
+  width: 1440px;
+}
+
+.schedule-shift-block {
+  top: 4px;
+  height: 48px;
+  opacity: 0.9;
+}
+
+.schedule-open-row {
+  height: 56px;
+  width: 1440px;
+}
+
+.schedule-open-shift {
+  top: 4px;
+  height: 48px;
+  background-color: rgba(34, 197, 94, 0.15);
+  border: 2px dashed #22c55e;
+}

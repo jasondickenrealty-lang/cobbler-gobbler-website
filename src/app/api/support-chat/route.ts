@@ -8,6 +8,13 @@ type ReqBody = {
 };
 
 export async function POST(req: Request) {
+  const origin = req.headers.get('origin');
+  const referer = req.headers.get('referer');
+  const host = req.headers.get('host');
+  if (origin && host && !origin.includes(host)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   try {
     const body = (await req.json().catch(() => ({}))) as ReqBody;
     const message = (body?.message || '').toString().trim();
@@ -21,11 +28,9 @@ export async function POST(req: Request) {
     const relayToken = process.env.SUPPORT_RELAY_TOKEN;
 
     if (!relayUrl || !relayToken) {
+      console.error('Support chat relay is not configured. SUPPORT_RELAY_URL and SUPPORT_RELAY_TOKEN must be set.');
       return NextResponse.json(
-        {
-          error:
-            'Support chat relay is not configured. Set SUPPORT_RELAY_URL and SUPPORT_RELAY_TOKEN in Vercel env.',
-        },
+        { error: 'Support chat is temporarily unavailable. Please try again later.' },
         { status: 500 }
       );
     }
@@ -46,8 +51,9 @@ export async function POST(req: Request) {
 
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
+      console.error(`Support relay request failed with status ${res.status}:`, data?.error);
       return NextResponse.json(
-        { error: data?.error || `Relay request failed (${res.status})` },
+        { error: 'Support chat is temporarily unavailable. Please try again later.' },
         { status: 502 }
       );
     }
@@ -55,15 +61,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ reply: data?.reply || '' });
   } catch (error: any) {
     const isAbort = error?.name === 'AbortError';
-    const message = isAbort
-      ? 'Support relay timed out'
-      : error?.message || 'Support relay request failed';
+    console.error('Support chat error:', isAbort ? 'Request timed out' : error?.message || 'Unknown error');
 
     return NextResponse.json(
-      {
-        error: message,
-        details: 'Check SUPPORT_RELAY_URL, relay health, SSL cert, and firewall/network rules.',
-      },
+      { error: 'Support chat is temporarily unavailable. Please try again later.' },
       { status: 502 }
     );
   }

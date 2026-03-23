@@ -6,6 +6,7 @@ import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import EmployeeNavbar from '@/components/EmployeeNavbar';
+import './schedule.css';
 
 // --- Types ---
 interface Schedule {
@@ -169,6 +170,49 @@ export default function SchedulePage() {
     return grouped;
   }, [schedules, employees]);
 
+  // Generate dynamic CSS for shift/gridline positioning to avoid inline styles
+  const dynamicCSS = useMemo(() => {
+    const rules: string[] = [];
+
+    // Time slot positions (nth-child is 1-based)
+    timeSlots.forEach((slot, i) => {
+      rules.push(`.schedule-time-slot:nth-child(${i + 1}) { left: ${slot.position}px; }`);
+    });
+
+    // Grid line positions
+    timeSlots.forEach((_, i) => {
+      rules.push(`.schedule-gridline:nth-child(${i + 1}) { left: ${i * HOUR_WIDTH}px; }`);
+    });
+
+    // Shift blocks by data-shift-id
+    const allEmployeeIds = [...employees.map(e => e.id), '__open__'];
+    allEmployeeIds.forEach(empId => {
+      const shifts = schedulesByEmployee.get(empId) || [];
+      shifts.forEach(shift => {
+        const pos = calculateShiftPosition(shift.startTime, shift.endTime);
+        if (empId === '__open__') {
+          rules.push(`[data-shift-id="${shift.id}"] { left: ${pos.left}px; width: ${pos.width - 4}px; }`);
+        } else {
+          const roleColor = getRoleColor(shift.role);
+          rules.push(`[data-shift-id="${shift.id}"] { left: ${pos.left}px; width: ${pos.width - 4}px; background-color: ${roleColor}; }`);
+        }
+      });
+    });
+
+    return rules.join('\n');
+  }, [employees, schedulesByEmployee]);
+
+  // Inject dynamic CSS via textContent instead of dangerouslySetInnerHTML to prevent XSS
+  useEffect(() => {
+    const styleEl = document.createElement('style');
+    styleEl.setAttribute('data-schedule-styles', '');
+    styleEl.textContent = dynamicCSS;
+    document.head.appendChild(styleEl);
+    return () => {
+      document.head.removeChild(styleEl);
+    };
+  }, [dynamicCSS]);
+
   const handleWeekChange = (direction: number) => {
     setWeekStart(prev => addDays(prev, direction * 7));
   };
@@ -182,6 +226,7 @@ export default function SchedulePage() {
             <h1 className="text-3xl font-bold text-primary">Team Schedule</h1>
             <div className="flex items-center gap-2">
               <button
+                type="button"
                 onClick={() => handleWeekChange(-1)}
                 className="w-9 h-9 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
               >
@@ -191,12 +236,14 @@ export default function SchedulePage() {
                 {formatWeekLabel(weekStart)}
               </div>
               <button
+                type="button"
                 onClick={() => handleWeekChange(1)}
                 className="w-9 h-9 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
               >
                 &#8250;
               </button>
               <button
+                type="button"
                 onClick={() => setWeekStart(startOfWeek(new Date()))}
                 className="ml-2 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
               >
@@ -226,13 +273,12 @@ export default function SchedulePage() {
             </div>
           ) : (
             <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
-              <div className="flex" style={{ minHeight: 400 }}>
+              <div className="flex schedule-grid">
                 {/* Fixed employee labels column */}
-                <div className="flex-shrink-0 bg-gray-50 border-r border-gray-200" style={{ width: 180 }}>
+                <div className="flex-shrink-0 bg-gray-50 border-r border-gray-200 schedule-labels-column">
                   {/* Header spacer */}
                   <div
-                    className="flex items-center px-3 font-semibold text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200"
-                    style={{ height: 48 }}
+                    className="flex items-center px-3 font-semibold text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200 schedule-header-cell"
                   >
                     Employee
                   </div>
@@ -242,8 +288,7 @@ export default function SchedulePage() {
                       key={emp.id}
                       className={`flex items-center px-3 border-b border-gray-100 ${
                         user?.uid === emp.id ? 'bg-primary/5 border-l-4 border-l-primary' : ''
-                      }`}
-                      style={{ height: ROW_HEIGHT }}
+                      } schedule-row`}
                     >
                       <div className="flex flex-col gap-0.5 min-w-0">
                         <span className={`font-semibold text-sm truncate ${user?.uid === emp.id ? 'text-primary' : 'text-gray-800'}`}>
@@ -256,8 +301,7 @@ export default function SchedulePage() {
                   ))}
                   {/* Open shifts label */}
                   <div
-                    className="flex items-center px-3 border-b border-gray-100 bg-green-50/50"
-                    style={{ height: ROW_HEIGHT }}
+                    className="flex items-center px-3 border-b border-gray-100 bg-green-50/50 schedule-row"
                   >
                     <div className="flex flex-col gap-0.5">
                       <span className="font-semibold text-sm text-green-600">Open Shifts</span>
@@ -269,12 +313,11 @@ export default function SchedulePage() {
                 {/* Scrollable timeline area */}
                 <div className="flex-1 overflow-x-auto overflow-y-hidden">
                   {/* Time header */}
-                  <div className="relative bg-gray-50 border-b border-gray-200" style={{ width: gridWidth, height: 48 }}>
+                  <div className="relative bg-gray-50 border-b border-gray-200 schedule-time-header">
                     {timeSlots.map(slot => (
                       <div
                         key={slot.hour}
-                        className="absolute top-0 h-full flex items-center justify-center border-r border-gray-100"
-                        style={{ left: slot.position, width: HOUR_WIDTH }}
+                        className="absolute top-0 h-full flex items-center justify-center border-r border-gray-100 schedule-time-slot"
                       >
                         <span className="text-xs font-semibold text-gray-400">{slot.label}</span>
                       </div>
@@ -289,33 +332,21 @@ export default function SchedulePage() {
                       return (
                         <div
                           key={emp.id}
-                          className={`relative border-b border-gray-100 ${isCurrentUser ? 'bg-primary/5' : ''}`}
-                          style={{ height: ROW_HEIGHT, width: gridWidth }}
+                          className={`relative border-b border-gray-100 schedule-employee-row ${isCurrentUser ? 'bg-primary/5' : ''}`}
                         >
                           {/* Grid lines */}
                           {timeSlots.map((_, i) => (
                             <div
                               key={i}
-                              className="absolute top-0 bottom-0 border-r border-gray-50"
-                              style={{ left: i * HOUR_WIDTH }}
+                              className="absolute top-0 bottom-0 border-r border-gray-50 schedule-gridline"
                             />
                           ))}
                           {/* Shift blocks */}
-                          {shifts.map(shift => {
-                            const pos = calculateShiftPosition(shift.startTime, shift.endTime);
-                            const roleColor = getRoleColor(shift.role);
-                            return (
+                          {shifts.map(shift => (
                               <div
                                 key={shift.id}
-                                className="absolute rounded-lg overflow-hidden shadow-sm"
-                                style={{
-                                  left: pos.left,
-                                  top: 4,
-                                  width: pos.width - 4,
-                                  height: ROW_HEIGHT - 8,
-                                  backgroundColor: roleColor,
-                                  opacity: 0.9,
-                                }}
+                                data-shift-id={shift.id}
+                                className="absolute rounded-lg overflow-hidden shadow-sm schedule-shift-block"
                                 title={`${formatTimeRange(shift.startTime, shift.endTime)} - ${shift.role}`}
                               >
                                 <div className="h-full px-2 flex flex-col justify-center text-white">
@@ -325,38 +356,26 @@ export default function SchedulePage() {
                                   <div className="text-[10px] opacity-80 capitalize">{shift.role}</div>
                                 </div>
                               </div>
-                            );
-                          })}
+                          ))}
                         </div>
                       );
                     })}
 
                     {/* Open Shifts Row */}
                     <div
-                      className="relative border-b border-gray-100 bg-green-50/30"
-                      style={{ height: ROW_HEIGHT, width: gridWidth }}
+                      className="relative border-b border-gray-100 bg-green-50/30 schedule-open-row"
                     >
-                      {timeSlots.map((slot, i) => (
+                      {timeSlots.map((_, i) => (
                         <div
                           key={i}
-                          className="absolute top-0 bottom-0 border-r border-gray-50"
-                          style={{ left: i * HOUR_WIDTH }}
+                          className="absolute top-0 bottom-0 border-r border-gray-50 schedule-gridline"
                         />
                       ))}
-                      {(schedulesByEmployee.get('__open__') || []).map(shift => {
-                        const pos = calculateShiftPosition(shift.startTime, shift.endTime);
-                        return (
+                      {(schedulesByEmployee.get('__open__') || []).map(shift => (
                           <div
                             key={shift.id}
-                            className="absolute rounded-lg overflow-hidden"
-                            style={{
-                              left: pos.left,
-                              top: 4,
-                              width: pos.width - 4,
-                              height: ROW_HEIGHT - 8,
-                              backgroundColor: 'rgba(34, 197, 94, 0.15)',
-                              border: '2px dashed #22c55e',
-                            }}
+                            data-shift-id={shift.id}
+                            className="absolute rounded-lg overflow-hidden schedule-open-shift"
                             title={`${formatTimeRange(shift.startTime, shift.endTime)} - ${shift.role} (Open)`}
                           >
                             <div className="h-full px-2 flex flex-col justify-center">
@@ -369,8 +388,7 @@ export default function SchedulePage() {
                               </div>
                             </div>
                           </div>
-                        );
-                      })}
+                      ))}
                     </div>
                   </div>
                 </div>

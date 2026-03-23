@@ -10,29 +10,30 @@ interface ColoringPage {
   id: string;
   title: string;
   downloadUrl: string;
-  active?: boolean;
   downloadCount?: number;
 }
 
-const FIRESTORE_API = `https://firestore.googleapis.com/v1/projects/cobblestone-pos/databases/(default)/documents/coloringPages`;
-const API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+const ALLOWED_DOWNLOAD_HOSTS = [
+  'firebasestorage.googleapis.com',
+  'storage.googleapis.com',
+];
 
-function parseFirestoreDoc(doc: Record<string, unknown>): ColoringPage | null {
-  const fields = doc.fields as Record<string, Record<string, unknown>> | undefined;
-  if (!fields) return null;
-  const name = doc.name as string;
-  const id = name.split('/').pop() || '';
-  const title = (fields.title?.stringValue as string) || '';
-  const downloadUrl = (fields.downloadUrl?.stringValue as string) || '';
-  const active = fields.active?.booleanValue !== false;
-  const rawDownloadCount = (fields.downloadCount?.integerValue ?? fields.downloadCount?.doubleValue) as string | number | undefined;
-  const parsedCount = Number(rawDownloadCount ?? 0);
-  const downloadCount = Number.isFinite(parsedCount) ? parsedCount : 0;
-  if (!downloadUrl || !active) return null;
-  return { id, title, downloadUrl, active, downloadCount };
+function isValidDownloadUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== 'https:') return false;
+    return ALLOWED_DOWNLOAD_HOSTS.includes(parsed.hostname);
+  } catch {
+    return false;
+  }
 }
 
 async function downloadFile(url: string, title: string) {
+  if (!isValidDownloadUrl(url)) {
+    alert('Invalid download URL. Please contact support.');
+    return;
+  }
+
   try {
     const res = await fetch(url);
     const blob = await res.blob();
@@ -69,13 +70,10 @@ export default function FreeKidsScoopPage() {
   useEffect(() => {
     const fetchPages = async () => {
       try {
-        const url = `${FIRESTORE_API}?key=${API_KEY}&orderBy=createdAt%20desc`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`Firestore fetch failed: ${res.status}`);
+        const res = await fetch('/api/free-kids-scoop');
+        if (!res.ok) throw new Error(`Failed to load coloring pages`);
         const data = await res.json();
-        const docs = (data.documents || []) as Record<string, unknown>[];
-        const parsed = docs.map(parseFirestoreDoc).filter(Boolean) as ColoringPage[];
-        setPages(parsed);
+        setPages(data.pages || []);
       } catch (error) {
         console.error('Error loading coloring pages:', error);
       } finally {
@@ -118,7 +116,7 @@ export default function FreeKidsScoopPage() {
               </div>
             ) : (
               <div className="grid md:grid-cols-3 gap-6">
-                {pages.map((page) => (
+                {pages.filter((page) => isValidDownloadUrl(page.downloadUrl)).map((page) => (
                   <div key={page.id} className="border border-dark/10 rounded overflow-hidden flex flex-col">
                     <div className="aspect-[3/4] bg-cream/50 overflow-hidden">
                       <img

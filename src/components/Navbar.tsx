@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL } from '@/lib/links';
+import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL, WHOLESALE_URL } from '@/lib/links';
 
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/menu', label: 'Monthly Flavors' },
+  { href: WHOLESALE_URL, label: 'Wholesale', external: true },
   { href: '/free-kids-scoop', label: 'FREE KIDS SCOOP' },
   { href: FREE_GAME_PLAY_URL, label: 'FREE GAME PLAY', external: true },
   { href: '/about', label: 'Our Story' },
@@ -30,7 +31,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               link.external ? (
                 <a

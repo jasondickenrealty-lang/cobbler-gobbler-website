@@ -207,18 +207,15 @@ export default function FundraisingPage() {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
               {[
-                { icon: '&#127979;', label: 'Schools & PTAs' },
-                { icon: '&#9917;', label: 'Youth Sports Teams' },
-                { icon: '&#9962;', label: 'Churches & Faith Groups' },
-                { icon: '&#128153;', label: 'Nonprofits & Charities' },
-                { icon: '&#127941;', label: 'Scouts & Clubs' },
-                { icon: '&#127963;', label: 'Community Organizations' },
+                { icon: '\uD83C\uDFEB', label: 'Schools & PTAs' },
+                { icon: '\u26BD', label: 'Youth Sports Teams' },
+                { icon: '\u26EA', label: 'Churches & Faith Groups' },
+                { icon: '\uD83D\uDC99', label: 'Nonprofits & Charities' },
+                { icon: '\uD83C\uDFC5', label: 'Scouts & Clubs' },
+                { icon: '\uD83C\uDFCB', label: 'Community Organizations' },
               ].map((item) => (
                 <div key={item.label} className="bg-cream rounded-lg p-6">
-                  <span
-                    className="text-3xl block mb-3"
-                    dangerouslySetInnerHTML={{ __html: item.icon }}
-                  />
+                  <span className="text-3xl block mb-3">{item.icon}</span>
                   <p className="text-dark/70 font-medium text-sm">{item.label}</p>
                 </div>
               ))}

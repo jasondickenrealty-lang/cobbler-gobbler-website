@@ -29,6 +29,15 @@ interface UploadedColoringPage {
 
 const allowedRoles = new Set(['manager', 'owner', 'admin']);
 
+// IMPORTANT: Server-side authorization for coloring page writes (create, update, delete)
+// is enforced via Firestore Security Rules. The client-side role check (canManage) provides
+// a UX guard, but the actual security boundary must be the Firestore rules, which should
+// restrict writes to the 'coloringPages' collection to users whose custom claims or
+// user document role is one of: manager, owner, admin.
+
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+const ALLOWED_EXTENSIONS = new Set(['.pdf', '.png', '.jpg', '.jpeg', '.svg']);
+
 export default function EmployeeColoringPagesPage() {
   const { userData } = useAuth();
   const [title, setTitle] = useState('');
@@ -146,6 +155,34 @@ export default function EmployeeColoringPagesPage() {
     if (!allowedFileTypes.includes(file.type)) {
       setError('Please upload a PDF, PNG, JPG, or SVG file.');
       return;
+    }
+
+    // Validate file extension matches allowed types
+    const fileExtension = file.name.includes('.')
+      ? '.' + file.name.split('.').pop()!.toLowerCase()
+      : '';
+    if (!ALLOWED_EXTENSIONS.has(fileExtension)) {
+      setError('File extension must be .pdf, .png, .jpg, .jpeg, or .svg.');
+      return;
+    }
+
+    // Validate file size (max 10 MB)
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      setError('File size must be under 10 MB.');
+      return;
+    }
+
+    // For SVG files, check for embedded script tags to prevent XSS
+    if (file.type === 'image/svg+xml') {
+      const svgText = await file.text();
+      if (/<script|on\w+\s*=|<style|javascript:/i.test(svgText)) {
+        setError('SVG files must not contain scripts, event handlers, style tags, or javascript: URLs.');
+        return;
+      }
+      if (/data:\s*[^,]*(?:text\/html|application\/x?javascript)/i.test(svgText)) {
+        setError('SVG files must not contain dangerous data: URLs.');
+        return;
+      }
     }
 
     setIsUploading(true);

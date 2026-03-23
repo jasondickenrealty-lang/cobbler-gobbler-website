@@ -33,5 +33,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Generated from ../shared at build time
-src/shared/
+# Copied from ../shared by prebuild script (tracked so Vercel deployments work)
