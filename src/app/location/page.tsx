@@ -19,7 +19,7 @@ interface BusinessInfo {
   };
 }
 
-const VISIT_US_EMAIL = 'hello@cobblestonecremery.com';
+const VISIT_US_EMAIL = 'hello@cobblestonecreamery.com';
 
 const FALLBACK: BusinessInfo = {
   name: 'Cobblestone Creamery',

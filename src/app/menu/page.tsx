@@ -7,6 +7,7 @@ import { ORDER_ONLINE_URL } from '@/lib/links';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import { FEATURED_FLAVORS } from '@/shared/featured-flavors';
 
 interface MenuItem {
   id: string;
@@ -34,16 +35,7 @@ interface Modifier {
   isActive?: boolean;
 }
 
-const FEATURED_CONES = [
-  { id: 'superman', name: 'Superman', image: '/menu-cones/superman.png' },
-  { id: 'butter-pecan', name: 'Butter Pecan', image: '/menu-cones/butter-pecan.jpeg' },
-  { id: 'chocolate', name: 'Chocolate', image: '/menu-cones/chocolate.jpeg' },
-  { id: 'chocolate-chip-cookie-dough', name: 'Chocolate Chip Cookie Dough', image: '/menu-cones/chocolate-chip-cookie-dough.jpeg' },
-  { id: 'vanilla', name: 'Vanilla', image: '/menu-cones/vanilla.jpg' },
-  { id: 'strawberry', name: 'Strawberry', image: '/menu-cones/strawberry.jpg' },
-  { id: 'oreo', name: 'Oreo', image: '/menu-cones/oreo.jpg' },
-  { id: 'mint-choc-chip', name: 'Mint Chocolate Chip', image: '/menu-cones/mint_chocolate_chip.jpeg' },
-];
+const FEATURED_CONES = FEATURED_FLAVORS;
 const FULL_MENU_PDF_URL = '/menu/cobblestone-full-menu.pdf';
 
 export default function MenuPage() {

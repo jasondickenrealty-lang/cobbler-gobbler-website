@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore';
 
+import { FEATURED_FLAVOR_NAMES } from '@/shared/featured-flavors';
+
 export const runtime = 'nodejs';
 
 type FlavorItem = {
@@ -11,16 +13,7 @@ type FlavorItem = {
   categoryName?: string;
 };
 
-const FEATURED_FALLBACK_FLAVORS = [
-  'Superman',
-  'Butter Pecan',
-  'Chocolate',
-  'Chocolate Chip Cookie Dough',
-  'Vanilla',
-  'Strawberry',
-  'Oreo',
-  'Mint Chocolate Chip',
-];
+const FEATURED_FALLBACK_FLAVORS = FEATURED_FLAVOR_NAMES;
 
 function isFlavorCategoryName(categoryName: string) {
   return /(flavor|flavour|ice\s*cream|gelato|sorbet|sherbet|soft\s*serve|frozen\s*yogurt)/i.test(categoryName || '');

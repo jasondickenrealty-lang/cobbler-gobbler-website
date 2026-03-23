@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Fundraising & Donations — Cobblestone Creamery | Evansville, IN',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description:
       'Support your cause with Cobblestone Creamery. We offer fundraising nights, donation requests, and community partnerships in Evansville, Indiana.',
     url: 'https://cobblestonecreamery.com/fundraising',
-    images: [{ url: '/logo.png', alt: 'Cobblestone Creamery fundraising and donations in Evansville Indiana' }],
+    images: [{ url: '/assets/fundraising-flyer.png', alt: 'Cobblestone Creamery fundraising flyer for Evansville Indiana organizations' }],
   },
 };
 
@@ -26,7 +26,7 @@ export default function FundraisingPage() {
       <main className="flex-1">
         {/* Header */}
         <section className="bg-cream">
-          <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
+          <div className="max-w-5xl mx-auto px-6 py-20 md:py-28 text-center">
             <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">
               Fundraising &amp; Donations
             </h1>
@@ -35,6 +35,21 @@ export default function FundraisingPage() {
               community organizations throughout Evansville, Indiana. Let us help you raise
               funds for your cause — with ice cream!
             </p>
+            <div className="mt-12 max-w-xl mx-auto">
+              <div className="overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_60px_rgba(10,31,68,0.14)] ring-1 ring-primary/10">
+                <Image
+                  src="/assets/fundraising-flyer.png"
+                  alt="Cobblestone Creamery high-profit ice cream fundraising flyer"
+                  width={1024}
+                  height={1536}
+                  priority
+                  className="h-auto w-full"
+                />
+              </div>
+              <p className="mt-4 text-sm md:text-base text-dark/60">
+                Share this flyer with your group to show how the fundraiser works and what your organization can raise.
+              </p>
+            </div>
           </div>
         </section>
 
