@@ -6,59 +6,51 @@ runConfig:
   memoryMiB: 512
 
 env:
-  # Public Firebase config (baked into client bundle)
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: "AIzaSyANRgxNQe16pM9pb2BaORbJkQvPoHP_eR8"
+    secret: NEXT_PUBLIC_FIREBASE_API_KEY
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    value: "cobblestone-pos.firebaseapp.com"
+    secret: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    value: "cobblestone-pos"
+    secret: NEXT_PUBLIC_FIREBASE_PROJECT_ID
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    value: "cobblestone-pos.firebasestorage.app"
+    secret: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-    value: "379924075336"
+    secret: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    value: "1:379924075336:web:402c8b323ffcb43b4f197d"
+    secret: NEXT_PUBLIC_FIREBASE_APP_ID
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_API_BASE
-    value: "https://us-central1-cobblestone-pos.cloudfunctions.net/api"
+    secret: NEXT_PUBLIC_API_BASE
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_ORDER_ONLINE_URL
-    value: "https://order.cobblestonecreamery.com/auth"
+    secret: NEXT_PUBLIC_ORDER_ONLINE_URL
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_WHOLESALE_URL
-    value: "https://wholesale.cobblestonecreamery.com"
+    secret: NEXT_PUBLIC_WHOLESALE_URL
     availability:
       - BUILD
       - RUNTIME
-
-  # Server-side secrets — set these via:
-  #   firebase apphosting:secrets:set FACEBOOK_APP_ID --project cobblestone-pos
-  #   firebase apphosting:secrets:set FACEBOOK_APP_SECRET --project cobblestone-pos
-  #   firebase apphosting:secrets:set SUPPORT_RELAY_URL --project cobblestone-pos
-  #   firebase apphosting:secrets:set SUPPORT_RELAY_TOKEN --project cobblestone-pos
-  #   firebase apphosting:secrets:set JOB_APPLICATION_API_BASE --project cobblestone-pos  (optional, falls back to NEXT_PUBLIC_API_BASE)
   - variable: FACEBOOK_APP_ID
     secret: FACEBOOK_APP_ID
     availability:
