@@ -16,13 +16,15 @@ interface ColoringPage {
 const ALLOWED_DOWNLOAD_HOSTS = [
   'firebasestorage.googleapis.com',
   'storage.googleapis.com',
+  'firebasestorage.app',
 ];
 
 function isValidDownloadUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
     if (parsed.protocol !== 'https:') return false;
-    return ALLOWED_DOWNLOAD_HOSTS.includes(parsed.hostname);
+    if (ALLOWED_DOWNLOAD_HOSTS.includes(parsed.hostname)) return true;
+    return parsed.hostname.endsWith('.firebasestorage.app');
   } catch {
     return false;
   }
@@ -66,6 +68,7 @@ async function trackDownload(pageId: string) {
 export default function FreeKidsScoopPage() {
   const [pages, setPages] = useState<ColoringPage[]>([]);
   const [loading, setLoading] = useState(true);
+  const visiblePages = pages.filter((page) => isValidDownloadUrl(page.downloadUrl));
 
   useEffect(() => {
     const fetchPages = async () => {
@@ -107,7 +110,7 @@ export default function FreeKidsScoopPage() {
           <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
             {loading ? (
               <div className="text-center py-10 text-dark/50">Loading coloring pages...</div>
-            ) : pages.length === 0 ? (
+            ) : visiblePages.length === 0 ? (
               <div className="text-center py-10">
                 <p className="text-dark/60 text-lg mb-3">Coloring pages are coming soon.</p>
                 <p className="text-dark/50 text-sm">
@@ -116,7 +119,7 @@ export default function FreeKidsScoopPage() {
               </div>
             ) : (
               <div className="grid md:grid-cols-3 gap-6">
-                {pages.filter((page) => isValidDownloadUrl(page.downloadUrl)).map((page) => (
+                {visiblePages.map((page) => (
                   <div key={page.id} className="border border-dark/10 rounded overflow-hidden flex flex-col">
                     <div className="aspect-[3/4] bg-cream/50 overflow-hidden">
                       <img

@@ -10,8 +10,7 @@
     "lint": "next lint",
     "check:sms-compliance": "node ./scripts/verify-sms-compliance-asset.cjs",
     "check:prod": "npm run check:sms-compliance && next build",
-    "deploy:prod": "npm run check:prod && vercel --prod",
-    "deploy:safe": "powershell -ExecutionPolicy Bypass -File ./scripts/deploy-safe.ps1"
+    "deploy": "npm run check:prod && firebase deploy --only apphosting:website --project cobblestone-pos"
   },
   "dependencies": {
     "next": "^14.2.0",
