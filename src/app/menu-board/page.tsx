@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import styles from './page.module.css';
 
 const SLIDE_DURATION_MS = 10000;
 
@@ -26,22 +27,22 @@ function VideoPanel({ videoUrl, sideImageUrl }: { videoUrl: string | null; sideI
   useEffect(() => { ref.current?.play().catch(() => {}); }, [videoUrl]);
   if (sideImageUrl) {
     return (
-      <aside style={{ width: '38%', flexShrink: 0, background: '#0a0a0a', borderLeft: '3px solid #1a1a1a', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <aside className={styles.videoPanel}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={sideImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+        <img src={sideImageUrl} alt="" className={styles.videoPanelMedia} />
       </aside>
     );
   }
   return (
-    <aside style={{ width: '38%', flexShrink: 0, background: '#0a0a0a', borderLeft: '3px solid #1a1a1a', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <aside className={styles.videoPanel}>
       {videoUrl
-        ? <video ref={ref} src={videoUrl} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+        ? <video ref={ref} src={videoUrl} autoPlay loop muted playsInline className={styles.videoPanelMedia} />
         : (
-          <div style={{ textAlign: 'center', padding: '2rem', userSelect: 'none' }}>
+          <div className={styles.brandPlaceholder}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Cobblestone Creamery" style={{ width: 200, maxWidth: '80%', opacity: 0.85, marginBottom: '1.5rem' }} />
-            <div style={{ width: 40, height: 2, background: '#C8956C', opacity: 0.6, margin: '0 auto 1rem', borderRadius: 1 }} />
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.78rem', margin: 0, letterSpacing: '0.06em' }}>900 Main Street &bull; Evansville, IN</p>
+            <img src="/logo.png" alt="Cobblestone Creamery" className={styles.brandLogo} />
+            <div className={styles.brandDivider} />
+            <p className={styles.brandAddress}>900 Main Street &bull; Evansville, IN</p>
           </div>
         )}
     </aside>
@@ -51,29 +52,29 @@ function VideoPanel({ videoUrl, sideImageUrl }: { videoUrl: string | null; sideI
 // Left-side menu list for a single category
 function CategorySlide({ category, items, videoUrl, slideIndex }: { category: string; items: MenuItem[]; videoUrl: string | null; slideIndex: number }) {
   return (
-    <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '2rem 2.5rem', overflow: 'hidden', background: 'rgba(255,255,255,0.93)' }}>
-        <div style={{ marginBottom: '1.25rem', flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
-            <h2 style={{ fontFamily: 'Georgia,serif', fontSize: '2.5rem', color: '#1a1a1a', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', margin: 0, lineHeight: 1.1 }}>{category}</h2>
+    <div className={styles.slideOuter}>
+      <div className={styles.slideContent}>
+        <div className={styles.slideHeader}>
+          <div className={styles.slideHeaderRow}>
+            <h2 className={styles.slideTitle}>{category}</h2>
             {category === 'Udderly Classic Scoops' && (
-              <div style={{ background: '#1a1a1a', color: '#FAF1E9', borderRadius: 8, padding: '0.35rem 0.9rem', display: 'flex', alignItems: 'center', gap: '0.45rem', flexShrink: 0, marginBottom: '0.2rem' }}>
-                <span style={{ fontSize: '1.1rem' }}>🧇</span>
-                <span style={{ fontFamily: 'Georgia,serif', fontSize: '1rem', fontWeight: 600, letterSpacing: '0.03em' }}>Add Waffle Bowl</span>
-                <span style={{ color: '#C8956C', fontFamily: 'Georgia,serif', fontSize: '1rem', fontWeight: 700 }}>+$1.50</span>
+              <div className={styles.waffleBadge}>
+                <span className={styles.waffleBadgeIcon}>🧇</span>
+                <span className={styles.waffleBadgeText}>Add Waffle Bowl</span>
+                <span className={styles.waffleBadgePrice}>+$1.50</span>
               </div>
             )}
           </div>
-          <div style={{ width: 52, height: 4, background: '#C8956C', marginTop: '0.55rem', borderRadius: 2 }} />
+          <div className={styles.goldBar} />
         </div>
-        <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-          {items.map((item, i) => (  
-            <div key={item.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem', padding: '0.7rem 0', borderBottom: i < items.length - 1 ? '1px solid rgba(0,0,0,0.07)' : 'none' }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ color: '#1a1a1a', fontSize: '1.4rem', fontWeight: 600, margin: 0, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</p>
-                {item.description && <p style={{ color: 'rgba(0,0,0,0.45)', fontSize: '0.8rem', margin: '0.15rem 0 0', lineHeight: 1.3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.description}</p>}
+        <div className={styles.itemsContainer}>
+          {items.map((item, i) => (
+            <div key={item.id} className={`${styles.itemRow} ${i < items.length - 1 ? styles.itemRowDivider : ''}`}>
+              <div className={styles.itemInfo}>
+                <p className={styles.itemName}>{item.name}</p>
+                {item.description && <p className={styles.itemDescription}>{item.description}</p>}
               </div>
-              <p style={{ fontFamily: 'Georgia,serif', color: '#C8956C', fontSize: '1.5rem', fontWeight: 700, margin: 0, flexShrink: 0 }}>${item.price.toFixed(2)}</p>
+              <p className={styles.itemPrice}>${item.price.toFixed(2)}</p>
             </div>
           ))}
         </div>
@@ -88,22 +89,22 @@ function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: 
   const active = modCats.filter(mc => modifiers.some(m => m.modifierCategoryId === mc.id));
   const cols = Math.min(active.length, 3);
   return (
-    <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '2rem 2.5rem', overflow: 'hidden', background: 'rgba(255,255,255,0.93)' }}>
-        <div style={{ marginBottom: '1.25rem', flexShrink: 0 }}>
-          <h2 style={{ fontFamily: 'Georgia,serif', fontSize: '2.5rem', color: '#1a1a1a', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', margin: 0 }}>Toppings &amp; Extras</h2>
-          <div style={{ width: 52, height: 4, background: '#C8956C', marginTop: '0.55rem', borderRadius: 2 }} />
+    <div className={styles.slideOuter}>
+      <div className={styles.slideContent}>
+        <div className={styles.slideHeader}>
+          <h2 className={styles.slideTitle}>Toppings &amp; Extras</h2>
+          <div className={styles.goldBar} />
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols},1fr)`, gap: '0.85rem', flex: 1, alignContent: 'start', overflow: 'hidden' }}>
+        <div className={styles.toppingsGrid} style={{ gridTemplateColumns: `repeat(${cols},1fr)` }}>
           {active.map(mc => {
             const mods = modifiers.filter(m => m.modifierCategoryId === mc.id);
             return (
-              <div key={mc.id} style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 10, padding: '0.9rem 1rem' }}>
-                <h3 style={{ fontFamily: 'Georgia,serif', fontSize: '1.1rem', color: '#1a1a1a', margin: '0 0 0.45rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{mc.name}</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
+              <div key={mc.id} className={styles.modCatCard}>
+                <h3 className={styles.modCatName}>{mc.name}</h3>
+                <div className={styles.modPillsContainer}>
                   {mods.map(mod => (
-                    <span key={mod.id} style={{ background: 'rgba(0,0,0,0.06)', color: '#1a1a1a', fontSize: '0.85rem', padding: '0.2rem 0.6rem', borderRadius: 999, border: '1px solid rgba(0,0,0,0.1)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                      {mod.name}{mod.price > 0 && <span style={{ color: '#C8956C', fontSize: '0.72rem', fontWeight: 700 }}>+${mod.price.toFixed(2)}</span>}
+                    <span key={mod.id} className={styles.modPill}>
+                      {mod.name}{mod.price > 0 && <span className={styles.modPrice}>+${mod.price.toFixed(2)}</span>}
                     </span>
                   ))}
                 </div>
@@ -183,15 +184,15 @@ function MenuBoardInner() {
     return (
       <>
         <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}`}</style>
-        <div style={{ position: 'fixed', inset: 0, background: '#f5f2ee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ textAlign: 'center' }}>
+        <div className={styles.loadingScreen}>
+          <div className={styles.loadingContent}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Cobblestone Creamery" style={{ width: 220, marginBottom: '1.5rem' }} />
-            <p style={{ fontFamily: 'Georgia,serif', fontSize: '2.4rem', color: '#1a1a1a', margin: 0 }}>
+            <img src="/logo.png" alt="Cobblestone Creamery" className={styles.loadingLogo} />
+            <p className={styles.loadingTitle}>
               {loading ? 'Loading Menu\u2026' : errorMsg ? 'Error loading menu' : 'No menu items found'}
             </p>
-            {errorMsg && <p style={{ color: '#c0392b', fontFamily: 'monospace', fontSize: '0.85rem', marginTop: '0.75rem', maxWidth: 600 }}>{errorMsg}</p>}
-            <p style={{ color: 'rgba(0,0,0,0.4)', fontSize: '1.05rem', marginTop: '0.5rem' }}>900 Main Street &bull; Evansville, Indiana</p>
+            {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
+            <p className={styles.loadingAddress}>900 Main Street &bull; Evansville, Indiana</p>
           </div>
         </div>
       </>
@@ -206,36 +207,36 @@ function MenuBoardInner() {
   const slide = visibleSlides[safeSlide] ?? visibleSlides[0];
   return (
     <>
-      <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.28}}`}</style>
-      <div style={{ position: 'fixed', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: 'system-ui,sans-serif', backgroundImage: COW_PATTERN, backgroundSize: '320px 320px', backgroundColor: '#f5f2ee' }}>
+      <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}`}</style>
+      <div className={styles.mainWrapper} style={{ backgroundImage: COW_PATTERN }}>
 
         {/* Header */}
-        <header style={{ background: '#1a1a1a', padding: '0 2rem', height: 72, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, position: 'relative' }}>
+        <header className={styles.mainHeader}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Cobblestone Creamery" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-            <div style={{ display: 'flex', gap: 5 }}>
-              {visibleSlides.map((_, i) => <div key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: i === safeSlide ? '#C8956C' : 'rgba(255,255,255,0.25)', transition: 'background 0.4s' }} />)}
+          <img src="/logo.png" alt="Cobblestone Creamery" className={styles.headerLogo} />
+          <div className={styles.headerRight}>
+            <div className={styles.dotsContainer}>
+              {visibleSlides.map((_, i) => <div key={i} className={`${styles.dot} ${i === safeSlide ? styles.dotActive : styles.dotInactive}`} />)}
             </div>
-            <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.83rem' }}>{safeSlide + 1} / {visibleSlides.length}</span>
+            <span className={styles.slideCounter}>{safeSlide + 1} / {visibleSlides.length}</span>
           </div>
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: 'rgba(255,255,255,0.1)' }}>
-            <div style={{ height: '100%', background: '#C8956C', width: progress + '%', transition: 'width 0.05s linear' }} />
+          <div className={styles.progressTrack}>
+            <div className={styles.progressFill} style={{ width: progress + '%' }} />
           </div>
         </header>
 
         {/* Slide */}
-        <div style={{ flex: 1, minHeight: 0, display: 'flex', opacity: isTransitioning ? 0 : 1, transition: 'opacity 0.4s ease' }}>
+        <div className={`${styles.slideWrapper} ${isTransitioning ? styles.slideHidden : styles.slideVisible}`}>
           {slide.type === 'category'
             ? <CategorySlide category={slide.category} items={slide.items} videoUrl={videoUrl} slideIndex={slides.indexOf(slide)} />
             : <ToppingsSlide modCats={slide.modCats} modifiers={slide.modifiers} videoUrl={videoUrl} slideIndex={slides.indexOf(slide)} />}
         </div>
 
         {/* Footer */}
-        <footer style={{ background: '#1a1a1a', padding: '0.55rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
-          <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', letterSpacing: '0.04em' }}>900 Main Street &middot; Evansville, Indiana 47708</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.4)', fontSize: '0.82rem' }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 2s ease-in-out infinite' }} />
+        <footer className={styles.mainFooter}>
+          <span className={styles.footerAddress}>900 Main Street &middot; Evansville, Indiana 47708</span>
+          <span className={styles.liveIndicator}>
+            <span className={styles.liveDot} />
             Live Menu
           </span>
         </footer>
