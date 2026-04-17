@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 const SLIDE_DURATION_MS = 10000;
 
@@ -117,7 +118,9 @@ function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: 
 }
 
 // Main page
-export default function MenuBoardPage() {
+function MenuBoardInner() {
+  const searchParams = useSearchParams();
+  const screen = searchParams.get('screen'); // '1' or '2', null = show all
   const [slides, setSlides] = useState<Slide[]>([]);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -197,7 +200,10 @@ export default function MenuBoardPage() {
 
   const COW_PATTERN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Crect width='320' height='320' fill='%23f5f2ee'/%3E%3Cellipse cx='55' cy='45' rx='42' ry='30' fill='%231a1a1a' transform='rotate(-18 55 45)' opacity='.82'/%3E%3Cellipse cx='185' cy='22' rx='30' ry='44' fill='%231a1a1a' transform='rotate(22 185 22)' opacity='.82'/%3E%3Cellipse cx='275' cy='110' rx='44' ry='26' fill='%231a1a1a' transform='rotate(-28 275 110)' opacity='.82'/%3E%3Cellipse cx='95' cy='175' rx='26' ry='42' fill='%231a1a1a' transform='rotate(12 95 175)' opacity='.82'/%3E%3Cellipse cx='220' cy='230' rx='50' ry='30' fill='%231a1a1a' transform='rotate(28 220 230)' opacity='.82'/%3E%3Cellipse cx='22' cy='280' rx='28' ry='22' fill='%231a1a1a' transform='rotate(-22 22 280)' opacity='.82'/%3E%3Cellipse cx='295' cy='290' rx='34' ry='25' fill='%231a1a1a' transform='rotate(18 295 290)' opacity='.82'/%3E%3Cellipse cx='150' cy='100' rx='22' ry='34' fill='%231a1a1a' transform='rotate(38 150 100)' opacity='.82'/%3E%3Cellipse cx='310' cy='185' rx='20' ry='28' fill='%231a1a1a' transform='rotate(-12 310 185)' opacity='.7'/%3E%3Cellipse cx='45' cy='130' rx='18' ry='26' fill='%231a1a1a' transform='rotate(30 45 130)' opacity='.7'/%3E%3C%2Fsvg%3E")`;
 
-  const slide = slides[currentSlide] ?? slides[0];
+  // Split slides by screen param: screen=1 → first 4, screen=2 → remaining
+  const visibleSlides = screen === '1' ? slides.slice(0, 4) : screen === '2' ? slides.slice(4) : slides;
+  const safeSlide = Math.min(currentSlide, Math.max(visibleSlides.length - 1, 0));
+  const slide = visibleSlides[safeSlide] ?? visibleSlides[0];
   return (
     <>
       <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.28}}`}</style>
@@ -209,9 +215,9 @@ export default function MenuBoardPage() {
           <img src="/logo.png" alt="Cobblestone Creamery" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
             <div style={{ display: 'flex', gap: 5 }}>
-              {slides.map((_, i) => <div key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: i === currentSlide ? '#C8956C' : 'rgba(255,255,255,0.25)', transition: 'background 0.4s' }} />)}
+              {visibleSlides.map((_, i) => <div key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: i === safeSlide ? '#C8956C' : 'rgba(255,255,255,0.25)', transition: 'background 0.4s' }} />)}
             </div>
-            <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.83rem' }}>{currentSlide + 1} / {slides.length}</span>
+            <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.83rem' }}>{safeSlide + 1} / {visibleSlides.length}</span>
           </div>
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: 'rgba(255,255,255,0.1)' }}>
             <div style={{ height: '100%', background: '#C8956C', width: progress + '%', transition: 'width 0.05s linear' }} />
@@ -221,8 +227,8 @@ export default function MenuBoardPage() {
         {/* Slide */}
         <div style={{ flex: 1, minHeight: 0, display: 'flex', opacity: isTransitioning ? 0 : 1, transition: 'opacity 0.4s ease' }}>
           {slide.type === 'category'
-            ? <CategorySlide category={slide.category} items={slide.items} videoUrl={videoUrl} slideIndex={currentSlide} />
-            : <ToppingsSlide modCats={slide.modCats} modifiers={slide.modifiers} videoUrl={videoUrl} slideIndex={currentSlide} />}
+            ? <CategorySlide category={slide.category} items={slide.items} videoUrl={videoUrl} slideIndex={slides.indexOf(slide)} />
+            : <ToppingsSlide modCats={slide.modCats} modifiers={slide.modifiers} videoUrl={videoUrl} slideIndex={slides.indexOf(slide)} />}
         </div>
 
         {/* Footer */}
@@ -235,5 +241,13 @@ export default function MenuBoardPage() {
         </footer>
       </div>
     </>
+  );
+}
+
+export default function MenuBoardPage() {
+  return (
+    <Suspense>
+      <MenuBoardInner />
+    </Suspense>
   );
 }
