@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const SLIDE_DURATION_MS = 8000;
+const SLIDE_DURATION_MS = 10000;
 
 interface MenuItem {
   id: string;
@@ -15,99 +15,111 @@ interface MenuItem {
   displayOrder?: number;
   categoryOrder?: number;
 }
+interface ModifierCategory { id: string; name: string; displayOrder?: number; }
+interface Modifier { id: string; name: string; price: number; modifierCategoryId: string; isActive?: boolean; }
+type Slide = { type: 'category'; category: string; items: MenuItem[] } | { type: 'toppings'; modCats: ModifierCategory[]; modifiers: Modifier[] };
 
-interface ModifierCategory {
-  id: string;
-  name: string;
-  displayOrder?: number;
-}
-
-interface Modifier {
-  id: string;
-  name: string;
-  price: number;
-  modifierCategoryId: string;
-  isActive?: boolean;
-}
-
-type Slide =
-  | { type: 'category'; category: string; items: MenuItem[] }
-  | { type: 'toppings'; modCats: ModifierCategory[]; modifiers: Modifier[] };
-
-function ItemCard({ item }: { item: MenuItem }) {
+// Right-side video / image / branded placeholder panel
+function VideoPanel({ videoUrl, sideImageUrl }: { videoUrl: string | null; sideImageUrl?: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => { ref.current?.play().catch(() => {}); }, [videoUrl]);
+  if (sideImageUrl) {
+    return (
+      <aside style={{ width: '38%', flexShrink: 0, background: '#0a0a0a', borderLeft: '3px solid #1a1a1a', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={sideImageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+      </aside>
+    );
+  }
   return (
-    <div style={{ background: 'rgba(250,241,233,0.07)', border: '1px solid rgba(200,149,108,0.25)', borderRadius: 16, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ aspectRatio: '16/9', background: 'rgba(250,241,233,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
-        {item.imageUrl
-          // eslint-disable-next-line @next/next/no-img-element
-          ? <img src={item.imageUrl} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          : <span style={{ fontSize: '2.5rem', opacity: 0.3 }}>🍦</span>
-        }
-      </div>
-      <div style={{ padding: '0.85rem 1rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
-        <p style={{ color: '#FAF1E9', fontSize: '1.25rem', fontWeight: 500, margin: 0, lineHeight: 1.2 }}>{item.name}</p>
-        {item.description && (
-          <p style={{ color: 'rgba(250,241,233,0.4)', fontSize: '0.75rem', margin: 0, lineHeight: 1.3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{item.description}</p>
+    <aside style={{ width: '38%', flexShrink: 0, background: '#0a0a0a', borderLeft: '3px solid #1a1a1a', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {videoUrl
+        ? <video ref={ref} src={videoUrl} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+        : (
+          <div style={{ textAlign: 'center', padding: '2rem', userSelect: 'none' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Cobblestone Creamery" style={{ width: 200, maxWidth: '80%', opacity: 0.85, marginBottom: '1.5rem' }} />
+            <div style={{ width: 40, height: 2, background: '#C8956C', opacity: 0.6, margin: '0 auto 1rem', borderRadius: 1 }} />
+            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.78rem', margin: 0, letterSpacing: '0.06em' }}>900 Main Street &bull; Evansville, IN</p>
+          </div>
         )}
-        <p style={{ color: '#C8956C', fontSize: '1.5rem', fontWeight: 700, fontFamily: 'Georgia,serif', margin: '0.3rem 0 0' }}>${item.price.toFixed(2)}</p>
-      </div>
-    </div>
+    </aside>
   );
 }
 
-function CategorySlide({ category, items }: { category: string; items: MenuItem[] }) {
-  const visible = items.slice(0, 12);
-  const cols = visible.length <= 3 ? 3 : visible.length <= 8 ? 4 : 5;
+// Left-side menu list for a single category
+function CategorySlide({ category, items, videoUrl, slideIndex }: { category: string; items: MenuItem[]; videoUrl: string | null; slideIndex: number }) {
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ textAlign: 'center', marginBottom: '1.75rem', flexShrink: 0 }}>
-        <h2 style={{ fontFamily: 'Georgia,serif', fontSize: '3rem', color: '#C8956C', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', margin: 0 }}>
-          {'\u2605'} {category} {'\u2605'}
-        </h2>
-        <div style={{ width: 60, height: 3, background: '#C8956C', margin: '0.6rem auto 0', borderRadius: 2 }} />
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols},1fr)`, gap: '1rem', flex: 1, alignContent: 'start', overflow: 'hidden' }}>
-        {visible.map(item => <ItemCard key={item.id} item={item} />)}
-      </div>
-    </div>
-  );
-}
-
-function ToppingsSlide({ modCats, modifiers }: { modCats: ModifierCategory[]; modifiers: Modifier[] }) {
-  const active = modCats.filter(mc => modifiers.some(m => m.modifierCategoryId === mc.id));
-  const cols = active.length <= 2 ? 2 : 3;
-  return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ textAlign: 'center', marginBottom: '1.75rem', flexShrink: 0 }}>
-        <h2 style={{ fontFamily: 'Georgia,serif', fontSize: '3rem', color: '#C8956C', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', margin: 0 }}>
-          {'\u2605'} Toppings &amp; Extras {'\u2605'}
-        </h2>
-        <div style={{ width: 60, height: 3, background: '#C8956C', margin: '0.6rem auto 0', borderRadius: 2 }} />
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols},1fr)`, gap: '1rem', flex: 1, alignContent: 'start', overflow: 'hidden' }}>
-        {active.map(mc => {
-          const mods = modifiers.filter(m => m.modifierCategoryId === mc.id);
-          return (
-            <div key={mc.id} style={{ background: 'rgba(250,241,233,0.07)', border: '1px solid rgba(200,149,108,0.25)', borderRadius: 16, padding: '1.25rem' }}>
-              <h3 style={{ fontFamily: 'Georgia,serif', fontSize: '1.5rem', color: '#C8956C', margin: '0 0 0.65rem', fontWeight: 600 }}>{mc.name}</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                {mods.map(mod => (
-                  <span key={mod.id} style={{ background: 'rgba(250,241,233,0.08)', color: '#FAF1E9', fontSize: '0.95rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid rgba(200,149,108,0.2)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-                    {mod.name}
-                    {mod.price > 0 && <span style={{ color: '#C8956C', fontSize: '0.8rem' }}>+${mod.price.toFixed(2)}</span>}
-                  </span>
-                ))}
+    <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '2rem 2.5rem', overflow: 'hidden', background: 'rgba(255,255,255,0.93)' }}>
+        <div style={{ marginBottom: '1.25rem', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+            <h2 style={{ fontFamily: 'Georgia,serif', fontSize: '2.5rem', color: '#1a1a1a', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', margin: 0, lineHeight: 1.1 }}>{category}</h2>
+            {category === 'Udderly Classic Scoops' && (
+              <div style={{ background: '#1a1a1a', color: '#FAF1E9', borderRadius: 8, padding: '0.35rem 0.9rem', display: 'flex', alignItems: 'center', gap: '0.45rem', flexShrink: 0, marginBottom: '0.2rem' }}>
+                <span style={{ fontSize: '1.1rem' }}>🧇</span>
+                <span style={{ fontFamily: 'Georgia,serif', fontSize: '1rem', fontWeight: 600, letterSpacing: '0.03em' }}>Add Waffle Bowl</span>
+                <span style={{ color: '#C8956C', fontFamily: 'Georgia,serif', fontSize: '1rem', fontWeight: 700 }}>+$1.50</span>
               </div>
+            )}
+          </div>
+          <div style={{ width: 52, height: 4, background: '#C8956C', marginTop: '0.55rem', borderRadius: 2 }} />
+        </div>
+        <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+          {items.map((item, i) => (  
+            <div key={item.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem', padding: '0.7rem 0', borderBottom: i < items.length - 1 ? '1px solid rgba(0,0,0,0.07)' : 'none' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ color: '#1a1a1a', fontSize: '1.4rem', fontWeight: 600, margin: 0, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</p>
+                {item.description && <p style={{ color: 'rgba(0,0,0,0.45)', fontSize: '0.8rem', margin: '0.15rem 0 0', lineHeight: 1.3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.description}</p>}
+              </div>
+              <p style={{ fontFamily: 'Georgia,serif', color: '#C8956C', fontSize: '1.5rem', fontWeight: 700, margin: 0, flexShrink: 0 }}>${item.price.toFixed(2)}</p>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
+      <VideoPanel videoUrl={videoUrl} sideImageUrl={slideIndex === 1 ? '/menu-board-slide2.jpg' : slideIndex === 2 ? '/menu-board-slide3.png' : slideIndex === 3 ? '/menu-board-slide4.jpg' : slideIndex === 4 ? '/menu-board-slide5.jpg' : slideIndex === 5 ? '/menu-board-slide6.jpg' : undefined} />
     </div>
   );
 }
 
+// Toppings list slide
+function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: ModifierCategory[]; modifiers: Modifier[]; videoUrl: string | null; slideIndex: number }) {
+  const active = modCats.filter(mc => modifiers.some(m => m.modifierCategoryId === mc.id));
+  const cols = Math.min(active.length, 3);
+  return (
+    <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '2rem 2.5rem', overflow: 'hidden', background: 'rgba(255,255,255,0.93)' }}>
+        <div style={{ marginBottom: '1.25rem', flexShrink: 0 }}>
+          <h2 style={{ fontFamily: 'Georgia,serif', fontSize: '2.5rem', color: '#1a1a1a', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', margin: 0 }}>Toppings &amp; Extras</h2>
+          <div style={{ width: 52, height: 4, background: '#C8956C', marginTop: '0.55rem', borderRadius: 2 }} />
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols},1fr)`, gap: '0.85rem', flex: 1, alignContent: 'start', overflow: 'hidden' }}>
+          {active.map(mc => {
+            const mods = modifiers.filter(m => m.modifierCategoryId === mc.id);
+            return (
+              <div key={mc.id} style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 10, padding: '0.9rem 1rem' }}>
+                <h3 style={{ fontFamily: 'Georgia,serif', fontSize: '1.1rem', color: '#1a1a1a', margin: '0 0 0.45rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{mc.name}</h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
+                  {mods.map(mod => (
+                    <span key={mod.id} style={{ background: 'rgba(0,0,0,0.06)', color: '#1a1a1a', fontSize: '0.85rem', padding: '0.2rem 0.6rem', borderRadius: 999, border: '1px solid rgba(0,0,0,0.1)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                      {mod.name}{mod.price > 0 && <span style={{ color: '#C8956C', fontSize: '0.72rem', fontWeight: 700 }}>+${mod.price.toFixed(2)}</span>}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <VideoPanel videoUrl={videoUrl} sideImageUrl={slideIndex === 1 ? '/menu-board-slide2.jpg' : slideIndex === 2 ? '/menu-board-slide3.png' : slideIndex === 3 ? '/menu-board-slide4.jpg' : slideIndex === 4 ? '/menu-board-slide5.jpg' : slideIndex === 5 ? '/menu-board-slide6.jpg' : undefined} />
+    </div>
+  );
+}
+
+// Main page
 export default function MenuBoardPage() {
   const [slides, setSlides] = useState<Slide[]>([]);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -120,14 +132,10 @@ export default function MenuBoardPage() {
       try {
         const res = await fetch('/api/menu-board-data');
         const data = await res.json();
-        if (!res.ok) {
-          if (active) { setErrorMsg(data.error || `HTTP ${res.status}`); setLoading(false); }
-          return;
-        }
+        if (!res.ok) { if (active) { setErrorMsg(data.error || 'HTTP ' + res.status); setLoading(false); } return; }
         const items = (data.items ?? []) as MenuItem[];
-        const modifierCategories = (data.modifierCategories ?? []) as ModifierCategory[];
-        const modifiers = (data.modifiers ?? []) as Modifier[];
-
+        const modCats = (data.modifierCategories ?? []) as ModifierCategory[];
+        const mods = (data.modifiers ?? []) as Modifier[];
         const sorted = [...items].sort((a, b) => {
           const coa = a.categoryOrder ?? 999, cob = b.categoryOrder ?? 999;
           if (coa !== cob) return coa - cob;
@@ -137,96 +145,91 @@ export default function MenuBoardPage() {
           if (doa !== dob) return doa - dob;
           return a.name.localeCompare(b.name);
         });
-
-        const seen = new Set<string>();
-        const cats: string[] = [];
-        for (const item of sorted) {
-          if (!seen.has(item.category)) { seen.add(item.category); cats.push(item.category); }
+        const seen = new Set<string>(); const cats: string[] = [];
+        for (const it of sorted) { if (!seen.has(it.category)) { seen.add(it.category); cats.push(it.category); } }
+        const newSlides: Slide[] = cats.map(cat => ({ type: 'category' as const, category: cat, items: sorted.filter(i => i.category === cat) }));
+        modCats.sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999));
+        const activeMods = mods.filter(m => m.isActive !== false);
+        if (modCats.some(mc => activeMods.some(m => m.modifierCategoryId === mc.id))) {
+          newSlides.push({ type: 'toppings' as const, modCats, modifiers: activeMods });
         }
-
-        const newSlides: Slide[] = cats.map(cat => ({
-          type: 'category' as const,
-          category: cat,
-          items: sorted.filter(i => i.category === cat),
-        }));
-
-        modifierCategories.sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999));
-        const activeMods = modifiers.filter(m => m.isActive !== false);
-        const hasActiveMods = modifierCategories.some(mc => activeMods.some(m => m.modifierCategoryId === mc.id));
-        if (hasActiveMods) newSlides.push({ type: 'toppings' as const, modCats: modifierCategories, modifiers: activeMods });
-
-        if (active) { setSlides(newSlides); setLoading(false); }
+        if (active) { setSlides(newSlides); setVideoUrl(data.videoUrl ?? '/menu-board-bg.mp4'); setLoading(false); }
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         if (active) { setErrorMsg(msg); setLoading(false); }
       }
     };
     load();
-    const interval = setInterval(load, 60000);
-    return () => { active = false; clearInterval(interval); };
+    const t = setInterval(load, 60000);
+    return () => { active = false; clearInterval(t); };
   }, []);
 
   useEffect(() => {
-    if (slides.length === 0) return;
+    if (!slides.length) return;
     setProgress(0);
     const start = Date.now();
-    const ticker = setInterval(() => setProgress(Math.min(((Date.now() - start) / SLIDE_DURATION_MS) * 100, 100)), 50);
+    const tick = setInterval(() => setProgress(Math.min(((Date.now() - start) / SLIDE_DURATION_MS) * 100, 100)), 50);
     const timer = setTimeout(() => {
       setIsTransitioning(true);
-      setTimeout(() => { setCurrentSlide(p => (p + 1) % slides.length); setIsTransitioning(false); }, 350);
+      setTimeout(() => { setCurrentSlide(p => (p + 1) % slides.length); setIsTransitioning(false); }, 400);
     }, SLIDE_DURATION_MS);
-    return () => { clearInterval(ticker); clearTimeout(timer); };
+    return () => { clearInterval(tick); clearTimeout(timer); };
   }, [currentSlide, slides.length]);
 
-  if (loading || slides.length === 0) {
+  if (loading || !slides.length) {
     return (
       <>
-        <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#2C2420}`}</style>
-        <div style={{ position: 'fixed', inset: 0, background: '#2C2420', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 99999 }}>
+        <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}`}</style>
+        <div style={{ position: 'fixed', inset: 0, background: '#f5f2ee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '5rem', marginBottom: '1rem' }}>🍦</div>
-            <p style={{ fontFamily: 'Georgia,serif', fontSize: '2.5rem', color: '#C8956C', margin: 0 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Cobblestone Creamery" style={{ width: 220, marginBottom: '1.5rem' }} />
+            <p style={{ fontFamily: 'Georgia,serif', fontSize: '2.4rem', color: '#1a1a1a', margin: 0 }}>
               {loading ? 'Loading Menu\u2026' : errorMsg ? 'Error loading menu' : 'No menu items found'}
             </p>
-            {errorMsg && <p style={{ color: '#f87171', fontFamily: 'monospace', fontSize: '0.85rem', marginTop: '0.75rem', maxWidth: 640 }}>{errorMsg}</p>}
-            <p style={{ color: 'rgba(250,241,233,0.4)', fontSize: '1.1rem', marginTop: '0.5rem' }}>900 Main Street · Evansville, Indiana</p>
+            {errorMsg && <p style={{ color: '#c0392b', fontFamily: 'monospace', fontSize: '0.85rem', marginTop: '0.75rem', maxWidth: 600 }}>{errorMsg}</p>}
+            <p style={{ color: 'rgba(0,0,0,0.4)', fontSize: '1.05rem', marginTop: '0.5rem' }}>900 Main Street &bull; Evansville, Indiana</p>
           </div>
         </div>
       </>
     );
   }
 
-  const slide = slides[currentSlide] ?? slides[0];
+  const COW_PATTERN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Crect width='320' height='320' fill='%23f5f2ee'/%3E%3Cellipse cx='55' cy='45' rx='42' ry='30' fill='%231a1a1a' transform='rotate(-18 55 45)' opacity='.82'/%3E%3Cellipse cx='185' cy='22' rx='30' ry='44' fill='%231a1a1a' transform='rotate(22 185 22)' opacity='.82'/%3E%3Cellipse cx='275' cy='110' rx='44' ry='26' fill='%231a1a1a' transform='rotate(-28 275 110)' opacity='.82'/%3E%3Cellipse cx='95' cy='175' rx='26' ry='42' fill='%231a1a1a' transform='rotate(12 95 175)' opacity='.82'/%3E%3Cellipse cx='220' cy='230' rx='50' ry='30' fill='%231a1a1a' transform='rotate(28 220 230)' opacity='.82'/%3E%3Cellipse cx='22' cy='280' rx='28' ry='22' fill='%231a1a1a' transform='rotate(-22 22 280)' opacity='.82'/%3E%3Cellipse cx='295' cy='290' rx='34' ry='25' fill='%231a1a1a' transform='rotate(18 295 290)' opacity='.82'/%3E%3Cellipse cx='150' cy='100' rx='22' ry='34' fill='%231a1a1a' transform='rotate(38 150 100)' opacity='.82'/%3E%3Cellipse cx='310' cy='185' rx='20' ry='28' fill='%231a1a1a' transform='rotate(-12 310 185)' opacity='.7'/%3E%3Cellipse cx='45' cy='130' rx='18' ry='26' fill='%231a1a1a' transform='rotate(30 45 130)' opacity='.7'/%3E%3C%2Fsvg%3E")`;
 
+  const slide = slides[currentSlide] ?? slides[0];
   return (
     <>
-      <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#2C2420}@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.35}}`}</style>
-      <div style={{ position: 'fixed', inset: 0, background: '#2C2420', display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: 'system-ui,sans-serif', zIndex: 99999 }}>
-        <header style={{ background: '#7B2D3B', padding: '0 2.5rem', height: 76, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, position: 'relative' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <span style={{ fontSize: '2rem' }}>🍦</span>
-            <span style={{ fontFamily: 'Georgia,serif', fontSize: '1.65rem', color: '#FAF1E9', fontWeight: 600, letterSpacing: '0.05em' }}>COBBLESTONE CREAMERY</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ color: 'rgba(250,241,233,0.55)', fontSize: '0.95rem' }}>{currentSlide + 1} / {slides.length}</span>
-            <div style={{ display: 'flex', gap: 7 }}>
-              {slides.map((_, i) => <div key={i} style={{ width: 8, height: 8, borderRadius: '50%', background: i === currentSlide ? '#C8956C' : 'rgba(250,241,233,0.22)', transition: 'background 0.4s' }} />)}
+      <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.28}}`}</style>
+      <div style={{ position: 'fixed', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: 'system-ui,sans-serif', backgroundImage: COW_PATTERN, backgroundSize: '320px 320px', backgroundColor: '#f5f2ee' }}>
+
+        {/* Header */}
+        <header style={{ background: '#1a1a1a', padding: '0 2rem', height: 72, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, position: 'relative' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="Cobblestone Creamery" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+            <div style={{ display: 'flex', gap: 5 }}>
+              {slides.map((_, i) => <div key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: i === currentSlide ? '#C8956C' : 'rgba(255,255,255,0.25)', transition: 'background 0.4s' }} />)}
             </div>
+            <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.83rem' }}>{currentSlide + 1} / {slides.length}</span>
           </div>
-          <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: 4, background: 'rgba(255,255,255,0.12)' }}>
-            <div style={{ height: '100%', background: '#C8956C', width: `${progress}%`, transition: 'width 0.05s linear' }} />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: 'rgba(255,255,255,0.1)' }}>
+            <div style={{ height: '100%', background: '#C8956C', width: progress + '%', transition: 'width 0.05s linear' }} />
           </div>
         </header>
-        <main style={{ flex: 1, overflow: 'hidden', padding: '2rem 3rem', opacity: isTransitioning ? 0 : 1, transition: 'opacity 0.35s ease' }}>
+
+        {/* Slide */}
+        <div style={{ flex: 1, minHeight: 0, display: 'flex', opacity: isTransitioning ? 0 : 1, transition: 'opacity 0.4s ease' }}>
           {slide.type === 'category'
-            ? <CategorySlide category={slide.category} items={slide.items} />
-            : <ToppingsSlide modCats={slide.modCats} modifiers={slide.modifiers} />
-          }
-        </main>
-        <footer style={{ background: 'rgba(0,0,0,0.3)', padding: '0.75rem 2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, borderTop: '1px solid rgba(200,149,108,0.1)' }}>
-          <span style={{ color: 'rgba(250,241,233,0.5)', fontSize: '0.95rem', letterSpacing: '0.03em' }}>900 Main Street &middot; Evansville, Indiana 47708</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: 'rgba(250,241,233,0.5)', fontSize: '0.9rem' }}>
-            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'livePulse 2s ease-in-out infinite' }} />
+            ? <CategorySlide category={slide.category} items={slide.items} videoUrl={videoUrl} slideIndex={currentSlide} />
+            : <ToppingsSlide modCats={slide.modCats} modifiers={slide.modifiers} videoUrl={videoUrl} slideIndex={currentSlide} />}
+        </div>
+
+        {/* Footer */}
+        <footer style={{ background: '#1a1a1a', padding: '0.55rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+          <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', letterSpacing: '0.04em' }}>900 Main Street &middot; Evansville, Indiana 47708</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.4)', fontSize: '0.82rem' }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 2s ease-in-out infinite' }} />
             Live Menu
           </span>
         </footer>
