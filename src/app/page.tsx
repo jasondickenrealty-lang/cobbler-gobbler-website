@@ -1,432 +1,653 @@
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import Link from 'next/link';
 import Image from 'next/image';
-import { ORDER_ONLINE_URL } from '@/lib/links';
+import Link from 'next/link';
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL } from '@/lib/links';
 
-/* SEO: FAQ structured data for rich snippets in Google search results */
+const faqItems = [
+  {
+    question: 'Where is Cobblestone Creamery located?',
+    answer:
+      'Cobblestone Creamery is located at 900 Main Street in downtown Evansville, Indiana 47708.',
+  },
+  {
+    question: 'What desserts do you serve?',
+    answer:
+      'We serve handcrafted ice cream, fresh waffle cones, milkshakes, sundaes, bowls, cobblers, and rotating specials made for pickup and walk-in guests.',
+  },
+  {
+    question: 'Do you make fresh waffle cones?',
+    answer:
+      'Yes. Our waffle cones are made fresh in house and are one of the first things guests notice when they walk in.',
+  },
+  {
+    question: 'Can I order online for pickup?',
+    answer:
+      'Yes. You can order online for pickup and have your desserts ready when you arrive at our downtown Evansville shop.',
+  },
+  {
+    question: 'Do you support local fundraising nights?',
+    answer:
+      'Yes. We work with schools, sports teams, churches, and local groups that want to host fundraising events in Evansville.',
+  },
+  {
+    question: 'What are your hours?',
+    answer:
+      'We are open Monday through Thursday from 11:00 AM to 9:00 PM, Friday and Saturday from 11:00 AM to 10:00 PM, and Sunday from 12:00 PM to 8:00 PM.',
+  },
+];
+
 const faqJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'Where is Cobblestone Creamery located?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Cobblestone Creamery is located at 900 Main Street in downtown Evansville, Indiana 47708. We are in the heart of downtown Evansville, easily accessible from all parts of the city.',
-      },
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
     },
-    {
-      '@type': 'Question',
-      name: 'What desserts do you serve?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'We serve handcrafted ice cream in fresh waffle cones, signature milkshakes, ice cream sundaes, bowls, classic cobblers, and more. All of our desserts are made fresh daily with premium ingredients at our Evansville, Indiana ice cream shop.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Do you make fresh waffle cones?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes! Our waffle cones are made fresh in-house every day. You can smell them baking as soon as you walk into our downtown Evansville ice cream shop. We offer classic waffle cones, sugar cones, and waffle bowls.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I order ice cream online in Evansville?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes! You can order online for pickup at order.cobblestonecreamery.com. Skip the line and have your favorite ice cream, milkshakes, and desserts ready when you arrive at our downtown Evansville location.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Do you serve milkshakes in Evansville?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes! Cobblestone Creamery serves thick, handcrafted milkshakes in downtown Evansville, Indiana. Choose from classic flavors or build your own with any of our premium ice cream flavors and mix-ins.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What makes Cobblestone Creamery one of the best ice cream spots in Evansville?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Cobblestone Creamery stands out in Evansville for our daily-made waffle cones, small-batch ice cream with rotating monthly flavors, handcrafted milkshakes, classic cobblers, and a welcoming atmosphere in the heart of downtown Evansville. We use premium ingredients and put care into every scoop.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What are your hours?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Cobblestone Creamery is open Monday through Thursday 11am–9pm, Friday and Saturday 11am–10pm, and Sunday 12pm–8pm. We are located at 900 Main Street, Evansville, IN 47708.',
-      },
-    },
-  ],
+  })),
 };
+
+const quickHits = [
+  { label: 'Fresh Daily', value: 'Waffle Cones' },
+  { label: 'Downtown Pickup', value: 'Fast Ordering' },
+  { label: 'Family Favorite', value: 'Kids Scoop Offers' },
+];
+
+const experienceCards = [
+  {
+    title: 'Fresh Waffle Cones',
+    description:
+      'Hot irons, crisp edges, and the kind of smell that stops people on the sidewalk.',
+    image: '/menu-cones/vanilla.jpg',
+    alt: 'Vanilla ice cream cone from Cobblestone Creamery',
+    href: '/menu',
+    cta: 'See The Menu',
+  },
+  {
+    title: 'Big Milkshake Energy',
+    description:
+      'Classic shakes, loaded toppings, and a sweeter version of the neighborhood clubhouse.',
+    image: '/menu-cones/oreo.jpg',
+    alt: 'Cookies and cream style dessert from Cobblestone Creamery',
+    href: ORDER_ONLINE_URL,
+    cta: 'Order A Shake',
+    external: true,
+  },
+  {
+    title: 'Cobblers And Sundaes',
+    description:
+      'Built for date night, post-game dessert runs, and everybody who wants more than one scoop.',
+    image: '/menu-cones/cake-batter.png',
+    alt: 'Cake batter dessert from Cobblestone Creamery',
+    href: '/menu',
+    cta: 'Browse Favorites',
+  },
+];
+
+const fanFavorites = [
+  {
+    title: 'Triple Peanut Butter Cup',
+    blurb: 'Rich, stacked, and built like a cleanup hitter.',
+    image: '/menu-cones/triple-peanut-butter-cup.png',
+    alt: 'Triple Peanut Butter Cup ice cream',
+  },
+  {
+    title: 'Superman',
+    blurb: 'Bright color, nostalgic flavor, and instant kid approval.',
+    image: '/menu-cones/superman.png',
+    alt: 'Superman ice cream flavor',
+  },
+  {
+    title: 'Strawberry',
+    blurb: 'Classic scoop-shop sweetness with a little summer feel.',
+    image: '/menu-cones/strawberry.jpg',
+    alt: 'Strawberry ice cream',
+  },
+  {
+    title: 'Mint Chocolate Chip',
+    blurb: 'Cool, crisp, and one of the first tubs to disappear.',
+    image: '/menu-cones/mint_chocolate_chip.jpeg',
+    alt: 'Mint chocolate chip ice cream',
+  },
+];
+
+const clubhouseNotes = [
+  'Built in downtown Evansville for families, date nights, and after-dinner dessert runs.',
+  'Easy online ordering for pickup when you want the line skipped and the treats ready.',
+  'Fundraisers, giveaways, and rotating menu moments that keep the shop feeling active.',
+];
+
+const visitStats = [
+  { label: 'Address', value: '900 Main Street' },
+  { label: 'Call Ahead', value: '(812) 205-3322' },
+  { label: 'Order Pickup', value: 'Fast Checkout' },
+  { label: 'Open Late', value: 'Fri + Sat' },
+];
 
 export default function HomePage() {
   return (
     <>
       <Navbar />
       <main className="flex-1">
-        {/* SEO: FAQ schema markup for Google rich results */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
 
-        {/* Hero with video background */}
-        <section className="relative overflow-hidden min-h-[80vh] flex items-center">
-          {/* Video background */}
+        <section className="relative isolate overflow-hidden border-b-4 border-gold bg-dark text-white">
           <video
             autoPlay
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover"
             poster="/logo.png"
           >
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
-          {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-black/50" />
 
-          {/* Content */}
-          <div className="relative z-10 max-w-3xl mx-auto px-6 py-24 md:py-32 text-center">
-            {/* SEO: Logo with keyword-rich ALT tag */}
-            <Image
-              src="/logo.png"
-              alt="Cobblestone Creamery downtown Evansville ice cream shop"
-              className="w-64 h-64 md:w-80 md:h-80 mx-auto mb-8 object-contain"
-              width={320}
-              height={320}
-              priority
-            />
-            {/* SEO: H1 with primary local keyword */}
-            <h1 className="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight drop-shadow-lg">
-              Ice Cream Shop in Evansville, Indiana
-            </h1>
-            {/* SEO: Intro paragraph with secondary keywords */}
-            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-xl mx-auto drop-shadow">
-              Handcrafted ice cream, fresh waffle cones, thick milkshakes, and
-              classic cobblers made daily with premium ingredients in the heart
-              of downtown Evansville, Indiana.
-            </p>
-            {/* SEO: Internal links to key pages */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,22,40,0.93)_0%,rgba(16,36,63,0.84)_42%,rgba(16,36,63,0.55)_100%)]" />
+          <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(201,145,47,0.25),transparent_62%)]" />
+          <div className="absolute bottom-0 left-0 right-0 h-14 bg-[linear-gradient(90deg,rgba(255,255,255,0.08),transparent_20%,transparent_80%,rgba(255,255,255,0.08))]" />
+
+          <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 md:pb-24 md:pt-24">
+            <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+              <div className="max-w-3xl">
+                <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-gold/50 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.34em] text-gold">
+                  <span className="h-2 w-2 rounded-full bg-gold" />
+                  Downtown Evansville Ice Cream Shop
+                </p>
+
+                <div className="mb-8 flex items-center gap-4">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/20 bg-white/10 p-2 shadow-[0_16px_32px_rgba(0,0,0,0.26)]">
+                    <Image
+                      src="/logo.png"
+                      alt="Cobblestone Creamery logo"
+                      width={88}
+                      height={88}
+                      className="h-full w-full rounded-full object-cover"
+                      priority
+                    />
+                  </div>
+                  <div className="h-px flex-1 bg-white/25" />
+                </div>
+
+                <h1 className="font-serif text-6xl uppercase leading-[0.9] tracking-[0.08em] text-chalk sm:text-7xl md:text-8xl">
+                  Cobblestone
+                  <span className="block text-gold">Creamery</span>
+                </h1>
+
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-white/[0.78] md:text-xl">
+                  Where downtown Evansville comes for fresh waffle cones, stacked
+                  milkshakes, loaded sundaes, and dessert-shop energy that feels a
+                  little more like game night than a quiet line at the freezer case.
+                </p>
+
+                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                  <a
+                    href={ORDER_ONLINE_URL}
+                    className="inline-flex items-center justify-center rounded-full bg-dugout-red px-8 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-white transition-transform duration-200 hover:translate-y-[-1px] hover:bg-[#ca4438]"
+                  >
+                    Order Online
+                  </a>
+                  <Link
+                    href="/menu"
+                    className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:border-gold/60 hover:text-gold"
+                  >
+                    View Menu
+                  </Link>
+                </div>
+
+                <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-3">
+                  {quickHits.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-[1.5rem] border border-white/10 bg-white/10 px-4 py-4 backdrop-blur-sm"
+                    >
+                      <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold/90">
+                        {item.label}
+                      </p>
+                      <p className="mt-2 text-base font-semibold text-white">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[2rem] border border-white/[0.12] bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))] p-6 shadow-[0_18px_48px_rgba(0,0,0,0.26)] backdrop-blur-sm">
+                <p className="text-sm uppercase tracking-[0.34em] text-gold">Tonight&apos;s Lineup</p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Best For</p>
+                    <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
+                      Fresh Scoops
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-white/[0.72]">
+                      House-made waffle cones, rotating flavors, and quick pickup ordering.
+                    </p>
+                  </div>
+                  <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Fan Club</p>
+                    <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
+                      Kids Scoop
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-white/[0.72]">
+                      Keep the family rotation moving with specials built for younger guests.
+                    </p>
+                  </div>
+                  <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Community</p>
+                    <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
+                      Fundraisers
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-white/[0.72]">
+                      Sports teams, schools, and local groups can team up with us for events.
+                    </p>
+                  </div>
+                  <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Bonus Play</p>
+                    <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
+                      Monthly Game
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-white/[0.72]">
+                      Orders can unlock game play, surprise wins, and reasons to come back again.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-dark/10 bg-cream">
+          <div className="mx-auto grid max-w-7xl gap-6 px-6 py-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+            <div>
+              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">From The Counter</p>
+              <h2 className="mt-2 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
+                Bigger Flavor.
+                <span className="block text-dugout-red">Stronger Personality.</span>
+              </h2>
+              <p className="mt-4 max-w-2xl text-lg leading-8 text-dark/[0.72]">
+                The Casey&apos;s reference works because every section feels intentional and
+                alive. This redesign follows that same idea for Cobblestone: bold hero,
+                stronger sections, easier calls to action, and a more memorable visual rhythm.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
               <Link
-                href="/menu"
-                className="bg-primary text-white px-8 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
+                href="/free-kids-scoop"
+                className="rounded-[1.75rem] border border-primary/[0.12] bg-white px-6 py-6 shadow-[0_16px_30px_rgba(16,36,63,0.08)] transition-transform duration-200 hover:translate-y-[-2px]"
               >
-                View Monthly Flavors
+                <p className="text-[0.72rem] uppercase tracking-[0.28em] text-dugout-red">Promo</p>
+                <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-primary">
+                  Free Kids Scoop
+                </p>
+                <p className="mt-3 text-sm leading-6 text-dark/70">
+                  Make the family offer easy to spot right from the homepage.
+                </p>
               </Link>
               <a
-                href={ORDER_ONLINE_URL}
-                className="bg-gold text-white px-8 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
+                href={FREE_GAME_PLAY_URL}
+                className="rounded-[1.75rem] border border-primary/[0.12] bg-primary px-6 py-6 text-white shadow-[0_16px_30px_rgba(16,36,63,0.16)] transition-transform duration-200 hover:translate-y-[-2px]"
               >
-                Order Online
+                <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Rewards</p>
+                <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
+                  Game Play
+                </p>
+                <p className="mt-3 text-sm leading-6 text-white/[0.72]">
+                  Push traffic into the monthly game without burying it in the nav.
+                </p>
               </a>
             </div>
           </div>
         </section>
 
-        {/* SEO: H2 sections targeting "waffle cones Evansville", "milkshakes Evansville", "desserts Evansville" */}
-        <section className="bg-white">
-          <div className="max-w-5xl mx-auto px-6 py-20 md:py-28">
-            <h2 className="text-3xl md:text-4xl font-serif text-primary text-center mb-16">
-              What Makes Us Special
-            </h2>
-            <div className="grid md:grid-cols-3 gap-12">
-              {/* SEO: "waffle cones Evansville" keyword section */}
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-cream mx-auto mb-5 flex items-center justify-center">
-                  <span className="text-gold text-lg font-serif">01</span>
-                </div>
-                <h3 className="font-serif text-xl text-primary mb-3">Fresh Waffle Cones</h3>
-                <p className="text-dark/60 leading-relaxed">
-                  Our waffle cones are made fresh in-house every single day. Crispy,
-                  golden, and warm — the perfect vessel for our handcrafted ice cream
-                  right here in Evansville, Indiana.
-                </p>
-              </div>
-              {/* SEO: "milkshakes Evansville" keyword section */}
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-cream mx-auto mb-5 flex items-center justify-center">
-                  <span className="text-gold text-lg font-serif">02</span>
-                </div>
-                <h3 className="font-serif text-xl text-primary mb-3">Signature Milkshakes</h3>
-                <p className="text-dark/60 leading-relaxed">
-                  Thick, creamy milkshakes blended with our handcrafted ice cream and
-                  premium toppings. From classic vanilla to seasonal specials — the best
-                  milkshakes in Evansville.
-                </p>
-              </div>
-              {/* SEO: "desserts Evansville" keyword section */}
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-cream mx-auto mb-5 flex items-center justify-center">
-                  <span className="text-gold text-lg font-serif">03</span>
-                </div>
-                <h3 className="font-serif text-xl text-primary mb-3">Ice Cream Bowls &amp; Sundaes</h3>
-                <p className="text-dark/60 leading-relaxed">
-                  Build your perfect bowl or sundae with scoops of our daily-churned
-                  ice cream and a variety of fresh toppings. The ultimate dessert
-                  experience in downtown Evansville.
-                </p>
-              </div>
+        <section className="bg-light-cream">
+          <div className="mx-auto max-w-7xl px-6 py-20 md:py-24">
+            <div className="max-w-2xl">
+              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">What To Order</p>
+              <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
+                The Dessert Counter
+                <span className="block text-ballpark-blue">Feels Like The Main Event</span>
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-dark/[0.72]">
+                The reference site leans on appetite and atmosphere. This section does the
+                same for Cobblestone by putting your signature categories right up front.
+              </p>
             </div>
-            {/* SEO: Internal link to full menu */}
-            <div className="text-center mt-12">
-              <Link
-                href="/menu"
-                className="inline-block text-sm font-medium tracking-wide uppercase text-primary border-b-2 border-gold pb-1 hover:text-gold transition-colors"
-              >
-                See Our Full Menu
-              </Link>
+
+            <div className="mt-12 grid gap-6 lg:grid-cols-3">
+              {experienceCards.map((card) => (
+                <article
+                  key={card.title}
+                  className="group overflow-hidden rounded-[2rem] border border-dark/[0.08] bg-white shadow-[0_16px_34px_rgba(16,36,63,0.08)]"
+                >
+                  <div className="relative h-72 overflow-hidden">
+                    <Image
+                      src={card.image}
+                      alt={card.alt}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_30%,rgba(11,22,40,0.62)_100%)]" />
+                    <p className="absolute left-5 top-5 rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[0.68rem] uppercase tracking-[0.28em] text-white backdrop-blur-sm">
+                      Cobblestone Favorite
+                    </p>
+                  </div>
+                  <div className="p-7">
+                    <h3 className="font-serif text-3xl uppercase tracking-[0.08em] text-primary">
+                      {card.title}
+                    </h3>
+                    <p className="mt-4 text-base leading-7 text-dark/[0.72]">{card.description}</p>
+                    {card.external ? (
+                      <a
+                        href={card.href}
+                        className="mt-6 inline-flex items-center text-sm font-semibold uppercase tracking-[0.22em] text-dugout-red transition-colors hover:text-primary"
+                      >
+                        {card.cta}
+                      </a>
+                    ) : (
+                      <Link
+                        href={card.href}
+                        className="mt-6 inline-flex items-center text-sm font-semibold uppercase tracking-[0.22em] text-dugout-red transition-colors hover:text-primary"
+                      >
+                        {card.cta}
+                      </Link>
+                    )}
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Story Teaser — SEO: local keyword reinforcement */}
-        <section className="bg-cream">
-          <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
-            <h2 className="text-3xl md:text-4xl font-serif text-primary mb-6">Our Story</h2>
-            <p className="text-dark/60 leading-relaxed mb-8 text-lg">
-              Established in 2026 by two friends with a love of ice cream, cows, and
-              community, Cobblestone Creamery was built to be a welcoming dessert shop
-              in downtown Evansville for great flavor, good company, and moments worth sharing.
-            </p>
-            <Link
-              href="/about"
-              className="inline-block text-sm font-medium tracking-wide uppercase text-primary border-b-2 border-gold pb-1 hover:text-gold transition-colors"
-            >
-              Read Our Full Story
-            </Link>
-          </div>
-        </section>
-
-        {/* Fundraising & Donations */}
-        <section className="bg-white">
-          <div className="max-w-4xl mx-auto px-6 py-20 md:py-28">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-serif text-primary mb-4">
-                  Fundraising &amp; Donations
-                </h2>
-                <p className="text-dark/60 leading-relaxed mb-6">
-                  Partner with Cobblestone Creamery for your next fundraiser! We
-                  support schools, churches, sports teams, and local organizations
-                  throughout Evansville. Host a fundraising night or request a
-                  donation for your event.
+        <section className="border-y border-dark/10 bg-white">
+          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 md:py-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="relative min-h-[320px] overflow-hidden rounded-[2rem] border border-dark/[0.08] bg-primary">
+                <Image
+                  src="/menu-cones/chocolate.jpeg"
+                  alt="Chocolate ice cream dessert from Cobblestone Creamery"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex min-h-[320px] flex-col justify-between rounded-[2rem] border border-dark/[0.08] bg-[linear-gradient(180deg,#10243f_0%,#1d466f_100%)] p-8 text-white shadow-[0_18px_36px_rgba(16,36,63,0.18)]">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-gold">Our Story</p>
+                  <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-chalk">
+                    The Creamery
+                    <span className="block text-gold">Clubhouse</span>
+                  </h2>
+                </div>
+                <p className="text-base leading-7 text-white/[0.72]">
+                  Cobblestone was built to feel less like a generic dessert counter and
+                  more like a downtown spot people actually want to linger in.
                 </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">Why It Works</p>
+              <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
+                Built For The
+                <span className="block text-ballpark-blue">Regular Rotation</span>
+              </h2>
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-dark/[0.72]">
+                The Casey&apos;s site leans into identity. For Cobblestone, that identity is
+                simple: a downtown dessert shop with personality, easy ordering, and enough
+                motion in the layout that the homepage feels active before anybody even taps
+                the menu.
+              </p>
+              <div className="mt-8 grid gap-4">
+                {clubhouseNotes.map((note) => (
+                  <div
+                    key={note}
+                    className="flex items-start gap-4 rounded-[1.5rem] border border-dark/[0.08] bg-light-cream px-5 py-5"
+                  >
+                    <div className="mt-1 h-3 w-3 rounded-full bg-dugout-red" />
+                    <p className="text-base leading-7 text-dark/[0.76]">{note}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href="/about"
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:bg-ballpark-blue"
+                >
+                  Read Our Story
+                </Link>
                 <Link
                   href="/fundraising"
-                  className="inline-block bg-primary text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
+                  className="inline-flex items-center justify-center rounded-full border border-primary/[0.15] bg-white px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.2em] text-primary transition-colors hover:border-gold/60 hover:text-dugout-red"
                 >
-                  Learn More
+                  Plan A Fundraiser
                 </Link>
               </div>
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div className="bg-cream rounded-lg p-5">
-                  <span className="text-2xl block mb-2">&#127979;</span>
-                  <p className="text-dark/70 text-sm font-medium">Schools</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="relative overflow-hidden bg-[linear-gradient(135deg,#10243f_0%,#173256_45%,#b33a2f_100%)] text-white">
+          <div className="absolute left-1/2 top-0 h-full w-full -translate-x-1/2 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_52%)]" />
+          <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-24">
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div>
+                <p className="text-sm uppercase tracking-[0.32em] text-gold">Promos + Community</p>
+                <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-chalk md:text-5xl">
+                  Keep The Homepage
+                  <span className="block text-gold">Working Harder</span>
+                </h2>
+                <p className="mt-5 max-w-2xl text-lg leading-8 text-white/[0.76]">
+                  The reference site uses bold promotional moments to break up the page.
+                  For Cobblestone, the strongest versions of that are the free kids scoop,
+                  online ordering, and fundraising callouts.
+                </p>
+              </div>
+
+              <div className="grid gap-4">
+                <div className="rounded-[1.8rem] border border-white/[0.14] bg-white/10 p-6 backdrop-blur-sm">
+                  <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Feature One</p>
+                  <h3 className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
+                    Free Kids Scoop
+                  </h3>
+                  <p className="mt-3 text-base leading-7 text-white/[0.72]">
+                    A clear family-focused promotion that deserves bigger placement.
+                  </p>
+                  <Link
+                    href="/free-kids-scoop"
+                    className="mt-5 inline-flex text-sm font-semibold uppercase tracking-[0.2em] text-gold"
+                  >
+                    View Promotion
+                  </Link>
                 </div>
-                <div className="bg-cream rounded-lg p-5">
-                  <span className="text-2xl block mb-2">&#9917;</span>
-                  <p className="text-dark/70 text-sm font-medium">Sports Teams</p>
-                </div>
-                <div className="bg-cream rounded-lg p-5">
-                  <span className="text-2xl block mb-2">&#9962;</span>
-                  <p className="text-dark/70 text-sm font-medium">Churches</p>
-                </div>
-                <div className="bg-cream rounded-lg p-5">
-                  <span className="text-2xl block mb-2">&#128153;</span>
-                  <p className="text-dark/70 text-sm font-medium">Nonprofits</p>
+                <div className="rounded-[1.8rem] border border-white/[0.14] bg-dark/[0.28] p-6 backdrop-blur-sm">
+                  <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Feature Two</p>
+                  <h3 className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
+                    Community Nights
+                  </h3>
+                  <p className="mt-3 text-base leading-7 text-white/[0.72]">
+                    Schools, sports teams, and local organizations can use the shop as a fundraiser driver.
+                  </p>
+                  <Link
+                    href="/fundraising"
+                    className="mt-5 inline-flex text-sm font-semibold uppercase tracking-[0.2em] text-gold"
+                  >
+                    Start Planning
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Monthly Game Promo */}
-        <section className="bg-gradient-to-br from-primary to-dark overflow-hidden relative">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-4 left-8 text-6xl">&#127922;</div>
-            <div className="absolute bottom-4 right-12 text-6xl">&#127881;</div>
-            <div className="absolute top-1/2 left-1/3 text-4xl">&#11088;</div>
-          </div>
-          <div className="relative max-w-3xl mx-auto px-6 py-16 md:py-20 text-center">
-            <p className="text-gold uppercase tracking-widest text-sm font-medium mb-3">Monthly Game</p>
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
-              Play &amp; Win!
-            </h2>
-            <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">
-              Every order comes with a chance to play our monthly game. Win discounts, free treats, and bonus loyalty points!
-            </p>
-            <a
-              href={ORDER_ONLINE_URL}
-              className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
-            >
-              Order Now to Play
-            </a>
+        <section className="bg-light-cream">
+          <div className="mx-auto max-w-7xl px-6 py-20 md:py-24">
+            <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">Fan Favorites</p>
+                <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
+                  Flavor Cards
+                  <span className="block text-ballpark-blue">That Sell The Shop</span>
+                </h2>
+              </div>
+              <Link
+                href="/menu"
+                className="text-sm font-semibold uppercase tracking-[0.22em] text-dugout-red transition-colors hover:text-primary"
+              >
+                Browse The Full Menu
+              </Link>
+            </div>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+              {fanFavorites.map((item) => (
+                <article
+                  key={item.title}
+                  className="overflow-hidden rounded-[2rem] border border-dark/[0.08] bg-white shadow-[0_16px_30px_rgba(16,36,63,0.08)]"
+                >
+                  <div className="relative h-64">
+                    <Image src={item.image} alt={item.alt} fill className="object-cover" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-serif text-3xl uppercase tracking-[0.08em] text-primary">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-7 text-dark/[0.72]">{item.blurb}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* SEO: "Visit Us in Downtown Evansville" section with address, phone, and hours */}
-        <section className="bg-white">
-          <div className="max-w-4xl mx-auto px-6 py-20 md:py-28">
-            <h2 className="text-3xl md:text-4xl font-serif text-primary text-center mb-12">
-              Visit Us in Downtown Evansville
-            </h2>
-            <div className="grid md:grid-cols-2 gap-12 items-start">
-              <div>
-                <h3 className="font-serif text-xl text-primary mb-4">Location &amp; Contact</h3>
-                {/* SEO: NAP (Name, Address, Phone) consistency for local search */}
-                <address className="not-italic text-dark/70 leading-relaxed space-y-2">
-                  <p className="font-medium text-dark">Cobblestone Creamery</p>
+        <section className="border-y border-dark/10 bg-white" id="visit-us">
+          <div className="mx-auto max-w-7xl px-6 py-20 md:py-24">
+            <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+              <div className="rounded-[2rem] border border-dark/[0.08] bg-[linear-gradient(180deg,#10243f_0%,#16355a_100%)] p-8 text-white shadow-[0_20px_40px_rgba(16,36,63,0.18)]">
+                <p className="text-sm uppercase tracking-[0.32em] text-gold">Visit The Shop</p>
+                <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-chalk md:text-5xl">
+                  Come By For
+                  <span className="block text-gold">Your Next Scoop</span>
+                </h2>
+                <address className="mt-8 not-italic space-y-3 text-base leading-7 text-white/[0.76]">
+                  <p className="text-white">Cobblestone Creamery</p>
                   <p>900 Main Street</p>
                   <p>Evansville, Indiana 47708</p>
-                  <p className="pt-2">
-                    <a href="tel:+18122053322" className="text-primary hover:text-gold transition-colors font-medium">
+                  <p>
+                    <a href="tel:+18122053322" className="transition-colors hover:text-gold">
                       (812) 205-3322
                     </a>
                   </p>
                 </address>
-                <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                   <Link
                     href="/location"
-                    className="inline-block bg-primary text-white px-6 py-2.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors text-center"
+                    className="inline-flex items-center justify-center rounded-full bg-gold px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.2em] text-primary transition-colors hover:bg-sand"
                   >
                     Get Directions
                   </Link>
                   <a
                     href={ORDER_ONLINE_URL}
-                    className="inline-block bg-gold text-white px-6 py-2.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors text-center"
+                    className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:border-gold/60 hover:text-gold"
                   >
-                    Order for Pickup
+                    Order Pickup
                   </a>
                 </div>
               </div>
+
               <div>
-                <h3 className="font-serif text-xl text-primary mb-4">Hours</h3>
-                <div className="text-dark/70 leading-relaxed space-y-1">
-                  <p><span className="font-medium text-dark">Monday – Thursday:</span> 11:00 AM – 9:00 PM</p>
-                  <p><span className="font-medium text-dark">Friday – Saturday:</span> 11:00 AM – 10:00 PM</p>
-                  <p><span className="font-medium text-dark">Sunday:</span> 12:00 PM – 8:00 PM</p>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {visitStats.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-[1.75rem] border border-dark/[0.08] bg-light-cream px-5 py-5"
+                    >
+                      <p className="text-[0.72rem] uppercase tracking-[0.28em] text-dugout-red">
+                        {item.label}
+                      </p>
+                      <p className="mt-3 font-serif text-3xl uppercase tracking-[0.08em] text-primary">
+                        {item.value}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-                <p className="mt-6 text-dark/60 text-sm leading-relaxed">
-                  Located in the heart of downtown Evansville, Indiana — just steps
-                  from Main Street shops and restaurants. Stop by for the best ice cream,
-                  milkshakes, and desserts in Evansville!
-                </p>
+
+                <div className="mt-6 rounded-[1.75rem] border border-dark/[0.08] bg-white p-6 shadow-[0_14px_26px_rgba(16,36,63,0.08)]">
+                  <p className="text-sm uppercase tracking-[0.3em] text-dugout-red">Hours</p>
+                  <div className="mt-5 grid gap-3 text-base leading-7 text-dark/[0.76]">
+                    <p>
+                      <span className="font-semibold text-dark">Monday - Thursday:</span> 11:00 AM - 9:00 PM
+                    </p>
+                    <p>
+                      <span className="font-semibold text-dark">Friday - Saturday:</span> 11:00 AM - 10:00 PM
+                    </p>
+                    <p>
+                      <span className="font-semibold text-dark">Sunday:</span> 12:00 PM - 8:00 PM
+                    </p>
+                  </div>
+                  <p className="mt-5 text-base leading-7 text-dark/70">
+                    Positioned in the heart of downtown Evansville, the shop is built for
+                    quick pickup runs, casual walk-ins, and groups that want dessert to be
+                    the place they end the night.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* SEO: FAQ section with keyword-rich answers — also marked up with FAQPage schema above */}
         <section className="bg-cream">
-          <div className="max-w-3xl mx-auto px-6 py-20 md:py-28">
-            <h2 className="text-3xl md:text-4xl font-serif text-primary text-center mb-12">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-8">
-              <div>
-                <h3 className="font-serif text-lg text-primary mb-2">
-                  Where is Cobblestone Creamery located?
-                </h3>
-                <p className="text-dark/60 leading-relaxed">
-                  Cobblestone Creamery is located at 900 Main Street in downtown
-                  Evansville, Indiana 47708. We&apos;re in the heart of downtown Evansville,
-                  easily accessible from all parts of the city.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-serif text-lg text-primary mb-2">
-                  What desserts do you serve?
-                </h3>
-                <p className="text-dark/60 leading-relaxed">
-                  We serve handcrafted ice cream in fresh waffle cones, signature milkshakes,
-                  ice cream sundaes, bowls, classic cobblers, and more. All of our desserts
-                  are made fresh daily with premium ingredients at our Evansville ice cream shop.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-serif text-lg text-primary mb-2">
-                  Do you make fresh waffle cones?
-                </h3>
-                <p className="text-dark/60 leading-relaxed">
-                  Yes! Our waffle cones are made fresh in-house every day. You can smell them
-                  baking as soon as you walk into our downtown Evansville ice cream shop.
-                  We offer classic waffle cones, sugar cones, and waffle bowls.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-serif text-lg text-primary mb-2">
-                  Can I order ice cream online in Evansville?
-                </h3>
-                <p className="text-dark/60 leading-relaxed">
-                  Yes! You can{' '}
-                  <a href={ORDER_ONLINE_URL} className="text-primary hover:text-gold underline transition-colors">
-                    order online for pickup
-                  </a>{' '}
-                  and have your favorite ice cream, milkshakes, and desserts ready when
-                  you arrive at our downtown Evansville location.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-serif text-lg text-primary mb-2">
-                  Do you serve milkshakes in Evansville?
-                </h3>
-                <p className="text-dark/60 leading-relaxed">
-                  Yes! We serve thick, handcrafted milkshakes in downtown Evansville, Indiana.
-                  Choose from classic flavors or build your own with any of our premium ice cream
-                  flavors and mix-ins.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-serif text-lg text-primary mb-2">
-                  What makes Cobblestone Creamery one of the best ice cream spots in Evansville?
-                </h3>
-                <p className="text-dark/60 leading-relaxed">
-                  We stand out in Evansville for our daily-made waffle cones, small-batch ice cream
-                  with rotating monthly flavors, handcrafted milkshakes, classic cobblers, and a
-                  welcoming atmosphere in the heart of downtown. We use premium ingredients and put
-                  care into every scoop.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-serif text-lg text-primary mb-2">
-                  What are your hours?
-                </h3>
-                <p className="text-dark/60 leading-relaxed">
-                  We&apos;re open Monday–Thursday 11am–9pm, Friday–Saturday 11am–10pm, and
-                  Sunday 12pm–8pm. Visit Cobblestone Creamery at 900 Main Street, Evansville, IN 47708.
-                </p>
-              </div>
+          <div className="mx-auto max-w-5xl px-6 py-20 md:py-24">
+            <div className="text-center">
+              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">Frequently Asked Questions</p>
+              <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
+                The Quick Answers
+              </h2>
+            </div>
+
+            <div className="mt-12 grid gap-5">
+              {faqItems.map((item) => (
+                <article
+                  key={item.question}
+                  className="rounded-[1.75rem] border border-dark/[0.08] bg-white px-6 py-6 shadow-[0_14px_26px_rgba(16,36,63,0.06)]"
+                >
+                  <h3 className="font-serif text-3xl uppercase tracking-[0.08em] text-primary">
+                    {item.question}
+                  </h3>
+                  <p className="mt-4 text-base leading-7 text-dark/[0.74]">{item.answer}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Order CTA — SEO: reinforces "ice cream Evansville" + internal link */}
         <section className="bg-primary">
-          <div className="max-w-3xl mx-auto px-6 py-20 md:py-24 text-center">
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
-              Skip the Line
+          <div className="mx-auto max-w-4xl px-6 py-20 text-center md:py-24">
+            <p className="text-sm uppercase tracking-[0.32em] text-gold">Ready To Order?</p>
+            <h2 className="mt-4 font-serif text-5xl uppercase tracking-[0.08em] text-chalk md:text-6xl">
+              Skip The Line.
+              <span className="block text-gold">Keep The Dessert.</span>
             </h2>
-            <p className="text-white/70 text-lg mb-8">
-              Order ahead for pickup from our downtown Evansville ice cream shop
-              and have your favorites ready when you arrive.
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/[0.72]">
+              Order ahead for pickup from Cobblestone Creamery and let the homepage do what
+              it should do: create appetite, explain the vibe, and move people toward checkout.
             </p>
-            <a
-              href={ORDER_ONLINE_URL}
-              className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
-            >
-              Order Ice Cream Online
-            </a>
+            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+              <a
+                href={ORDER_ONLINE_URL}
+                className="inline-flex items-center justify-center rounded-full bg-dugout-red px-8 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:bg-[#ca4438]"
+              >
+                Order Ice Cream Online
+              </a>
+              <Link
+                href="/menu"
+                className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:border-gold/60 hover:text-gold"
+              >
+                Browse The Menu
+              </Link>
+            </div>
           </div>
         </section>
       </main>

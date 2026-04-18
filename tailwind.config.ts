@@ -9,18 +9,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#7B2D3B',
-        cream: '#FAF1E9',
-        gold: '#C8956C',
-        dark: '#2C2420',
-        'light-cream': '#FDF8F4',
+        primary: '#10243f',
+        cream: '#efe1c5',
+        gold: '#c9912f',
+        dark: '#0b1628',
+        'light-cream': '#f8f3e7',
+        'dugout-red': '#b33a2f',
+        'ballpark-blue': '#1d466f',
+        scoreboard: '#15273f',
+        sand: '#d8b87f',
+        chalk: '#fdf9ef',
+        field: '#355b3b',
         // Keep old names mapped for employee pages
-        secondary: '#FFB6C1',
-        accent: '#FFA07A',
+        secondary: '#b33a2f',
+        accent: '#1d466f',
       },
       fontFamily: {
-        serif: ['var(--font-lora)', 'Georgia', 'serif'],
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-display)', 'Impact', 'sans-serif'],
+        sans: ['var(--font-body)', 'Trebuchet MS', 'sans-serif'],
       },
     },
   },

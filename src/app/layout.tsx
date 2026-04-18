@@ -1,14 +1,18 @@
 import type { Metadata } from 'next';
-import { Inter, Lora } from 'next/font/google';
+import { Bebas_Neue, Source_Sans_3 } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ChatWidget from '@/components/ChatWidget';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const lora = Lora({
+const bodyFont = Source_Sans_3({
   subsets: ['latin'],
-  variable: '--font-lora',
+  variable: '--font-body',
   weight: ['400', '500', '600', '700'],
+});
+const displayFont = Bebas_Neue({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: '400',
 });
 
 const SITE_URL = 'https://cobblestonecreamery.com';
@@ -137,7 +141,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${lora.variable}`}>
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`}>
       <head>
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />

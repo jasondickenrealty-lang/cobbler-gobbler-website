@@ -1,81 +1,131 @@
 import Link from 'next/link';
-import { ORDER_ONLINE_URL } from '@/lib/links';
+import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL, WHOLESALE_URL } from '@/lib/links';
+
+const quickLinks = [
+  { href: '/menu', label: 'Menu' },
+  { href: ORDER_ONLINE_URL, label: 'Order Online', external: true },
+  { href: '/about', label: 'Our Story' },
+  { href: '/free-kids-scoop', label: 'Free Kids Scoop' },
+  { href: '/fundraising', label: 'Fundraising' },
+  { href: WHOLESALE_URL, label: 'Wholesale', external: true },
+  { href: FREE_GAME_PLAY_URL, label: 'Game Play', external: true },
+  { href: '/location', label: 'Visit Us' },
+];
+
+const hours = [
+  'Monday - Thursday: 11:00 AM - 9:00 PM',
+  'Friday - Saturday: 11:00 AM - 10:00 PM',
+  'Sunday: 12:00 PM - 8:00 PM',
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-white/90 mt-auto">
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* Brand */}
-          <div>
-            <h3 className="font-serif text-xl text-white mb-3">Cobblestone Creamery</h3>
-            <p className="text-sm text-white/60 leading-relaxed">
-              Handcrafted ice cream, classic cobblers, and milkshakes made fresh
-              daily in downtown Evansville, Indiana. Established in 2026 by two
-              friends who love ice cream and community.
+    <footer className="mt-auto border-t-4 border-gold bg-primary text-white">
+      <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.9fr_0.9fr]">
+          <div className="max-w-xl">
+            <p className="mb-3 text-sm uppercase tracking-[0.34em] text-gold">Cobblestone Creamery</p>
+            <h3 className="font-serif text-4xl uppercase tracking-[0.08em] text-chalk">
+              Dessert With
+              <span className="block text-gold">Some Ballpark Energy</span>
+            </h3>
+            <p className="mt-5 max-w-lg text-base leading-7 text-white/[0.72]">
+              Fresh waffle cones, stacked milkshakes, cobblers, and downtown Evansville
+              scoop-shop energy. Built for families, post-dinner dessert runs, and
+              anyone who wants the place to feel as fun as the treat.
             </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Quick Links</h4>
-            <div className="space-y-2">
-              <Link href="/menu" className="block text-sm text-white/60 hover:text-white transition-colors">Monthly Flavors in Evansville</Link>
-              <a href={ORDER_ONLINE_URL} className="block text-sm text-white/60 hover:text-white transition-colors">Order Ice Cream Online</a>
-              <Link href="/about" className="block text-sm text-white/60 hover:text-white transition-colors">Our Story</Link>
-              <Link href="/free-kids-scoop" className="block text-sm text-white/60 hover:text-white transition-colors">Free Kids Scoop</Link>
-              <Link href="/fundraising" className="block text-sm text-white/60 hover:text-white transition-colors">Fundraising &amp; Donations</Link>
-              <Link href="/join-our-team" className="block text-sm text-white/60 hover:text-white transition-colors">Join Our Team</Link>
-              <Link href="/location" className="block text-sm text-white/60 hover:text-white transition-colors">Visit Our Downtown Evansville Shop</Link>
-              <Link href="/ice-cream-evansville-in" className="block text-sm text-white/60 hover:text-white transition-colors">Ice Cream in Evansville, IN</Link>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={ORDER_ONLINE_URL}
+                className="rounded-full bg-dugout-red px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#ca4438]"
+              >
+                Order Online
+              </a>
+              <Link
+                href="/location"
+                className="rounded-full border border-white/[0.18] bg-white/[0.06] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:border-gold/60 hover:text-gold"
+              >
+                Visit Us
+              </Link>
             </div>
           </div>
 
-          {/* Contact */}
           <div>
-            <h4 className="text-sm font-medium uppercase tracking-wider text-gold mb-4">Get in Touch</h4>
-            <address className="not-italic space-y-2 text-sm text-white/60">
-              <p>900 Main Street, Evansville, Indiana 47708</p>
-              <p>
-                <a href="tel:8122053322" className="hover:text-white transition-colors">(812) 205-3322</a>
-              </p>
-              <p>
-                <a href="mailto:info@cobblestonecreamery.com" className="hover:text-white transition-colors">info@cobblestonecreamery.com</a>
-              </p>
-              <p>
-                <a
-                  href="https://www.facebook.com/profile.php?id=61588303764359"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors"
-                >
-                  Facebook
-                </a>
-              </p>
-            </address>
+            <h4 className="text-sm font-semibold uppercase tracking-[0.3em] text-gold">Quick Links</h4>
+            <div className="mt-5 grid gap-3">
+              {quickLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={`${link.label}-${link.href}`}
+                    href={link.href}
+                    className="text-sm uppercase tracking-[0.16em] text-white/[0.72] transition-colors hover:text-gold"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm uppercase tracking-[0.16em] text-white/[0.72] transition-colors hover:text-gold"
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold uppercase tracking-[0.3em] text-gold">Visit The Shop</h4>
+            <div className="mt-5 rounded-[1.75rem] border border-white/[0.12] bg-white/[0.06] p-6">
+              <address className="not-italic space-y-3 text-sm uppercase tracking-[0.14em] text-white/[0.72]">
+                <p className="text-white">900 Main Street</p>
+                <p>Evansville, Indiana 47708</p>
+                <p>
+                  <a href="tel:+18122053322" className="transition-colors hover:text-gold">
+                    (812) 205-3322
+                  </a>
+                </p>
+                <p>
+                  <a
+                    href="mailto:info@cobblestonecreamery.com"
+                    className="transition-colors hover:text-gold"
+                  >
+                    info@cobblestonecreamery.com
+                  </a>
+                </p>
+              </address>
+
+              <div className="mt-6 border-t border-white/10 pt-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold">Hours</p>
+                <div className="mt-3 space-y-2 text-sm text-white/70">
+                  {hours.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/40">
-            &copy; {new Date().getFullYear()} Cobblestone Creamery. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4">
-            <Link href="/privacy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs uppercase tracking-[0.18em] text-white/[0.45] md:flex-row md:items-center md:justify-between">
+          <p>&copy; {new Date().getFullYear()} Cobblestone Creamery. All rights reserved.</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/privacy" className="transition-colors hover:text-white/[0.72]">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+            <Link href="/terms" className="transition-colors hover:text-white/[0.72]">
               Terms &amp; Conditions
             </Link>
             <a
               href="https://www.facebook.com/profile.php?id=61588303764359"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-white/40 hover:text-white/60 transition-colors"
+              className="transition-colors hover:text-white/[0.72]"
             >
               Facebook
             </a>
-            <Link href="/employee/login" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+            <Link href="/employee/login" className="transition-colors hover:text-white/[0.72]">
               Employee Portal
             </Link>
           </div>
