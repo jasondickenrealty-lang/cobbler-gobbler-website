@@ -13,6 +13,7 @@ type NavLink = {
 
 const navLinks: NavLink[] = [
   { href: '/', label: 'Home' },
+  { href: '/contest-signup', label: 'Contest Signup' },
   { href: '/menu', label: 'Menu' },
   { href: WHOLESALE_URL, label: 'Wholesale', external: true },
   { href: '/about', label: 'Our Story' },
@@ -123,7 +124,6 @@ export default function Navbar() {
               onClick={() => setMobileOpen((open) => !open)}
               className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white lg:hidden"
               aria-label="Toggle menu"
-              aria-expanded={mobileOpen}
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileOpen ? (

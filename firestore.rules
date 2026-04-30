@@ -19,6 +19,11 @@ service cloud.firestore {
       return isActiveUser() && 
              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role;
     }
+
+    function hasAnyRole(roles) {
+      return isActiveUser() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in roles;
+    }
     
     // Users collection - users can read their own data, only owners can write
     match /users/{userId} {
@@ -39,6 +44,36 @@ service cloud.firestore {
     match /announcements/{announcementId} {
       allow read: if isActiveUser();
       allow create, update, delete: if hasRole('manager') || hasRole('owner');
+    }
+
+    // Contest signups - public create, manager/owner/admin read
+    match /contestSignups/{signupId} {
+      allow create: if request.resource.data.keys().hasOnly([
+                      'name',
+                      'phone',
+                      'email',
+                      'normalizedEmail',
+                      'normalizedPhone',
+                      'ageGroup',
+                      'parentGuardianName',
+                      'legalAccepted',
+                      'eventName',
+                      'eventDate',
+                      'eventDateLabel',
+                      'createdAt'
+                    ])
+                    && request.resource.data.name is string
+                    && request.resource.data.phone is string
+                    && request.resource.data.email is string
+                    && request.resource.data.normalizedEmail is string
+                    && request.resource.data.normalizedPhone is string
+                    && request.resource.data.ageGroup in ['18+', '16-17']
+                    && request.resource.data.parentGuardianName is string
+                    && request.resource.data.legalAccepted == true
+                    && request.resource.data.eventName == 'Annual Cobble Eating Contest'
+                    && request.resource.data.eventDate == '2026-05-24';
+      allow read: if hasAnyRole(['manager', 'owner', 'admin']);
+      allow update, delete: if false;
     }
     
     // Default deny all other collections
