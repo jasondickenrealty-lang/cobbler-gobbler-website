@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from 'react';
 import Image from 'next/image';
-import { addDoc, collection, getDocs, limit, query, serverTimestamp, where } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { db } from '@/lib/firebase';
@@ -70,39 +70,6 @@ export default function ContestSignupPage() {
       const normalizedEmail = email.trim().toLowerCase();
       const normalizedPhone = normalizePhone(phone);
 
-      const [emailSnapshot, phoneSnapshot] = await Promise.all([
-        getDocs(
-          query(
-            collection(db, 'contestSignups'),
-            where('normalizedEmail', '==', normalizedEmail),
-            limit(10)
-          )
-        ),
-        getDocs(
-          query(
-            collection(db, 'contestSignups'),
-            where('normalizedPhone', '==', normalizedPhone),
-            limit(10)
-          )
-        ),
-      ]);
-
-      const emailExistsForEvent = emailSnapshot.docs.some(
-        (doc) => doc.data()?.eventDate === EVENT_DATE_ISO
-      );
-      if (emailExistsForEvent) {
-        setErrorMessage('This email is already signed up for the May 24 contest.');
-        return;
-      }
-
-      const phoneExistsForEvent = phoneSnapshot.docs.some(
-        (doc) => doc.data()?.eventDate === EVENT_DATE_ISO
-      );
-      if (phoneExistsForEvent) {
-        setErrorMessage('This phone number is already signed up for the May 24 contest.');
-        return;
-      }
-
       await addDoc(collection(db, 'contestSignups'), {
         name: name.trim(),
         phone: phone.trim(),
@@ -112,7 +79,7 @@ export default function ContestSignupPage() {
         ageGroup,
         parentGuardianName: parentGuardianName.trim(),
         legalAccepted,
-        eventName: 'Annual Cobble Eating Contest',
+        eventName: '1st Annual Cobbler Eating Contest',
         eventDate: EVENT_DATE_ISO,
         eventDateLabel: EVENT_DATE_LABEL,
         createdAt: serverTimestamp(),
@@ -160,7 +127,7 @@ export default function ContestSignupPage() {
               </div>
 
               <h1 className="font-serif text-4xl uppercase leading-[0.95] tracking-[0.08em] text-[#fff1cf] sm:text-5xl lg:text-6xl">
-                Cobble
+                1st Annual Cobbler
                 <span className="block rotate-[-1.4deg] text-[#ffbf1f] [text-shadow:0_2px_0_rgba(0,0,0,0.5),0_9px_24px_rgba(0,0,0,0.45)]">Eating Contest</span>
               </h1>
 

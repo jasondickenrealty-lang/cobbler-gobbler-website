@@ -70,7 +70,7 @@ service cloud.firestore {
                     && request.resource.data.ageGroup in ['18+', '16-17']
                     && request.resource.data.parentGuardianName is string
                     && request.resource.data.legalAccepted == true
-                    && request.resource.data.eventName == 'Annual Cobble Eating Contest'
+                    && request.resource.data.eventName == '1st Annual Cobbler Eating Contest'
                     && request.resource.data.eventDate == '2026-05-24';
       allow read: if hasAnyRole(['manager', 'owner', 'admin']);
       allow update, delete: if false;
