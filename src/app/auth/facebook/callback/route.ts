@@ -3,6 +3,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const ALLOWED_ORIGINS = [
   'https://cobblestonecreamery.com',

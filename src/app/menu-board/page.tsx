@@ -5,6 +5,72 @@ import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
 const SLIDE_DURATION_MS = 10000;
+const ADS_DURATION_MS = 8000;
+
+// ── Screen 3: Ads / Photos / Specials ──────────────────────────────────────
+interface AdImage { name: string; url: string; }
+
+function AdsScreen() {
+  const [images, setImages] = useState<AdImage[]>([]);
+  const [current, setCurrent] = useState(0);
+  const [fading, setFading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      try {
+        const res = await fetch('/api/menu-board-ads');
+        const data = await res.json();
+        if (active) { setImages(data.images ?? []); setLoading(false); }
+      } catch { if (active) setLoading(false); }
+    };
+    load();
+    const t = setInterval(load, 60000);
+    return () => { active = false; clearInterval(t); };
+  }, []);
+
+  useEffect(() => {
+    if (images.length < 2) return;
+    const timer = setTimeout(() => {
+      setFading(true);
+      setTimeout(() => { setCurrent(p => (p + 1) % images.length); setFading(false); }, 600);
+    }, ADS_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [current, images.length]);
+
+  return (
+    <>
+      <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#000}`}</style>
+      <div className={styles.adsScreen}>
+        {loading || images.length === 0 ? (
+          <div className={styles.adsPlaceholder}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Cobblestone Creamery" className={styles.adsPlaceholderLogo} />
+            {!loading && <p className={styles.adsPlaceholderText}>No ads uploaded yet</p>}
+          </div>
+        ) : (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              key={images[current]?.url}
+              src={images[current]?.url}
+              alt=""
+              className={`${styles.adsImage} ${fading ? styles.adsImageFading : styles.adsImageVisible}`}
+            />
+            {images.length > 1 && (
+              <div className={styles.adsDots}>
+                {images.map((_, i) => (
+                  <div key={i} className={`${styles.adsDot} ${i === current ? styles.adsDotActive : ''}`} />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
+  );
+}
 
 interface MenuItem {
   id: string;
@@ -118,10 +184,15 @@ function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: 
   );
 }
 
-// Main page
+// Routes between the ads screen (screen=3) and the main menu board
 function MenuBoardInner() {
   const searchParams = useSearchParams();
-  const screen = searchParams.get('screen'); // '1' or '2', null = show all
+  const screen = searchParams.get('screen');
+  if (screen === '3') return <AdsScreen />;
+  return <MenuBoardMain screen={screen} />;
+}
+
+function MenuBoardMain({ screen }: { screen: string | null }) {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
