@@ -20,7 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/ice-cream-evansville-in`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.9,
+      priority: 1.0,
     },
     {
       url: `${baseUrl}/about`,
@@ -65,10 +65,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.2,
     },
     {
-      url: `${baseUrl}/sms-optin`,
+      url: `${baseUrl}/contest-signup`,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.2,
+      changeFrequency: 'monthly',
+      priority: 0.5,
     },
   ];
 }

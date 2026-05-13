@@ -69,6 +69,8 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'IceCreamShop',
   name: 'Cobblestone Creamery',
+  description: 'Locally owned ice cream shop in downtown Evansville, Indiana serving handcrafted ice cream, fresh waffle cones, milkshakes, sundaes, and classic cobblers. Order online for pickup at 900 Main Street.',
+  foundingDate: '2026',
   image: `${SITE_URL}/logo.png`,
   url: SITE_URL,
   telephone: '(812) 205-3322',
@@ -116,8 +118,10 @@ const jsonLd = {
     name: 'Evansville',
     '@id': 'https://www.wikidata.org/wiki/Q79860',
   },
-  servesCuisine: ['Ice Cream', 'Desserts', 'Cobblers', 'Milkshakes'],
+  servesCuisine: ['Ice Cream', 'Desserts', 'Cobblers', 'Milkshakes', 'Waffle Cones', 'Sundaes'],
   priceRange: '$',
+  paymentAccepted: 'Cash, Credit Card',
+  currenciesAccepted: 'USD',
   sameAs: [
     'https://www.facebook.com/profile.php?id=61588303764359',
   ],
@@ -125,7 +129,7 @@ const jsonLd = {
     '@type': 'OrderAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://order.cobblestonecreamery.com/auth',
+      urlTemplate: 'https://order.cobblestonecreamery.com',
       actionPlatform: [
         'http://schema.org/DesktopWebPlatform',
         'http://schema.org/MobileWebPlatform',

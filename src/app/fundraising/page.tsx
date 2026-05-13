@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Fundraising & Donations — Cobblestone Creamery | Evansville, IN',
+  title: 'Fundraising & Donations | Cobblestone Creamery',
   description:
     'Partner with Cobblestone Creamery for your next fundraiser or donation request. We support schools, churches, nonprofits, and community organizations in Evansville, Indiana.',
   alternates: {
@@ -16,6 +16,13 @@ export const metadata: Metadata = {
       'Support your cause with Cobblestone Creamery. We offer fundraising nights, donation requests, and community partnerships in Evansville, Indiana.',
     url: 'https://cobblestonecreamery.com/fundraising',
     images: [{ url: '/assets/fundraising-flyer.png', alt: 'Cobblestone Creamery fundraising flyer for Evansville Indiana organizations' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Fundraising & Donations | Cobblestone Creamery',
+    description:
+      'Partner with Cobblestone Creamery for your next fundraiser or donation request. We support schools, churches, nonprofits, and community organizations in Evansville, Indiana.',
+    images: ['/assets/fundraising-flyer.png'],
   },
 };
 

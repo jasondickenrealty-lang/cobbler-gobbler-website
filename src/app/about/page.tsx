@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ORDER_ONLINE_URL } from '@/lib/links';
 
 export const metadata: Metadata = {
-  title: 'Our Story — Neighborhood Ice Cream Shop in Evansville, IN',
+  title: 'Our Story | Cobblestone Creamery Evansville, IN',
   description:
     'Learn the story behind Cobblestone Creamery — a neighborhood ice cream shop in downtown Evansville, Indiana serving handcrafted desserts, milkshakes, and fresh waffle cones since 2026.',
   alternates: {
@@ -17,6 +17,13 @@ export const metadata: Metadata = {
       'A community-focused ice cream shop in downtown Evansville, Indiana. Founded in 2026 by two friends who love handcrafted desserts and community.',
     url: 'https://cobblestonecreamery.com/about',
     images: [{ url: '/logo.png', alt: 'Cobblestone Creamery neighborhood ice cream shop in Evansville Indiana' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Our Story | Cobblestone Creamery — Evansville, IN',
+    description:
+      'Learn the story behind Cobblestone Creamery — a neighborhood ice cream shop in downtown Evansville, Indiana serving handcrafted desserts, milkshakes, and fresh waffle cones since 2026.',
+    images: ['/logo.png'],
   },
 };
 

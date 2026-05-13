@@ -51,9 +51,9 @@ const faqJsonLd = {
 };
 
 const quickHits = [
-  { label: 'Fresh Daily', value: 'Waffle Cones' },
-  { label: 'Downtown Pickup', value: 'Fast Ordering' },
-  { label: 'Family Favorite', value: 'Kids Scoop Offers' },
+  { label: 'Fresh At Cobblestone', value: 'Waffle Cones' },
+  { label: 'Cobblestone Pickup', value: 'Fast Ordering' },
+  { label: 'Cobblestone Family Favorite', value: 'Kids Scoop Offers' },
 ];
 
 const experienceCards = [
@@ -115,9 +115,9 @@ const fanFavorites = [
 ];
 
 const clubhouseNotes = [
-  'Built in downtown Evansville for families, date nights, and after-dinner dessert runs.',
-  'Easy online ordering for pickup when you want the line skipped and the treats ready.',
-  'Fundraisers, giveaways, and rotating menu moments that keep the shop feeling active.',
+  'Built in downtown Evansville for Cobblestone guests who want a shop with personality.',
+  'Easy Cobblestone online ordering for pickup when you want the line skipped and the treats ready.',
+  'Fundraisers, giveaways, and Cobblestone menu moments that keep the shop feeling active.',
 ];
 
 const visitStats = [
@@ -181,9 +181,10 @@ export default function HomePage() {
                 </h1>
 
                 <p className="mt-6 max-w-2xl text-lg leading-8 text-white/[0.78] md:text-xl">
-                  Where downtown Evansville comes for fresh waffle cones, stacked
-                  milkshakes, loaded sundaes, and dessert-shop energy that feels a
-                  little more like game night than a quiet line at the freezer case.
+                  Cobblestone Creamery is where downtown Evansville comes for fresh
+                  waffle cones, stacked milkshakes, loaded sundaes, and dessert-shop
+                  energy that feels a little more like Cobblestone and a little less
+                  like a quiet line at the freezer case.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -217,42 +218,42 @@ export default function HomePage() {
               </div>
 
               <div className="rounded-[2rem] border border-white/[0.12] bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))] p-6 shadow-[0_18px_48px_rgba(0,0,0,0.26)] backdrop-blur-sm">
-                <p className="text-sm uppercase tracking-[0.34em] text-gold">Tonight&apos;s Lineup</p>
+                <p className="text-sm uppercase tracking-[0.34em] text-gold">Tonight&apos;s Cobblestone Lineup</p>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
-                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Best For</p>
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Best For Cobblestone</p>
                     <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
                       Fresh Scoops
                     </p>
                     <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      House-made waffle cones, rotating flavors, and quick pickup ordering.
+                      House-made waffle cones, Cobblestone flavors, and quick pickup ordering.
                     </p>
                   </div>
                   <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
-                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Fan Club</p>
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Cobblestone Fan Club</p>
                     <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
                       Kids Scoop
                     </p>
                     <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      Keep the family rotation moving with specials built for younger guests.
+                      Keep the Cobblestone family tradition moving with specials built for younger guests.
                     </p>
                   </div>
                   <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
-                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Community</p>
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Cobblestone Community</p>
                     <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
                       Fundraisers
                     </p>
                     <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      Sports teams, schools, and local groups can team up with us for events.
+                      Sports teams, schools, and local groups can team up with Cobblestone for events.
                     </p>
                   </div>
                   <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
-                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Bonus Play</p>
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Cobblestone Bonus Play</p>
                     <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
                       Monthly Game
                     </p>
                     <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      Orders can unlock game play, surprise wins, and reasons to come back again.
+                      Orders can unlock Cobblestone game play, surprise wins, and reasons to come back again.
                     </p>
                   </div>
                 </div>
@@ -264,15 +265,16 @@ export default function HomePage() {
         <section className="border-b border-dark/10 bg-cream">
           <div className="mx-auto grid max-w-7xl gap-6 px-6 py-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
             <div>
-              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">From The Counter</p>
+              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">From The Cobblestone Counter</p>
               <h2 className="mt-2 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
-                Bigger Flavor.
-                <span className="block text-dugout-red">Stronger Personality.</span>
+                Bigger Cobblestone Flavor.
+                <span className="block text-dugout-red">Stronger Cobblestone Personality.</span>
               </h2>
               <p className="mt-4 max-w-2xl text-lg leading-8 text-dark/[0.72]">
-                The Casey&apos;s reference works because every section feels intentional and
-                alive. This redesign follows that same idea for Cobblestone: bold hero,
-                stronger sections, easier calls to action, and a more memorable visual rhythm.
+                Handcrafted at Cobblestone in downtown Evansville — every scoop, shake,
+                and sundae made fresh daily. Bold flavors, easy online pickup, and a
+                dessert shop experience that feels like a Cobblestone neighborhood hangout,
+                not a chain.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -285,7 +287,7 @@ export default function HomePage() {
                   Free Kids Scoop
                 </p>
                 <p className="mt-3 text-sm leading-6 text-dark/70">
-                  Make the family offer easy to spot right from the homepage.
+                  Color a page at home and bring it in — your kid gets a free scoop of ice cream on us.
                 </p>
               </Link>
               <a
@@ -297,7 +299,7 @@ export default function HomePage() {
                   Game Play
                 </p>
                 <p className="mt-3 text-sm leading-6 text-white/[0.72]">
-                  Push traffic into the monthly game without burying it in the nav.
+                  Every order can unlock a chance to play and win. Check back each month for a new game.
                 </p>
               </a>
             </div>
@@ -307,14 +309,15 @@ export default function HomePage() {
         <section className="bg-light-cream">
           <div className="mx-auto max-w-7xl px-6 py-20 md:py-24">
             <div className="max-w-2xl">
-              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">What To Order</p>
+                <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">What To Order At Cobblestone</p>
               <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
-                The Dessert Counter
+                The Cobblestone Dessert Counter
                 <span className="block text-ballpark-blue">Feels Like The Main Event</span>
               </h2>
               <p className="mt-4 text-lg leading-8 text-dark/[0.72]">
-                The reference site leans on appetite and atmosphere. This section does the
-                same for Cobblestone by putting your signature categories right up front.
+                From waffle cones fresh off the iron to signature Cobblestone milkshakes
+                loaded with toppings — every item on the menu is handcrafted and built to
+                be the best part of your day in downtown Evansville.
               </p>
             </div>
 
@@ -390,16 +393,16 @@ export default function HomePage() {
             </div>
 
             <div>
-              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">Why It Works</p>
+              <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">Why Guests Choose Cobblestone</p>
               <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
-                Built For The
-                <span className="block text-ballpark-blue">Regular Rotation</span>
+                Built For Every
+                <span className="block text-ballpark-blue">Cobblestone Visit</span>
               </h2>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-dark/[0.72]">
-                The Casey&apos;s site leans into identity. For Cobblestone, that identity is
-                simple: a downtown dessert shop with personality, easy ordering, and enough
-                motion in the layout that the homepage feels active before anybody even taps
-                the menu.
+                Cobblestone Creamery is a downtown Evansville ice cream shop with real
+                personality — handcrafted scoops, easy online ordering for pickup, and a
+                Cobblestone-first vibe that keeps families, date nights, and regulars coming
+                back all season long.
               </p>
               <div className="mt-8 grid gap-4">
                 {clubhouseNotes.map((note) => (
@@ -435,38 +438,38 @@ export default function HomePage() {
           <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-24">
             <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
-                <p className="text-sm uppercase tracking-[0.32em] text-gold">Promos + Community</p>
+                <p className="text-sm uppercase tracking-[0.32em] text-gold">Cobblestone Promos + Community</p>
                 <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-chalk md:text-5xl">
-                  Keep The Homepage
-                  <span className="block text-gold">Working Harder</span>
+                  Cobblestone Family Deals &amp;
+                  <span className="block text-gold">Cobblestone Community Nights</span>
                 </h2>
                 <p className="mt-5 max-w-2xl text-lg leading-8 text-white/[0.76]">
-                  The reference site uses bold promotional moments to break up the page.
-                  For Cobblestone, the strongest versions of that are the free kids scoop,
-                  online ordering, and fundraising callouts.
+                  From the free kids scoop program to community fundraising events —
+                  there is always something happening at Cobblestone Creamery in
+                  downtown Evansville, Indiana.
                 </p>
               </div>
 
               <div className="grid gap-4">
                 <div className="rounded-[1.8rem] border border-white/[0.14] bg-white/10 p-6 backdrop-blur-sm">
-                  <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Feature One</p>
+                    <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Cobblestone Family Promo</p>
                   <h3 className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
                     Free Kids Scoop
                   </h3>
                   <p className="mt-3 text-base leading-7 text-white/[0.72]">
-                    A clear family-focused promotion that deserves bigger placement.
+                    Download a coloring page, color it at home, and bring it in. Your kid gets a free scoop of ice cream.
                   </p>
                   <Link
                     href="/free-kids-scoop"
                     className="mt-5 inline-flex text-sm font-semibold uppercase tracking-[0.2em] text-gold"
                   >
-                    View Promotion
+                    View Cobblestone Promo
                   </Link>
                 </div>
                 <div className="rounded-[1.8rem] border border-white/[0.14] bg-dark/[0.28] p-6 backdrop-blur-sm">
-                  <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Feature Two</p>
+                  <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Cobblestone Community</p>
                   <h3 className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
-                    Community Nights
+                    Cobblestone Community Nights
                   </h3>
                   <p className="mt-3 text-base leading-7 text-white/[0.72]">
                     Schools, sports teams, and local organizations can use the shop as a fundraiser driver.
@@ -487,10 +490,10 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-6 py-20 md:py-24">
             <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">Fan Favorites</p>
+                <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">Cobblestone Fan Favorites</p>
                 <h2 className="mt-3 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
-                  Flavor Cards
-                  <span className="block text-ballpark-blue">That Sell The Shop</span>
+                  Cobblestone Flavor Cards
+                  <span className="block text-ballpark-blue">Worth Coming Back For</span>
                 </h2>
               </div>
               <Link
@@ -631,8 +634,9 @@ export default function HomePage() {
               <span className="block text-gold">Keep The Dessert.</span>
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/[0.72]">
-              Order ahead for pickup from Cobblestone Creamery and let the homepage do what
-              it should do: create appetite, explain the vibe, and move people toward checkout.
+              Skip the wait and order ahead for pickup at Cobblestone Creamery. Your
+              favorite scoops, shakes, and sundaes ready when you walk through the door
+              at 900 Main Street in downtown Evansville, Indiana.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
               <a

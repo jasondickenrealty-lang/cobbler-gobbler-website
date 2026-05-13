@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Visit Us in Downtown Evansville, IN',
+  title: 'Visit Us | Cobblestone Creamery Downtown Evansville, IN',
   description:
     'Find Cobblestone Creamery at 900 Main Street in downtown Evansville, IN. Open 7 days a week. View our hours, directions, and contact info.',
   alternates: {
@@ -13,6 +13,13 @@ export const metadata: Metadata = {
       'Visit our ice cream shop at 900 Main Street in downtown Evansville, Indiana. Open 7 days a week.',
     url: 'https://cobblestonecreamery.com/location',
     images: [{ url: '/logo.png', alt: 'Cobblestone Creamery location in Evansville' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Visit Us in Downtown Evansville, IN | Cobblestone Creamery',
+    description:
+      'Find Cobblestone Creamery at 900 Main Street in downtown Evansville, IN. Open 7 days a week. View our hours, directions, and contact info.',
+    images: ['/logo.png'],
   },
 };
 

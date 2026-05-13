@@ -5,18 +5,18 @@ import Link from 'next/link';
 import { ORDER_ONLINE_URL } from '@/lib/links';
 
 export const metadata: Metadata = {
-  title: 'Ice Cream in Evansville, IN',
+  title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery',
   description:
-    'Looking for the best ice cream in Evansville, IN? Cobblestone Creamery serves handcrafted ice cream, cobblers, milkshakes, and desserts at 900 Main Street in downtown Evansville.',
+    'Looking for the best ice cream in Evansville, IN? Cobblestone Creamery serves handcrafted ice cream, fresh waffle cones, cobblers, milkshakes, and sundaes at 900 Main Street in downtown Evansville. Order online for pickup!',
   alternates: {
     canonical: 'https://cobblestonecreamery.com/ice-cream-evansville-in',
   },
   openGraph: {
-    title: 'Ice Cream in Evansville, IN | Cobblestone Creamery',
+    title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery',
     description:
-      'Handcrafted ice cream, cobblers, and milkshakes in downtown Evansville, Indiana. Visit Cobblestone Creamery at 900 Main Street.',
+      'Handcrafted ice cream, fresh waffle cones, cobblers, and milkshakes in downtown Evansville, Indiana. Visit Cobblestone Creamery at 900 Main Street or order online for pickup.',
     url: 'https://cobblestonecreamery.com/ice-cream-evansville-in',
-    images: [{ url: '/logo.png', alt: 'Cobblestone Creamery - Ice cream in Evansville IN' }],
+    images: [{ url: '/logo.png', alt: 'Best ice cream in Evansville IN - Cobblestone Creamery' }],
   },
 };
 
