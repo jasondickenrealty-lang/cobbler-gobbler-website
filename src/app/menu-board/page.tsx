@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, Suspense } from 'react';
+import { useEffect, useMemo, useRef, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
@@ -239,17 +239,22 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
     return () => { active = false; clearInterval(t); };
   }, []);
 
+  const visibleSlides = useMemo(
+    () => screen === '1' ? slides.slice(0, 4) : screen === '2' ? slides.slice(4) : slides,
+    [screen, slides]
+  );
+
   useEffect(() => {
-    if (!slides.length) return;
+    if (!visibleSlides.length) return;
     setProgress(0);
     const start = Date.now();
     const tick = setInterval(() => setProgress(Math.min(((Date.now() - start) / SLIDE_DURATION_MS) * 100, 100)), 50);
     const timer = setTimeout(() => {
       setIsTransitioning(true);
-      setTimeout(() => { setCurrentSlide(p => (p + 1) % slides.length); setIsTransitioning(false); }, 400);
+      setTimeout(() => { setCurrentSlide(p => (p + 1) % visibleSlides.length); setIsTransitioning(false); }, 400);
     }, SLIDE_DURATION_MS);
     return () => { clearInterval(tick); clearTimeout(timer); };
-  }, [currentSlide, slides.length]);
+  }, [currentSlide, visibleSlides.length]);
 
   if (loading || !slides.length) {
     return (
@@ -272,8 +277,6 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
 
   const COW_PATTERN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Crect width='320' height='320' fill='%23f5f2ee'/%3E%3Cellipse cx='55' cy='45' rx='42' ry='30' fill='%231a1a1a' transform='rotate(-18 55 45)' opacity='.82'/%3E%3Cellipse cx='185' cy='22' rx='30' ry='44' fill='%231a1a1a' transform='rotate(22 185 22)' opacity='.82'/%3E%3Cellipse cx='275' cy='110' rx='44' ry='26' fill='%231a1a1a' transform='rotate(-28 275 110)' opacity='.82'/%3E%3Cellipse cx='95' cy='175' rx='26' ry='42' fill='%231a1a1a' transform='rotate(12 95 175)' opacity='.82'/%3E%3Cellipse cx='220' cy='230' rx='50' ry='30' fill='%231a1a1a' transform='rotate(28 220 230)' opacity='.82'/%3E%3Cellipse cx='22' cy='280' rx='28' ry='22' fill='%231a1a1a' transform='rotate(-22 22 280)' opacity='.82'/%3E%3Cellipse cx='295' cy='290' rx='34' ry='25' fill='%231a1a1a' transform='rotate(18 295 290)' opacity='.82'/%3E%3Cellipse cx='150' cy='100' rx='22' ry='34' fill='%231a1a1a' transform='rotate(38 150 100)' opacity='.82'/%3E%3Cellipse cx='310' cy='185' rx='20' ry='28' fill='%231a1a1a' transform='rotate(-12 310 185)' opacity='.7'/%3E%3Cellipse cx='45' cy='130' rx='18' ry='26' fill='%231a1a1a' transform='rotate(30 45 130)' opacity='.7'/%3E%3C%2Fsvg%3E")`;
 
-  // Split slides by screen param: screen=1 → first 4, screen=2 → remaining
-  const visibleSlides = screen === '1' ? slides.slice(0, 4) : screen === '2' ? slides.slice(4) : slides;
   const safeSlide = Math.min(currentSlide, Math.max(visibleSlides.length - 1, 0));
   const slide = visibleSlides[safeSlide] ?? visibleSlides[0];
   return (
