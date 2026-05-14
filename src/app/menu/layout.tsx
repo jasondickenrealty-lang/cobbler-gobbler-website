@@ -1,24 +1,24 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Monthly Flavors & Menu | Cobblestone Creamery',
+  title: 'Ice Cream Menu | Cobblestone Creamery — Evansville, IN',
   description:
-    'Explore this month\'s handcrafted ice cream flavors, classic cobblers, milkshakes, and desserts at Cobblestone Creamery in Evansville, IN. Made fresh daily.',
+    'View the full ice cream menu at Cobblestone Creamery in downtown Evansville, Indiana. Handcrafted scoops, waffle cones, milkshakes, sundaes, and classic cobblers made fresh daily. Order online for pickup!',
   alternates: {
     canonical: 'https://cobblestonecreamery.com/menu',
   },
   openGraph: {
-    title: 'Monthly Flavors & Menu | Cobblestone Creamery',
+    title: 'Ice Cream Menu | Cobblestone Creamery Evansville, IN',
     description:
-      'Explore this month\'s handcrafted ice cream flavors, cobblers, and milkshakes at Cobblestone Creamery in downtown Evansville, IN.',
+      'Handcrafted ice cream, waffle cones, milkshakes, sundaes & classic cobblers at Cobblestone Creamery — 900 Main Street, downtown Evansville, IN. Order online for pickup!',
     url: 'https://cobblestonecreamery.com/menu',
-    images: [{ url: '/logo.png', alt: 'Cobblestone Creamery menu' }],
+    images: [{ url: '/logo.png', width: 800, height: 800, alt: 'Cobblestone Creamery ice cream menu — Evansville, IN' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Monthly Flavors & Menu | Cobblestone Creamery',
+    title: 'Ice Cream Menu | Cobblestone Creamery Evansville, IN',
     description:
-      'Explore this month\'s handcrafted ice cream flavors, cobblers, and milkshakes at Cobblestone Creamery in downtown Evansville, IN.',
+      'Handcrafted ice cream, waffle cones, milkshakes & cobblers at Cobblestone Creamery in downtown Evansville, IN. Fresh daily — order online for pickup!',
     images: ['/logo.png'],
   },
 };

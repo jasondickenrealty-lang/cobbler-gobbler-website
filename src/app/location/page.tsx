@@ -19,7 +19,7 @@ interface BusinessInfo {
   };
 }
 
-const VISIT_US_EMAIL = 'hello@cobblestonecreamery.com';
+const VISIT_US_EMAIL = 'info@cobblestonecreamery.com';
 
 const FALLBACK: BusinessInfo = {
   name: 'Cobblestone Creamery',
@@ -30,9 +30,9 @@ const FALLBACK: BusinessInfo = {
   phone: '(812) 205-3322',
   email: VISIT_US_EMAIL,
   hours: {
-    'Monday - Thursday': '11am - 9pm',
-    'Friday - Saturday': '11am - 10pm',
-    'Sunday': '12pm - 8pm',
+    'Monday - Thursday': '11:00 AM – 9:00 PM',
+    'Friday - Saturday': '11:00 AM – 10:00 PM',
+    'Sunday': '12:00 PM – 8:00 PM',
   },
 };
 

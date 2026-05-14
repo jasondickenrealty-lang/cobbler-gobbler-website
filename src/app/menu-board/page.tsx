@@ -244,16 +244,33 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
     [screen, slides]
   );
 
+  // Ref so the interval callback always reads the latest count without stale closures
+  const slideCountRef = useRef(visibleSlides.length);
+  slideCountRef.current = visibleSlides.length;
+
+  // Cycling: setInterval fires independently of React state — no timeout chain to break
   useEffect(() => {
-    if (!visibleSlides.length) return;
+    if (visibleSlides.length === 0) return;
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentSlide(p => (p + 1) % slideCountRef.current);
+        setIsTransitioning(false);
+      }, 400);
+    }, SLIDE_DURATION_MS);
+    return () => clearInterval(interval);
+  }, [visibleSlides.length]);
+
+  // Progress bar resets whenever the visible slide changes or slides first load
+  useEffect(() => {
+    if (visibleSlides.length === 0) return;
     setProgress(0);
     const start = Date.now();
-    const tick = setInterval(() => setProgress(Math.min(((Date.now() - start) / SLIDE_DURATION_MS) * 100, 100)), 50);
-    const timer = setTimeout(() => {
-      setIsTransitioning(true);
-      setTimeout(() => { setCurrentSlide(p => (p + 1) % visibleSlides.length); setIsTransitioning(false); }, 400);
-    }, SLIDE_DURATION_MS);
-    return () => { clearInterval(tick); clearTimeout(timer); };
+    const tick = setInterval(
+      () => setProgress(Math.min(((Date.now() - start) / SLIDE_DURATION_MS) * 100, 100)),
+      50
+    );
+    return () => clearInterval(tick);
   }, [currentSlide, visibleSlides.length]);
 
   if (loading || !slides.length) {

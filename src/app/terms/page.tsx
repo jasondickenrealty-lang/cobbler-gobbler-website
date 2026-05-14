@@ -1,5 +1,29 @@
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+
+export const metadata: Metadata = {
+  title: 'Terms & Conditions | Cobblestone Creamery',
+  description:
+    'Review Cobblestone Creamery\'s terms and conditions for website use, online ordering, loyalty, and SMS messaging in Evansville, Indiana.',
+  alternates: {
+    canonical: 'https://cobblestonecreamery.com/terms',
+  },
+  openGraph: {
+    title: 'Terms & Conditions | Cobblestone Creamery',
+    description:
+      'Review Cobblestone Creamery\'s terms and conditions for website use, online ordering, loyalty, and SMS messaging in Evansville, Indiana.',
+    url: 'https://cobblestonecreamery.com/terms',
+    images: [{ url: '/logo.png', alt: 'Cobblestone Creamery terms and conditions' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms & Conditions | Cobblestone Creamery',
+    description:
+      'Review Cobblestone Creamery\'s terms and conditions for website use, online ordering, loyalty, and SMS messaging in Evansville, Indiana.',
+    images: ['/logo.png'],
+  },
+};
 
 export default function TermsPage() {
   return (

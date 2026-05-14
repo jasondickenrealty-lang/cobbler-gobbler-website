@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Bebas_Neue, Source_Sans_3 } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
-import ChatWidget from '@/components/ChatWidget';
+import ChatWidgetGate from '@/components/ChatWidgetGate';
 import './globals.css';
 
 const bodyFont = Source_Sans_3({
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: '%s | Cobblestone Creamery',
   },
   description:
-    'Cobblestone Creamery is the best ice cream shop in Evansville, Indiana. Fresh waffle cones, signature milkshakes, sundaes, and classic cobblers made daily. Visit us at 900 Main Street in downtown Evansville, IN. Order online for pickup!',
+    'Cobblestone Creamery — Evansville\'s locally owned ice cream shop at 900 Main Street. Fresh waffle cones made daily, signature milkshakes, sundaes, and classic cobblers. Open 7 days a week in downtown Evansville, IN. Order online for pickup!',
   icons: {
     icon: '/favicon.ico',
   },
@@ -69,11 +69,13 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'IceCreamShop',
   name: 'Cobblestone Creamery',
+  alternateName: 'Cobblestone Creamery Evansville',
   description: 'Locally owned ice cream shop in downtown Evansville, Indiana serving handcrafted ice cream, fresh waffle cones, milkshakes, sundaes, and classic cobblers. Order online for pickup at 900 Main Street.',
   foundingDate: '2026',
   image: `${SITE_URL}/logo.png`,
+  logo: `${SITE_URL}/logo.png`,
   url: SITE_URL,
-  telephone: '(812) 205-3322',
+  telephone: '+18122053322',
   email: 'info@cobblestonecreamery.com',
   address: {
     '@type': 'PostalAddress',
@@ -88,6 +90,12 @@ const jsonLd = {
     latitude: 37.9716,
     longitude: -87.5711,
   },
+  hasMap: 'https://www.google.com/maps/search/?api=1&query=900+Main+Street+Evansville+Indiana+47708',
+  openingHours: [
+    'Mo-Th 11:00-21:00',
+    'Fr-Sa 11:00-22:00',
+    'Su 12:00-20:00',
+  ],
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -113,30 +121,42 @@ const jsonLd = {
     '@type': 'Menu',
     url: `${SITE_URL}/menu`,
   },
-  areaServed: {
-    '@type': 'City',
-    name: 'Evansville',
-    '@id': 'https://www.wikidata.org/wiki/Q79860',
-  },
+  areaServed: [
+    { '@type': 'City', name: 'Evansville', '@id': 'https://www.wikidata.org/wiki/Q79860' },
+    { '@type': 'City', name: 'Newburgh' },
+    { '@type': 'City', name: 'Boonville' },
+    { '@type': 'City', name: 'Henderson' },
+    { '@type': 'City', name: 'Owensboro' },
+  ],
   servesCuisine: ['Ice Cream', 'Desserts', 'Cobblers', 'Milkshakes', 'Waffle Cones', 'Sundaes'],
   priceRange: '$',
-  paymentAccepted: 'Cash, Credit Card',
+  paymentAccepted: 'Cash, Credit Card, Debit Card',
   currenciesAccepted: 'USD',
   sameAs: [
     'https://www.facebook.com/profile.php?id=61588303764359',
   ],
-  potentialAction: {
-    '@type': 'OrderAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: 'https://order.cobblestonecreamery.com',
-      actionPlatform: [
-        'http://schema.org/DesktopWebPlatform',
-        'http://schema.org/MobileWebPlatform',
-      ],
+  potentialAction: [
+    {
+      '@type': 'OrderAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://order.cobblestonecreamery.com',
+        actionPlatform: [
+          'http://schema.org/DesktopWebPlatform',
+          'http://schema.org/MobileWebPlatform',
+        ],
+      },
+      deliveryMethod: ['http://purl.org/goodrelations/v1#DeliveryModePickUp'],
     },
-    deliveryMethod: ['http://purl.org/goodrelations/v1#DeliveryModePickUp'],
-  },
+    {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${SITE_URL}/menu?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -147,6 +167,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         <script
@@ -157,7 +179,7 @@ export default function RootLayout({
       <body className="font-sans text-dark">
         <AuthProvider>
           {children}
-          <ChatWidget />
+          <ChatWidgetGate />
         </AuthProvider>
       </body>
     </html>

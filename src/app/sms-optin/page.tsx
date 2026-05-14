@@ -1,6 +1,30 @@
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ORDER_ONLINE_URL } from '@/lib/links';
+
+export const metadata: Metadata = {
+  title: 'SMS Opt-In Consent | Cobblestone Creamery',
+  description:
+    'Review Cobblestone Creamery\'s SMS opt-in consent details for order updates, promotions, and store announcements in Evansville, Indiana.',
+  alternates: {
+    canonical: 'https://cobblestonecreamery.com/sms-optin',
+  },
+  openGraph: {
+    title: 'SMS Opt-In Consent | Cobblestone Creamery',
+    description:
+      'Review Cobblestone Creamery\'s SMS opt-in consent details for order updates, promotions, and store announcements in Evansville, Indiana.',
+    url: 'https://cobblestonecreamery.com/sms-optin',
+    images: [{ url: '/logo.png', alt: 'Cobblestone Creamery SMS opt-in consent' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SMS Opt-In Consent | Cobblestone Creamery',
+    description:
+      'Review Cobblestone Creamery\'s SMS opt-in consent details for order updates, promotions, and store announcements in Evansville, Indiana.',
+    images: ['/logo.png'],
+  },
+};
 
 export default function SmsOptInPage() {
   return (

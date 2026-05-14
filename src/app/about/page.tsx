@@ -4,41 +4,56 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ORDER_ONLINE_URL } from '@/lib/links';
 
+const SITE_URL = 'https://cobblestonecreamery.com';
+
 export const metadata: Metadata = {
-  title: 'Our Story | Cobblestone Creamery Evansville, IN',
+  title: 'About Cobblestone Creamery | Ice Cream Shop in Evansville, IN',
   description:
-    'Learn the story behind Cobblestone Creamery — a neighborhood ice cream shop in downtown Evansville, Indiana serving handcrafted desserts, milkshakes, and fresh waffle cones since 2026.',
+    'Learn the story behind Cobblestone Creamery — a locally owned ice cream shop at 900 Main Street in downtown Evansville, Indiana. Handcrafted desserts, fresh waffle cones, milkshakes, and cobblers made daily since 2026.',
   alternates: {
-    canonical: 'https://cobblestonecreamery.com/about',
+    canonical: `${SITE_URL}/about`,
   },
   openGraph: {
-    title: 'Our Story | Cobblestone Creamery — Evansville, IN',
+    title: 'About Cobblestone Creamery | Locally Owned Ice Cream Shop in Evansville, IN',
     description:
-      'A community-focused ice cream shop in downtown Evansville, Indiana. Founded in 2026 by two friends who love handcrafted desserts and community.',
-    url: 'https://cobblestonecreamery.com/about',
-    images: [{ url: '/logo.png', alt: 'Cobblestone Creamery neighborhood ice cream shop in Evansville Indiana' }],
+      'Cobblestone Creamery is a community-focused ice cream shop in downtown Evansville, Indiana. Founded in 2026. Fresh waffle cones, handcrafted scoops, milkshakes, and classic cobblers.',
+    url: `${SITE_URL}/about`,
+    images: [{ url: '/logo.png', width: 800, height: 800, alt: 'Cobblestone Creamery neighborhood ice cream shop in Evansville, Indiana' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Our Story | Cobblestone Creamery — Evansville, IN',
+    title: 'About Cobblestone Creamery | Ice Cream Shop in Evansville, IN',
     description:
-      'Learn the story behind Cobblestone Creamery — a neighborhood ice cream shop in downtown Evansville, Indiana serving handcrafted desserts, milkshakes, and fresh waffle cones since 2026.',
+      'Locally owned ice cream shop in downtown Evansville, Indiana — handcrafted desserts, fresh waffle cones, milkshakes, and classic cobblers since 2026.',
     images: ['/logo.png'],
   },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'About', item: `${SITE_URL}/about` },
+  ],
 };
 
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Navbar />
       <main className="flex-1">
         {/* Header */}
         <section className="bg-cream">
           <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
-            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Our Story</h1>
+            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">About Cobblestone Creamery</h1>
             <p className="text-dark/60 text-lg">
-              A neighborhood ice cream shop in downtown Evansville, Indiana — established in
-              2026 by two friends with a love of handcrafted desserts, cows, and community.
+              A locally owned ice cream shop at 900 Main Street in downtown Evansville, Indiana — established in
+              2026 by two friends with a love of handcrafted desserts, fresh waffle cones, and community.
             </p>
           </div>
         </section>

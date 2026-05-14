@@ -129,9 +129,9 @@ export default function MenuPage() {
         {/* Header */}
         <section className="bg-cream">
           <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
-            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Flavors of the Moo-nth</h1>
+            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Ice Cream Menu — Cobblestone Creamery</h1>
             <p className="text-dark/60 text-lg mb-8">
-              Everything is made fresh daily with premium ingredients.
+              Handcrafted ice cream, fresh waffle cones, milkshakes, sundaes, and classic cobblers — made fresh daily in downtown Evansville, Indiana.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a

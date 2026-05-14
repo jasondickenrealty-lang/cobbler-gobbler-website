@@ -1,5 +1,29 @@
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Cobblestone Creamery',
+  description:
+    'Read Cobblestone Creamery\'s privacy policy for website use, online ordering, loyalty, and SMS messaging in Evansville, Indiana.',
+  alternates: {
+    canonical: 'https://cobblestonecreamery.com/privacy',
+  },
+  openGraph: {
+    title: 'Privacy Policy | Cobblestone Creamery',
+    description:
+      'Read Cobblestone Creamery\'s privacy policy for website use, online ordering, loyalty, and SMS messaging in Evansville, Indiana.',
+    url: 'https://cobblestonecreamery.com/privacy',
+    images: [{ url: '/logo.png', alt: 'Cobblestone Creamery privacy policy' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy | Cobblestone Creamery',
+    description:
+      'Read Cobblestone Creamery\'s privacy policy for website use, online ordering, loyalty, and SMS messaging in Evansville, Indiana.',
+    images: ['/logo.png'],
+  },
+};
 
 export default function PrivacyPage() {
   return (
