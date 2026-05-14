@@ -6,9 +6,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/employee/', '/api/'],
+        disallow: ['/employee/', '/api/', '/menu-board/', '/marketing-display/'],
       },
     ],
     sitemap: 'https://cobblestonecreamery.com/sitemap.xml',
+    host: 'https://cobblestonecreamery.com',
   };
 }

@@ -98,10 +98,10 @@ export default function FreeKidsScoopPage() {
       <main className="flex-1">
         <section className="bg-cream">
           <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
-            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">FREE KIDS SCOOP</h1>
+            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Free Kids Ice Cream Scoop</h1>
             <p className="text-dark/70 text-lg leading-relaxed">
-              Download a coloring page, color it at home, and bring it in to Cobblestone Creamery
-              for a free kids scoop.
+              Download a coloring page, color it at home, and bring it into Cobblestone Creamery
+              at 900 Main Street in downtown Evansville, Indiana for a free kids scoop of ice cream.
             </p>
           </div>
         </section>

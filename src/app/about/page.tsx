@@ -66,15 +66,27 @@ export default function AboutPage() {
               Cobblestone Creamery started in 2026 when two longtime friends decided to turn
               their shared dream into something real: a neighborhood ice cream shop in Evansville
               built on joy, quality, and a little small-town charm. Located at 900 Main Street in
-              the heart of downtown Evansville, we set out to create a community gathering spot
-              where every visit feels like coming home.
+              the heart of downtown Evansville, Indiana, we set out to create a community gathering
+              spot where every visit feels like coming home.
             </p>
-            <p className="text-dark/70 leading-relaxed">
+            <p className="text-dark/70 leading-relaxed mb-6">
               Inspired by weekend farm drives, old-fashioned scoop shops, and a serious obsession
               with creamy flavors, they created a place where everyone feels welcome. From handcrafted
-              ice cream and fresh waffle cones to thick milkshakes and classic cobblers, every item on
-              our menu is made with care using premium ingredients. Around here,
-              we don&apos;t rush good ice cream: we like to moo-ve at the pace of great flavor.
+              ice cream and fresh waffle cones pressed hot off the iron to thick milkshakes and classic
+              cobblers baked fresh, every item on our menu is made with care using premium ingredients.
+              Around here, we don&apos;t rush good ice cream: we like to moo-ve at the pace of great flavor.
+            </p>
+            <p className="text-dark/70 leading-relaxed">
+              Downtown Evansville deserves a dessert shop with real personality, and that is exactly
+              what Cobblestone Creamery was built to be. We are open seven days a week at{' '}
+              <Link href="/location" className="text-primary hover:text-gold underline transition-colors">
+                900 Main Street
+              </Link>
+              , and you can always{' '}
+              <a href="https://order.cobblestonecreamery.com" className="text-primary hover:text-gold underline transition-colors">
+                order online for pickup
+              </a>
+              {' '}so your favorite scoops are ready when you walk in.
             </p>
           </div>
         </section>

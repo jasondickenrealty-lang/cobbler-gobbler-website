@@ -4,24 +4,24 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Fundraising & Donations | Cobblestone Creamery',
+  title: 'Fundraising Nights & Donations | Cobblestone Creamery Evansville, IN',
   description:
-    'Partner with Cobblestone Creamery for your next fundraiser or donation request. We support schools, churches, nonprofits, and community organizations in Evansville, Indiana.',
+    'Host a fundraising night at Cobblestone Creamery in Evansville, Indiana! We support schools, churches, youth sports teams, nonprofits, and local organizations. We donate a percentage of sales back to your cause. Call (812) 205-3322.',
   alternates: {
     canonical: 'https://cobblestonecreamery.com/fundraising',
   },
   openGraph: {
-    title: 'Fundraising & Donations | Cobblestone Creamery',
+    title: 'Fundraising Nights & Donations | Cobblestone Creamery — Evansville, IN',
     description:
-      'Support your cause with Cobblestone Creamery. We offer fundraising nights, donation requests, and community partnerships in Evansville, Indiana.',
+      'Partner with Cobblestone Creamery for your next fundraiser. Fundraising nights, gift card donations, and community support for Evansville-area schools, teams, and nonprofits.',
     url: 'https://cobblestonecreamery.com/fundraising',
-    images: [{ url: '/assets/fundraising-flyer.png', alt: 'Cobblestone Creamery fundraising flyer for Evansville Indiana organizations' }],
+    images: [{ url: '/assets/fundraising-flyer.png', width: 1024, height: 1536, alt: 'Cobblestone Creamery ice cream fundraising flyer for Evansville, Indiana organizations' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Fundraising & Donations | Cobblestone Creamery',
+    title: 'Fundraising Nights & Donations | Cobblestone Creamery Evansville, IN',
     description:
-      'Partner with Cobblestone Creamery for your next fundraiser or donation request. We support schools, churches, nonprofits, and community organizations in Evansville, Indiana.',
+      'Host a fundraiser at Cobblestone Creamery — we donate a percentage of sales to your cause. Schools, sports teams, churches & nonprofits in Evansville, IN.',
     images: ['/assets/fundraising-flyer.png'],
   },
 };
@@ -151,7 +151,7 @@ export default function FundraisingPage() {
                       info@cobblestonecreamery.com
                     </a>{' '}
                     or call{' '}
-                    <a href="tel:8122053322" className="text-primary hover:text-gold underline transition-colors">
+                    <a href="tel:+18122053322" className="text-primary hover:text-gold underline transition-colors">
                       (812) 205-3322
                     </a>{' '}
                     with your organization name, event details, and preferred date. For donation
@@ -248,7 +248,7 @@ export default function FundraisingPage() {
                 Email Us
               </a>
               <a
-                href="tel:8122053322"
+                href="tel:+18122053322"
                 className="inline-block bg-white/10 text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-white/20 transition-colors border border-white/20"
               >
                 Call (812) 205-3322

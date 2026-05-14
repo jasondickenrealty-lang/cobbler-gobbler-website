@@ -4,20 +4,38 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ORDER_ONLINE_URL } from '@/lib/links';
 
+const SITE_URL = 'https://cobblestonecreamery.com';
+
 export const metadata: Metadata = {
-  title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery',
+  title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery — 900 Main St',
   description:
-    'Looking for the best ice cream in Evansville, IN? Cobblestone Creamery serves handcrafted ice cream, fresh waffle cones, cobblers, milkshakes, and sundaes at 900 Main Street in downtown Evansville. Order online for pickup!',
+    'Cobblestone Creamery is the best ice cream shop in Evansville, Indiana. Handcrafted ice cream, fresh waffle cones, classic cobblers, thick milkshakes, and sundaes at 900 Main Street in downtown Evansville. Open 7 days a week — order online for pickup!',
   alternates: {
-    canonical: 'https://cobblestonecreamery.com/ice-cream-evansville-in',
+    canonical: `${SITE_URL}/ice-cream-evansville-in`,
   },
   openGraph: {
+    title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery — 900 Main St',
+    description:
+      'Handcrafted ice cream, fresh waffle cones, cobblers, and milkshakes in downtown Evansville, Indiana. Visit Cobblestone Creamery at 900 Main Street or order online for pickup. Open 7 days a week!',
+    url: `${SITE_URL}/ice-cream-evansville-in`,
+    images: [{ url: '/logo.png', width: 800, height: 800, alt: 'Best ice cream in Evansville, IN — Cobblestone Creamery at 900 Main Street' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
     title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery',
     description:
-      'Handcrafted ice cream, fresh waffle cones, cobblers, and milkshakes in downtown Evansville, Indiana. Visit Cobblestone Creamery at 900 Main Street or order online for pickup.',
-    url: 'https://cobblestonecreamery.com/ice-cream-evansville-in',
-    images: [{ url: '/logo.png', alt: 'Best ice cream in Evansville IN - Cobblestone Creamery' }],
+      'Handcrafted ice cream, waffle cones, milkshakes & cobblers at 900 Main Street in downtown Evansville, IN. Open 7 days a week — order online for pickup!',
+    images: ['/logo.png'],
   },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Ice Cream in Evansville, IN', item: `${SITE_URL}/ice-cream-evansville-in` },
+  ],
 };
 
 const FAQ_ITEMS = [
@@ -68,6 +86,10 @@ export default function IceCreamEvansvillePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Navbar />
       <main className="flex-1">
         {/* Hero */}
@@ -96,9 +118,9 @@ export default function IceCreamEvansvillePage() {
                 <h3 className="font-serif text-xl text-primary mb-3">Made Fresh Every Day</h3>
                 <p className="text-dark/60 leading-relaxed">
                   Every batch of ice cream is crafted from scratch each morning
-                  in our downtown Evansville shop. We use premium, locally
-                  sourced ingredients to create bold, creative flavors you
-                  won&apos;t find anywhere else.
+                  in our downtown Evansville shop. We use premium ingredients to
+                  create bold, creative flavors that keep Evansville coming back
+                  for more.
                 </p>
               </div>
               <div>

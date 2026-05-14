@@ -83,10 +83,11 @@ export default function JoinOurTeamPage() {
       <main className="flex-1">
         <section className="bg-cream">
           <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
-            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Join Our Team</h1>
+            <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Now Hiring in Evansville, Indiana</h1>
             <p className="text-dark/70 text-lg leading-relaxed">
-              We are hiring friendly, reliable people who care about quality and customer service.
-              Fill out the application below and we will email your application to our hiring inbox.
+              Cobblestone Creamery is hiring friendly, reliable people who love great food and great
+              customer service. Fill out the application below and we will be in touch if there is a fit
+              at our downtown Evansville shop at 900 Main Street.
             </p>
           </div>
         </section>
