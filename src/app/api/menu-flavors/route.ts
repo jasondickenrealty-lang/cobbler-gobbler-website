@@ -38,6 +38,18 @@ export async function GET() {
   try {
     const flavorMap = new Map<string, FlavorItem>();
 
+    if (!db) {
+      FEATURED_FALLBACK_FLAVORS.forEach((name) => {
+        upsertFlavor(flavorMap, { name, price: null, source: 'featured-fallback' });
+      });
+
+      return NextResponse.json({
+        generatedAt: new Date().toISOString(),
+        source: 'featured-fallback',
+        flavors: [...flavorMap.values()].sort((a, b) => a.name.localeCompare(b.name)),
+      });
+    }
+
     const [menuSnapshot, modifierCategorySnapshot, modifierSnapshot] = await Promise.all([
       getDocs(query(collection(db, 'menu'), where('available', '==', true))),
       getDocs(collection(db, 'modifierCategories')),
