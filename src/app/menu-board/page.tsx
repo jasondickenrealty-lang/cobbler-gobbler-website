@@ -117,12 +117,24 @@ function VideoPanel({ videoUrl, sideImageUrl }: { videoUrl: string | null; sideI
 
 // Left-side menu list for a single category
 function CategorySlide({ category, items, videoUrl, slideIndex }: { category: string; items: MenuItem[]; videoUrl: string | null; slideIndex: number }) {
+  const n = items.length;
+  const compact = n > 7;
+  const tiny = n > 11;
+
+  const densityContent  = tiny ? styles.slideContentTiny  : compact ? styles.slideContentCompact  : '';
+  const densityHeader   = tiny ? styles.slideHeaderTiny   : compact ? styles.slideHeaderCompact   : '';
+  const densityTitle    = tiny ? styles.slideTitleTiny    : compact ? styles.slideTitleCompact    : '';
+  const densityRow      = tiny ? styles.itemRowTiny       : compact ? styles.itemRowCompact       : '';
+  const densityName     = tiny ? styles.itemNameTiny      : compact ? styles.itemNameCompact      : '';
+  const densityDesc     = tiny ? styles.itemDescriptionTiny : '';
+  const densityPrice    = tiny ? styles.itemPriceTiny     : compact ? styles.itemPriceCompact     : '';
+
   return (
     <div className={styles.slideOuter}>
-      <div className={styles.slideContent}>
-        <div className={styles.slideHeader}>
+      <div className={`${styles.slideContent} ${densityContent}`}>
+        <div className={`${styles.slideHeader} ${densityHeader}`}>
           <div className={styles.slideHeaderRow}>
-            <h2 className={styles.slideTitle}>{category}</h2>
+            <h2 className={`${styles.slideTitle} ${densityTitle}`}>{category}</h2>
             {category === 'Udderly Classic Scoops' && (
               <div className={styles.waffleBadge}>
                 <span className={styles.waffleBadgeIcon}>🧇</span>
@@ -135,12 +147,12 @@ function CategorySlide({ category, items, videoUrl, slideIndex }: { category: st
         </div>
         <div className={styles.itemsContainer}>
           {items.map((item, i) => (
-            <div key={item.id} className={`${styles.itemRow} ${i < items.length - 1 ? styles.itemRowDivider : ''}`}>
+            <div key={item.id} className={`${styles.itemRow} ${densityRow} ${i < items.length - 1 ? styles.itemRowDivider : ''}`}>
               <div className={styles.itemInfo}>
-                <p className={styles.itemName}>{item.name}</p>
-                {item.description && <p className={styles.itemDescription}>{item.description}</p>}
+                <p className={`${styles.itemName} ${densityName}`}>{item.name}</p>
+                {item.description && <p className={`${styles.itemDescription} ${densityDesc}`}>{item.description}</p>}
               </div>
-              <p className={styles.itemPrice}>${item.price.toFixed(2)}</p>
+              <p className={`${styles.itemPrice} ${densityPrice}`}>${item.price.toFixed(2)}</p>
             </div>
           ))}
         </div>

@@ -111,6 +111,27 @@
   font-weight: 700;
 }
 
+/* Compact / tiny density modifiers for categories with many items */
+.slideContentCompact { padding: 1.25rem 2rem; }
+.slideContentTiny    { padding: 0.75rem 1.5rem; }
+
+.slideHeaderCompact { margin-bottom: 0.85rem; }
+.slideHeaderTiny    { margin-bottom: 0.5rem; }
+
+.slideTitleCompact { font-size: 2.1rem; }
+.slideTitleTiny    { font-size: 1.8rem; }
+
+.itemRowCompact { padding: 0.4rem 0; }
+.itemRowTiny    { padding: 0.2rem 0; }
+
+.itemNameCompact { font-size: 1.2rem; }
+.itemNameTiny    { font-size: 1.05rem; }
+
+.itemDescriptionTiny { font-size: 0.68rem; }
+
+.itemPriceCompact { font-size: 1.3rem; }
+.itemPriceTiny    { font-size: 1.1rem; }
+
 /* Category items */
 .itemsContainer {
   flex: 1;
