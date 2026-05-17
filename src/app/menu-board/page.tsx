@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
-const SLIDE_DURATION_MS = 10000;
+const SLIDE_DURATION_MS = 15000;
 const ADS_DURATION_MS = 8000;
 
 // ── Screen 3: Ads / Photos / Specials ──────────────────────────────────────
