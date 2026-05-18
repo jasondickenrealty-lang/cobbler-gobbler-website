@@ -166,6 +166,7 @@ function CategorySlide({ category, items, videoUrl, slideIndex }: { category: st
 function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: ModifierCategory[]; modifiers: Modifier[]; videoUrl: string | null; slideIndex: number }) {
   const active = modCats.filter(mc => modifiers.some(m => m.modifierCategoryId === mc.id));
   const cols = Math.min(active.length, 3);
+  const columnsClass = cols === 1 ? styles.toppingsGridOne : cols === 2 ? styles.toppingsGridTwo : styles.toppingsGridThree;
   return (
     <div className={styles.slideOuter}>
       <div className={styles.slideContent}>
@@ -173,7 +174,7 @@ function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: 
           <h2 className={styles.slideTitle}>Toppings &amp; Extras</h2>
           <div className={styles.goldBar} />
         </div>
-        <div className={styles.toppingsGrid} style={{ gridTemplateColumns: `repeat(${cols},1fr)` }}>
+        <div className={`${styles.toppingsGrid} ${columnsClass}`}>
           {active.map(mc => {
             const mods = modifiers.filter(m => m.modifierCategoryId === mc.id);
             return (
@@ -208,7 +209,6 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [progress, setProgress] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
@@ -273,18 +273,6 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
     return () => clearInterval(interval);
   }, [visibleSlides.length]);
 
-  // Progress bar resets whenever the visible slide changes or slides first load
-  useEffect(() => {
-    if (visibleSlides.length === 0) return;
-    setProgress(0);
-    const start = Date.now();
-    const tick = setInterval(
-      () => setProgress(Math.min(((Date.now() - start) / SLIDE_DURATION_MS) * 100, 100)),
-      50
-    );
-    return () => clearInterval(tick);
-  }, [currentSlide, visibleSlides.length]);
-
   if (loading || !slides.length) {
     return (
       <>
@@ -304,14 +292,12 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
     );
   }
 
-  const COW_PATTERN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Crect width='320' height='320' fill='%23f5f2ee'/%3E%3Cellipse cx='55' cy='45' rx='42' ry='30' fill='%231a1a1a' transform='rotate(-18 55 45)' opacity='.82'/%3E%3Cellipse cx='185' cy='22' rx='30' ry='44' fill='%231a1a1a' transform='rotate(22 185 22)' opacity='.82'/%3E%3Cellipse cx='275' cy='110' rx='44' ry='26' fill='%231a1a1a' transform='rotate(-28 275 110)' opacity='.82'/%3E%3Cellipse cx='95' cy='175' rx='26' ry='42' fill='%231a1a1a' transform='rotate(12 95 175)' opacity='.82'/%3E%3Cellipse cx='220' cy='230' rx='50' ry='30' fill='%231a1a1a' transform='rotate(28 220 230)' opacity='.82'/%3E%3Cellipse cx='22' cy='280' rx='28' ry='22' fill='%231a1a1a' transform='rotate(-22 22 280)' opacity='.82'/%3E%3Cellipse cx='295' cy='290' rx='34' ry='25' fill='%231a1a1a' transform='rotate(18 295 290)' opacity='.82'/%3E%3Cellipse cx='150' cy='100' rx='22' ry='34' fill='%231a1a1a' transform='rotate(38 150 100)' opacity='.82'/%3E%3Cellipse cx='310' cy='185' rx='20' ry='28' fill='%231a1a1a' transform='rotate(-12 310 185)' opacity='.7'/%3E%3Cellipse cx='45' cy='130' rx='18' ry='26' fill='%231a1a1a' transform='rotate(30 45 130)' opacity='.7'/%3E%3C%2Fsvg%3E")`;
-
   const safeSlide = Math.min(currentSlide, Math.max(visibleSlides.length - 1, 0));
   const slide = visibleSlides[safeSlide] ?? visibleSlides[0];
   return (
     <>
       <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}`}</style>
-      <div className={styles.mainWrapper} style={{ backgroundImage: COW_PATTERN }}>
+      <div className={`${styles.mainWrapper} ${styles.cowPattern}`}>
 
         {/* Header */}
         <header className={styles.mainHeader}>
@@ -324,7 +310,7 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
             <span className={styles.slideCounter}>{safeSlide + 1} / {visibleSlides.length}</span>
           </div>
           <div className={styles.progressTrack}>
-            <div className={styles.progressFill} style={{ width: progress + '%' }} />
+            <div key={safeSlide} className={styles.progressFill} />
           </div>
         </header>
 

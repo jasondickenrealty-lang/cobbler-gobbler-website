@@ -23,9 +23,37 @@
   width: 80px;
 }
 
+/* Static positions for 18 time slots (6am–11pm at 80px/hr) */
+.schedule-time-slot:nth-child(1)  { left: 0px; }
+.schedule-time-slot:nth-child(2)  { left: 80px; }
+.schedule-time-slot:nth-child(3)  { left: 160px; }
+.schedule-time-slot:nth-child(4)  { left: 240px; }
+.schedule-time-slot:nth-child(5)  { left: 320px; }
+.schedule-time-slot:nth-child(6)  { left: 400px; }
+.schedule-time-slot:nth-child(7)  { left: 480px; }
+.schedule-time-slot:nth-child(8)  { left: 560px; }
+.schedule-time-slot:nth-child(9)  { left: 640px; }
+.schedule-time-slot:nth-child(10) { left: 720px; }
+.schedule-time-slot:nth-child(11) { left: 800px; }
+.schedule-time-slot:nth-child(12) { left: 880px; }
+.schedule-time-slot:nth-child(13) { left: 960px; }
+.schedule-time-slot:nth-child(14) { left: 1040px; }
+.schedule-time-slot:nth-child(15) { left: 1120px; }
+.schedule-time-slot:nth-child(16) { left: 1200px; }
+.schedule-time-slot:nth-child(17) { left: 1280px; }
+.schedule-time-slot:nth-child(18) { left: 1360px; }
+
 .schedule-employee-row {
   height: 56px;
   width: 1440px;
+  /* CSS gridlines replace the old per-row gridline divs */
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent 79px,
+    #f9fafb 79px,
+    #f9fafb 80px
+  );
 }
 
 .schedule-shift-block {
@@ -37,6 +65,14 @@
 .schedule-open-row {
   height: 56px;
   width: 1440px;
+  /* CSS gridlines replace the old per-row gridline divs */
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent 79px,
+    #f9fafb 79px,
+    #f9fafb 80px
+  );
 }
 
 .schedule-open-shift {
