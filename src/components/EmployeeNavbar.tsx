@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useState } from 'react';
 
 const employeeLinks = [
   { href: '/employee/dashboard', label: 'Dashboard' },
@@ -15,6 +16,7 @@ const employeeLinks = [
 export default function EmployeeNavbar() {
   const pathname = usePathname();
   const { signOut, userData } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -28,10 +30,11 @@ export default function EmployeeNavbar() {
     <nav className="bg-primary text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/employee/dashboard" className="text-2xl font-bold">
+          <Link href="/employee/dashboard" className="text-xl font-bold shrink-0">
             🍨 Employee Portal
           </Link>
-          
+
+          {/* Desktop nav links */}
           <div className="hidden md:flex space-x-8">
             {employeeLinks.map((link) => (
               <Link
@@ -45,18 +48,52 @@ export default function EmployeeNavbar() {
               </Link>
             ))}
           </div>
-          
-          <div className="flex items-center space-x-4">
-            <span className="text-sm capitalize">{userData?.role}</span>
+
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:block text-sm capitalize">{userData?.role}</span>
             <button
               onClick={handleSignOut}
-              className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
+              className="bg-red-600 px-3 py-2 rounded text-sm hover:bg-red-700 transition"
             >
               Sign Out
+            </button>
+            {/* Hamburger button — mobile only */}
+            <button
+              onClick={() => setMobileOpen((o) => !o)}
+              className="md:hidden flex flex-col justify-center gap-1 p-2 rounded hover:bg-white/10 transition"
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileOpen ? 'true' : 'false'}
+            >
+              <span className={`block w-5 h-0.5 bg-white transition-transform duration-200 ${mobileOpen ? 'translate-y-1.5 rotate-45' : ''}`} />
+              <span className={`block w-5 h-0.5 bg-white transition-opacity duration-200 ${mobileOpen ? 'opacity-0' : ''}`} />
+              <span className={`block w-5 h-0.5 bg-white transition-transform duration-200 ${mobileOpen ? '-translate-y-1.5 -rotate-45' : ''}`} />
             </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile dropdown menu */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-white/20 bg-primary">
+          <div className="px-4 py-3 space-y-1">
+            {employeeLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition hover:bg-white/10 ${
+                  pathname === link.href ? 'bg-white/20' : ''
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="pt-2 mt-1 border-t border-white/20 px-3 text-xs text-white/50 capitalize">
+              {userData?.role}
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

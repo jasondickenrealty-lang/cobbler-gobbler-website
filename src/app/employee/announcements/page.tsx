@@ -77,9 +77,9 @@ export default function AnnouncementsPage() {
             <div className="space-y-4">
               {announcements.map((announcement) => (
                 <div key={announcement.id} className={`p-6 rounded-lg shadow-md border-2 ${getPriorityColor(announcement.priority)}`}>
-                  <div className="flex justify-between items-start mb-3">
-                    <h2 className="text-xl font-semibold">{announcement.title}</h2>
-                    <span className="text-xs font-semibold uppercase px-2 py-1 rounded">
+                  <div className="flex justify-between items-start gap-2 mb-3">
+                    <h2 className="text-xl font-semibold flex-1 min-w-0">{announcement.title}</h2>
+                    <span className="text-xs font-semibold uppercase px-2 py-1 rounded shrink-0">
                       {announcement.priority}
                     </span>
                   </div>

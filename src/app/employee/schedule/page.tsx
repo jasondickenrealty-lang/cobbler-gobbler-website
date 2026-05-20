@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -34,6 +34,11 @@ interface Employee {
   firstName: string;
   lastName: string;
   role: string;
+  locationId?: string;
+  active?: boolean;
+  isActive?: boolean;
+  uid?: string;
+  email?: string;
 }
 
 type ViewMode = 'week' | 'day';
@@ -43,6 +48,8 @@ interface DayAvailability {
   available: boolean;
   startTime: string;
   endTime: string;
+  splitStart?: string;
+  splitEnd?: string;
 }
 
 interface Availability {
@@ -74,6 +81,49 @@ function addDays(date: Date, days: number): Date {
 
 function toISODate(date: Date): string {
   return date.toISOString().split('T')[0];
+}
+
+function toISODateFromUnknown(value: unknown): string | null {
+  if (!value) return null;
+  if (typeof value === 'string') {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : toISODate(parsed);
+  }
+  if (value && typeof value === 'object' && 'toDate' in (value as Record<string, unknown>)) {
+    const parsed = (value as { toDate: () => Date }).toDate();
+    return Number.isNaN(parsed.getTime()) ? null : toISODate(parsed);
+  }
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : toISODate(value);
+  }
+  return null;
+}
+
+function normalizeLocation(value: unknown): string {
+  return String(value || '').trim().toLowerCase();
+}
+
+function normalizeSchedule(raw: Partial<Schedule> & Record<string, unknown>): Schedule {
+  const status = (raw.status as string | undefined) || ((raw.isOpenShift as boolean | undefined) ? 'open' : 'scheduled');
+  const employeeId =
+    (raw.employeeId as string | undefined) ||
+    (raw.userId as string | undefined) ||
+    (raw.uid as string | undefined) ||
+    null;
+
+  return {
+    id: String(raw.id || ''),
+    employeeId,
+    shiftDate: toISODateFromUnknown(raw.shiftDate || raw.date || raw.scheduleDate) || '',
+    startTime: String(raw.startTime || raw.start || ''),
+    endTime: String(raw.endTime || raw.end || ''),
+    role: String(raw.role || 'cashier'),
+    status,
+    isOpenShift: raw.isOpenShift === true || status === 'open',
+    notes: (raw.notes as string | undefined) || undefined,
+    locationId: String(raw.locationId || raw.location || ''),
+  };
 }
 
 function formatWeekLabel(start: Date): string {
@@ -153,6 +203,10 @@ export default function SchedulePage() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
+  const locationCandidates = useMemo(
+    () => Array.from(new Set([LOCATION_ID, 'default', 'main'].map(normalizeLocation).filter(Boolean))),
+    []
+  );
 
   // Time Off modal
   const [showTimeOffModal, setShowTimeOffModal] = useState(false);
@@ -179,16 +233,22 @@ export default function SchedulePage() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const q = query(collection(db, 'employees'), where('locationId', '==', LOCATION_ID));
-        const snapshot = await getDocs(q);
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Employee));
-        setEmployees(data);
+        const snapshot = await getDocs(collection(db, 'users'));
+        const allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Employee));
+        const scopedUsers = allUsers.filter((emp) => {
+          const isStaff = ['employee', 'cashier', 'kitchen', 'driver', 'manager', 'admin', 'owner'].includes(String(emp.role || '').toLowerCase());
+          if (!isStaff) return false;
+          if (emp.active === false || emp.isActive === false) return false;
+          const loc = normalizeLocation(emp.locationId);
+          return !loc || locationCandidates.includes(loc);
+        });
+        setEmployees(scopedUsers);
       } catch (error) {
         console.error('Error fetching employees:', error);
       }
     };
     fetchEmployees();
-  }, []);
+  }, [locationCandidates]);
 
   // Fetch schedules when week changes
   useEffect(() => {
@@ -197,15 +257,17 @@ export default function SchedulePage() {
       try {
         const startDate = toISODate(weekStart);
         const endDate = toISODate(weekEnd);
-        const q = query(
-          collection(db, 'schedules'),
-          where('locationId', '==', LOCATION_ID),
-          where('shiftDate', '>=', startDate),
-          where('shiftDate', '<=', endDate)
-        );
-        const snapshot = await getDocs(q);
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Schedule));
-        setSchedules(data.filter(s => s.status !== 'cancelled'));
+        const snapshot = await getDocs(collection(db, 'schedules'));
+        const normalized = snapshot.docs
+          .map(doc => normalizeSchedule({ id: doc.id, ...doc.data() } as Record<string, unknown>))
+          .filter(s => !!s.shiftDate)
+          .filter(s => s.shiftDate >= startDate && s.shiftDate <= endDate)
+          .filter((s) => {
+            const loc = normalizeLocation(s.locationId);
+            return !loc || locationCandidates.includes(loc);
+          })
+          .filter(s => s.status !== 'cancelled');
+        setSchedules(normalized);
       } catch (error) {
         console.error('Error fetching schedules:', error);
       } finally {
@@ -213,7 +275,16 @@ export default function SchedulePage() {
       }
     };
     fetchSchedules();
-  }, [weekStart, weekEnd]);
+  }, [weekStart, weekEnd, locationCandidates]);
+
+  const employeeById = useMemo(() => {
+    const map = new Map<string, Employee>();
+    employees.forEach((emp) => {
+      map.set(emp.id, emp);
+      if (emp.uid) map.set(emp.uid, emp);
+    });
+    return map;
+  }, [employees]);
 
   // Filter schedules for current view
   const visibleSchedules = useMemo(() => {
@@ -224,21 +295,48 @@ export default function SchedulePage() {
     return schedules;
   }, [schedules, viewMode, selectedDay]);
 
+  const displayEmployees = useMemo(() => {
+    const ordered = [...employees];
+    const known = new Set(ordered.map((emp) => emp.id));
+
+    visibleSchedules.forEach((schedule) => {
+      if (!schedule.employeeId || schedule.isOpenShift) return;
+      const existing = employeeById.get(schedule.employeeId);
+      if (existing && !known.has(existing.id)) {
+        ordered.push(existing);
+        known.add(existing.id);
+        return;
+      }
+      if (!existing && !known.has(schedule.employeeId)) {
+        ordered.push({
+          id: schedule.employeeId,
+          firstName: 'Employee',
+          lastName: schedule.employeeId.slice(0, 6),
+          role: schedule.role || 'staff',
+        });
+        known.add(schedule.employeeId);
+      }
+    });
+
+    return ordered;
+  }, [employees, visibleSchedules, employeeById]);
+
   // Group schedules by employee for visible period
   const schedulesByEmployee = useMemo(() => {
     const grouped = new Map<string, Schedule[]>();
-    employees.forEach(emp => grouped.set(emp.id, []));
+    displayEmployees.forEach(emp => grouped.set(emp.id, []));
     grouped.set('__open__', []);
     visibleSchedules.forEach(schedule => {
       if (schedule.isOpenShift || !schedule.employeeId) {
         grouped.get('__open__')!.push(schedule);
       } else {
-        if (!grouped.has(schedule.employeeId)) grouped.set(schedule.employeeId, []);
-        grouped.get(schedule.employeeId)!.push(schedule);
+        const resolvedEmployeeId = employeeById.get(schedule.employeeId)?.id || schedule.employeeId;
+        if (!grouped.has(resolvedEmployeeId)) grouped.set(resolvedEmployeeId, []);
+        grouped.get(resolvedEmployeeId)!.push(schedule);
       }
     });
     return grouped;
-  }, [visibleSchedules, employees]);
+  }, [visibleSchedules, displayEmployees, employeeById]);
 
   // Navigation handlers
   const handleWeekChange = useCallback((dir: number) => {
@@ -329,6 +427,22 @@ export default function SchedulePage() {
     }));
   };
 
+  const addSplit = (day: keyof Availability) => {
+    setAvailability(prev => ({
+      ...prev,
+      [day]: { ...prev[day], splitStart: '13:00', splitEnd: '17:00' },
+    }));
+  };
+
+  const removeSplit = (day: keyof Availability) => {
+    setAvailability(prev => {
+      const updated = { ...prev[day] };
+      delete updated.splitStart;
+      delete updated.splitEnd;
+      return { ...prev, [day]: updated };
+    });
+  };
+
   // Inject shift positions only — time slot and gridline positions live in static CSS
   const dynamicCSS = useMemo(() => {
     const rules: string[] = [];
@@ -357,12 +471,27 @@ export default function SchedulePage() {
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Header row */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <h1 className="text-3xl font-bold text-primary">Team Schedule</h1>
+          <div className="flex flex-col gap-3 mb-4">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl sm:text-3xl font-bold text-primary">Team Schedule</h1>
+              {/* Action buttons — top-right on mobile */}
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => { setShowTimeOffModal(true); setTimeOffMsg(null); }}
+                  className="px-3 py-2 rounded-lg bg-amber-500 text-white text-xs sm:text-sm font-semibold hover:bg-amber-600 transition-colors whitespace-nowrap"
+                >Time Off</button>
+                <button
+                  type="button"
+                  onClick={openAvailModal}
+                  className="px-3 py-2 rounded-lg bg-emerald-600 text-white text-xs sm:text-sm font-semibold hover:bg-emerald-700 transition-colors whitespace-nowrap"
+                >Availability</button>
+              </div>
+            </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2">
               {/* Week / Day toggle */}
-              <div className="flex rounded-lg border border-gray-300 overflow-hidden text-sm font-semibold">
+              <div className="flex rounded-lg border border-gray-300 overflow-hidden text-sm font-semibold self-start sm:self-auto">
                 <button
                   type="button"
                   onClick={() => setViewMode('week')}
@@ -379,41 +508,30 @@ export default function SchedulePage() {
                 </button>
               </div>
 
-              {/* Navigation */}
-              <button
-                type="button"
-                onClick={() => viewMode === 'day' ? handleDayChange(-1) : handleWeekChange(-1)}
-                className="w-9 h-9 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
-              >&#8249;</button>
+              {/* Date navigation */}
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <button
+                  type="button"
+                  onClick={() => viewMode === 'day' ? handleDayChange(-1) : handleWeekChange(-1)}
+                  className="w-9 h-9 shrink-0 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
+                >&#8249;</button>
 
-              <div className="font-semibold text-gray-700 bg-gray-100 px-4 py-2 rounded-full text-sm min-w-[220px] text-center">
-                {viewMode === 'week' ? formatWeekLabel(weekStart) : formatDayLabel(selectedDay)}
+                <div className="font-semibold text-gray-700 bg-gray-100 px-3 py-2 rounded-full text-sm flex-1 text-center min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+                  {viewMode === 'week' ? formatWeekLabel(weekStart) : formatDayLabel(selectedDay)}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => viewMode === 'day' ? handleDayChange(1) : handleWeekChange(1)}
+                  className="w-9 h-9 shrink-0 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
+                >&#8250;</button>
+
+                <button
+                  type="button"
+                  onClick={goToToday}
+                  className="shrink-0 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                >Today</button>
               </div>
-
-              <button
-                type="button"
-                onClick={() => viewMode === 'day' ? handleDayChange(1) : handleWeekChange(1)}
-                className="w-9 h-9 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
-              >&#8250;</button>
-
-              <button
-                type="button"
-                onClick={goToToday}
-                className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
-              >Today</button>
-
-              {/* Action buttons */}
-              <button
-                type="button"
-                onClick={() => { setShowTimeOffModal(true); setTimeOffMsg(null); }}
-                className="px-4 py-2 rounded-lg bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors"
-              >Request Time Off</button>
-
-              <button
-                type="button"
-                onClick={openAvailModal}
-                className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors"
-              >My Availability</button>
             </div>
           </div>
 
@@ -445,7 +563,7 @@ export default function SchedulePage() {
                   <div className="flex items-center px-3 font-semibold text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200 schedule-header-cell">
                     Employee
                   </div>
-                  {employees.map(emp => (
+                  {displayEmployees.map(emp => (
                     <div
                       key={emp.id}
                       className={`flex items-center px-3 border-b border-gray-100 ${user?.uid === emp.id ? 'bg-primary/5 border-l-4 border-l-primary' : ''} schedule-row`}
@@ -477,7 +595,7 @@ export default function SchedulePage() {
                     ))}
                   </div>
                   <div className="relative">
-                    {employees.map(emp => {
+                    {displayEmployees.map(emp => {
                       const shifts = schedulesByEmployee.get(emp.id) || [];
                       const isMe = user?.uid === emp.id;
                       return (
@@ -539,7 +657,7 @@ export default function SchedulePage() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-800">Request Time Off</h2>
-              <button onClick={() => setShowTimeOffModal(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+              <button type="button" onClick={() => setShowTimeOffModal(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
             </div>
 
             <div className="space-y-4">
@@ -547,6 +665,8 @@ export default function SchedulePage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                   <input
+                    id="timeoff-start-date"
+                    aria-label="Time off start date"
                     type="date"
                     value={timeOffForm.startDate}
                     onChange={e => setTimeOffForm(f => ({ ...f, startDate: e.target.value }))}
@@ -556,6 +676,8 @@ export default function SchedulePage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
                   <input
+                    id="timeoff-end-date"
+                    aria-label="Time off end date"
                     type="date"
                     value={timeOffForm.endDate}
                     min={timeOffForm.startDate}
@@ -568,6 +690,8 @@ export default function SchedulePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
                 <select
+                  id="timeoff-type"
+                  aria-label="Time off request type"
                   value={timeOffForm.type}
                   onChange={e => setTimeOffForm(f => ({ ...f, type: e.target.value as TimeOffType }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -598,10 +722,12 @@ export default function SchedulePage() {
 
               <div className="flex gap-3 pt-1">
                 <button
+                  type="button"
                   onClick={() => setShowTimeOffModal(false)}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                 >Cancel</button>
                 <button
+                  type="button"
                   onClick={submitTimeOff}
                   disabled={timeOffSubmitting}
                   className="flex-1 px-4 py-2 bg-amber-500 text-white rounded-lg text-sm font-semibold hover:bg-amber-600 transition-colors disabled:opacity-50"
@@ -620,7 +746,7 @@ export default function SchedulePage() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-800">My Weekly Availability</h2>
-              <button onClick={() => setShowAvailModal(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+              <button type="button" onClick={() => setShowAvailModal(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
             </div>
 
             {availLoading ? (
@@ -647,6 +773,7 @@ export default function SchedulePage() {
                         {d.available && (
                           <div className="flex items-center gap-2 text-sm">
                             <input
+                              aria-label={`${DAY_LABELS[day]} start time`}
                               type="time"
                               value={d.startTime}
                               onChange={e => setAvailability(prev => ({ ...prev, [day]: { ...prev[day], startTime: e.target.value } }))}
@@ -654,6 +781,7 @@ export default function SchedulePage() {
                             />
                             <span className="text-gray-400 text-xs">to</span>
                             <input
+                              aria-label={`${DAY_LABELS[day]} end time`}
                               type="time"
                               value={d.endTime}
                               onChange={e => setAvailability(prev => ({ ...prev, [day]: { ...prev[day], endTime: e.target.value } }))}
@@ -663,6 +791,45 @@ export default function SchedulePage() {
                         )}
                         {!d.available && <span className="text-xs text-gray-400">Not available</span>}
                       </div>
+
+                      {d.available && (
+                        <div className="mt-2 pl-[52px]">
+                          {d.splitStart !== undefined ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-400 w-8 shrink-0">Also</span>
+                              <input
+                                aria-label={`${DAY_LABELS[day]} split shift start time`}
+                                type="time"
+                                value={d.splitStart}
+                                onChange={e => setAvailability(prev => ({ ...prev, [day]: { ...prev[day], splitStart: e.target.value } }))}
+                                className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                              />
+                              <span className="text-gray-400 text-xs">to</span>
+                              <input
+                                aria-label={`${DAY_LABELS[day]} split shift end time`}
+                                type="time"
+                                value={d.splitEnd ?? '17:00'}
+                                onChange={e => setAvailability(prev => ({ ...prev, [day]: { ...prev[day], splitEnd: e.target.value } }))}
+                                className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeSplit(day)}
+                                className="text-gray-300 hover:text-red-400 text-base leading-none ml-1 transition-colors"
+                                aria-label="Remove split shift"
+                              >✕</button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => addSplit(day)}
+                              className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1 transition-colors"
+                            >
+                              <span className="text-base leading-none">+</span> Add split shift
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -686,10 +853,12 @@ export default function SchedulePage() {
 
                 <div className="flex gap-3 pt-1">
                   <button
+                    type="button"
                     onClick={() => setShowAvailModal(false)}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                   >Close</button>
                   <button
+                    type="button"
                     onClick={saveAvailability}
                     disabled={availSaving}
                     className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
