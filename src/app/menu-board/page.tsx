@@ -87,6 +87,15 @@ interface ModifierCategory { id: string; name: string; displayOrder?: number; }
 interface Modifier { id: string; name: string; price: number; modifierCategoryId: string; isActive?: boolean; }
 type Slide = { type: 'category'; category: string; items: MenuItem[] } | { type: 'toppings'; modCats: ModifierCategory[]; modifiers: Modifier[] };
 
+function toNumber(value: unknown, fallback = 0): number {
+  const n = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function formatMoney(value: unknown): string {
+  return toNumber(value).toFixed(2);
+}
+
 // Right-side video / image / branded placeholder panel
 function VideoPanel({ videoUrl, sideImageUrl }: { videoUrl: string | null; sideImageUrl?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -152,7 +161,7 @@ function CategorySlide({ category, items, videoUrl, slideIndex }: { category: st
                 <p className={`${styles.itemName} ${densityName}`}>{item.name}</p>
                 {item.description && <p className={`${styles.itemDescription} ${densityDesc}`}>{item.description}</p>}
               </div>
-              <p className={`${styles.itemPrice} ${densityPrice}`}>${item.price.toFixed(2)}</p>
+              <p className={`${styles.itemPrice} ${densityPrice}`}>${formatMoney(item.price)}</p>
             </div>
           ))}
         </div>
@@ -183,7 +192,7 @@ function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: 
                 <div className={styles.modPillsContainer}>
                   {mods.map(mod => (
                     <span key={mod.id} className={styles.modPill}>
-                      {mod.name}{mod.price > 0 && <span className={styles.modPrice}>+${mod.price.toFixed(2)}</span>}
+                      {mod.name}{toNumber(mod.price) > 0 && <span className={styles.modPrice}>+${formatMoney(mod.price)}</span>}
                     </span>
                   ))}
                 </div>
@@ -260,17 +269,38 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
   const slideCountRef = useRef(visibleSlides.length);
   slideCountRef.current = visibleSlides.length;
 
+  useEffect(() => {
+    if (visibleSlides.length === 0) {
+      setCurrentSlide(0);
+      return;
+    }
+    setCurrentSlide(prev => Math.min(prev, visibleSlides.length - 1));
+  }, [visibleSlides.length]);
+
   // Cycling: setInterval fires independently of React state — no timeout chain to break
   useEffect(() => {
     if (visibleSlides.length === 0) return;
+    let transitionTimeout: ReturnType<typeof setTimeout> | null = null;
+
     const interval = setInterval(() => {
+      if (slideCountRef.current <= 0) return;
       setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentSlide(p => (p + 1) % slideCountRef.current);
+      transitionTimeout = setTimeout(() => {
+        const count = slideCountRef.current;
+        if (count <= 0) {
+          setCurrentSlide(0);
+          setIsTransitioning(false);
+          return;
+        }
+        setCurrentSlide(p => (p + 1) % count);
         setIsTransitioning(false);
       }, 400);
     }, SLIDE_DURATION_MS);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+      if (transitionTimeout) clearTimeout(transitionTimeout);
+    };
   }, [visibleSlides.length]);
 
   if (loading || !slides.length) {
@@ -294,6 +324,22 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
 
   const safeSlide = Math.min(currentSlide, Math.max(visibleSlides.length - 1, 0));
   const slide = visibleSlides[safeSlide] ?? visibleSlides[0];
+
+  if (!slide) {
+    return (
+      <>
+        <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}`}</style>
+        <div className={styles.loadingScreen}>
+          <div className={styles.loadingContent}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Cobblestone Creamery" className={styles.loadingLogo} />
+            <p className={styles.loadingTitle}>No slides available for this screen</p>
+            <p className={styles.loadingAddress}>900 Main Street &bull; Evansville, Indiana</p>
+          </div>
+        </div>
+      </>
+    );
+  }
   return (
     <>
       <style>{`html,body{margin:0;padding:0;overflow:hidden;background:#f5f2ee}`}</style>
