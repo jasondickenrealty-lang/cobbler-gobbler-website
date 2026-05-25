@@ -12,13 +12,14 @@ export default function EmployeeLoginPage() {
   const [loading, setLoading] = useState(false);
   const { signIn, user, userData } = useAuth();
   const router = useRouter();
+  const isActiveEmployee = userData?.active !== false && userData?.isActive !== false;
 
   // Redirect to dashboard if already logged in
   useEffect(() => {
-    if (user && userData?.active) {
+    if (user && userData && isActiveEmployee) {
       router.push('/employee/dashboard');
     }
-  }, [user, userData, router]);
+  }, [user, userData, isActiveEmployee, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

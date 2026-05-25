@@ -14,6 +14,7 @@ const DAY_START_HOUR = 6;
 const DAY_END_HOUR = 23;
 const LOCATION_ID = process.env.NEXT_PUBLIC_LOCATION_ID || 'default';
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'https://us-central1-cobblestone-pos.cloudfunctions.net/api';
+const TENANT_ID = process.env.NEXT_PUBLIC_TENANT_ID || 'cobblestone';
 
 // --- Types ---
 interface Schedule {
@@ -233,7 +234,7 @@ export default function SchedulePage() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const snapshot = await getDocs(collection(db, 'users'));
+        const snapshot = await getDocs(collection(db, 'tenants', TENANT_ID, 'users'));
         const allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Employee));
         const scopedUsers = allUsers.filter((emp) => {
           const isStaff = ['employee', 'cashier', 'kitchen', 'driver', 'manager', 'admin', 'owner'].includes(String(emp.role || '').toLowerCase());
@@ -257,7 +258,7 @@ export default function SchedulePage() {
       try {
         const startDate = toISODate(weekStart);
         const endDate = toISODate(weekEnd);
-        const snapshot = await getDocs(collection(db, 'schedules'));
+        const snapshot = await getDocs(collection(db, 'tenants', TENANT_ID, 'schedules'));
         const normalized = snapshot.docs
           .map(doc => normalizeSchedule({ id: doc.id, ...doc.data() } as Record<string, unknown>))
           .filter(s => !!s.shiftDate)

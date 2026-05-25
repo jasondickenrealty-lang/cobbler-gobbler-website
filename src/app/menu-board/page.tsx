@@ -96,6 +96,29 @@ function formatMoney(value: unknown): string {
   return toNumber(value).toFixed(2);
 }
 
+function normalizeText(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function getCategorySideImage(category: string, items: MenuItem[]): string | undefined {
+  const uploadedImage = items.find(item => item.imageUrl && item.imageUrl.trim())?.imageUrl?.trim();
+  if (uploadedImage) return uploadedImage;
+
+  const categoryText = normalizeText(category);
+  const itemText = normalizeText(
+    items.map(item => `${item.name} ${item.description || ''}`).join(' '),
+  );
+  const combined = `${categoryText} ${itemText}`;
+
+  if (categoryText.includes('cereal milk shake')) return '/menu-board-slide5.jpg';
+  if (categoryText.includes('moo shake') || combined.includes('shake')) return '/menu-board-slide2.jpg';
+  if (categoryText.includes('signature cobbler') || combined.includes('cobbler')) return '/menu-board-slide3.png';
+  if (categoryText.includes('moo bowl')) return '/menu-board-slide4.jpg';
+  if (categoryText.includes('whole herd') || categoryText.includes('classic scoop')) return '/menu-board-slide6.jpg';
+
+  return undefined;
+}
+
 // Right-side video / image / branded placeholder panel
 function VideoPanel({ videoUrl, sideImageUrl }: { videoUrl: string | null; sideImageUrl?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -125,10 +148,11 @@ function VideoPanel({ videoUrl, sideImageUrl }: { videoUrl: string | null; sideI
 }
 
 // Left-side menu list for a single category
-function CategorySlide({ category, items, videoUrl, slideIndex }: { category: string; items: MenuItem[]; videoUrl: string | null; slideIndex: number }) {
+function CategorySlide({ category, items, videoUrl }: { category: string; items: MenuItem[]; videoUrl: string | null }) {
   const n = items.length;
   const compact = n > 7;
   const tiny = n > 11;
+  const sideImageUrl = getCategorySideImage(category, items);
 
   const densityContent  = tiny ? styles.slideContentTiny  : compact ? styles.slideContentCompact  : '';
   const densityHeader   = tiny ? styles.slideHeaderTiny   : compact ? styles.slideHeaderCompact   : '';
@@ -166,13 +190,13 @@ function CategorySlide({ category, items, videoUrl, slideIndex }: { category: st
           ))}
         </div>
       </div>
-      <VideoPanel videoUrl={videoUrl} sideImageUrl={slideIndex === 1 ? '/menu-board-slide2.jpg' : slideIndex === 2 ? '/menu-board-slide3.png' : slideIndex === 3 ? '/menu-board-slide4.jpg' : slideIndex === 4 ? '/menu-board-slide5.jpg' : slideIndex === 5 ? '/menu-board-slide6.jpg' : undefined} />
+      <VideoPanel videoUrl={videoUrl} sideImageUrl={sideImageUrl} />
     </div>
   );
 }
 
 // Toppings list slide
-function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: ModifierCategory[]; modifiers: Modifier[]; videoUrl: string | null; slideIndex: number }) {
+function ToppingsSlide({ modCats, modifiers, videoUrl }: { modCats: ModifierCategory[]; modifiers: Modifier[]; videoUrl: string | null }) {
   const active = modCats.filter(mc => modifiers.some(m => m.modifierCategoryId === mc.id));
   const cols = Math.min(active.length, 3);
   const columnsClass = cols === 1 ? styles.toppingsGridOne : cols === 2 ? styles.toppingsGridTwo : styles.toppingsGridThree;
@@ -201,7 +225,7 @@ function ToppingsSlide({ modCats, modifiers, videoUrl, slideIndex }: { modCats: 
           })}
         </div>
       </div>
-      <VideoPanel videoUrl={videoUrl} sideImageUrl={slideIndex === 1 ? '/menu-board-slide2.jpg' : slideIndex === 2 ? '/menu-board-slide3.png' : slideIndex === 3 ? '/menu-board-slide4.jpg' : slideIndex === 4 ? '/menu-board-slide5.jpg' : slideIndex === 5 ? '/menu-board-slide6.jpg' : undefined} />
+      <VideoPanel videoUrl={videoUrl} />
     </div>
   );
 }
@@ -363,8 +387,8 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
         {/* Slide */}
         <div className={`${styles.slideWrapper} ${isTransitioning ? styles.slideHidden : styles.slideVisible}`}>
           {slide.type === 'category'
-            ? <CategorySlide category={slide.category} items={slide.items} videoUrl={videoUrl} slideIndex={slides.indexOf(slide)} />
-            : <ToppingsSlide modCats={slide.modCats} modifiers={slide.modifiers} videoUrl={videoUrl} slideIndex={slides.indexOf(slide)} />}
+            ? <CategorySlide category={slide.category} items={slide.items} videoUrl={videoUrl} />
+            : <ToppingsSlide modCats={slide.modCats} modifiers={slide.modifiers} videoUrl={videoUrl} />}
         </div>
 
         {/* Footer */}

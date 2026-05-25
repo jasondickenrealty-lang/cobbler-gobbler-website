@@ -7,12 +7,13 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, userData, loading } = useAuth();
   const router = useRouter();
+  const isActiveEmployee = userData?.active !== false && userData?.isActive !== false;
 
   useEffect(() => {
-    if (!loading && (!user || !userData?.active)) {
+    if (!loading && (!user || !userData || !isActiveEmployee)) {
       router.push('/employee/login');
     }
-  }, [user, userData, loading, router]);
+  }, [user, userData, isActiveEmployee, loading, router]);
 
   if (loading) {
     return (
@@ -22,7 +23,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     );
   }
 
-  if (!user || !userData?.active) {
+  if (!user || !userData || !isActiveEmployee) {
     return null;
   }
 

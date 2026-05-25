@@ -5,11 +5,14 @@ import { User, onAuthStateChanged, signInWithEmailAndPassword, signOut as fireba
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 
+const TENANT_ID = process.env.NEXT_PUBLIC_TENANT_ID || 'cobblestone';
+
 export type UserRole = 'employee' | 'cashier' | 'kitchen' | 'driver' | 'manager' | 'owner' | 'admin';
 
 export interface UserData {
   role: UserRole;
-  active: boolean;
+  active?: boolean;
+  isActive?: boolean;
   email: string;
 }
 
@@ -43,11 +46,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (user) {
         // Fetch user data from Firestore
         try {
-          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          const userDoc = await getDoc(doc(db, 'tenants', TENANT_ID, 'users', user.uid));
           if (userDoc.exists()) {
             setUserData(userDoc.data() as UserData);
           } else {
-            setUserData(null);
+            const legacyUserDoc = await getDoc(doc(db, 'users', user.uid));
+            setUserData(legacyUserDoc.exists() ? (legacyUserDoc.data() as UserData) : null);
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
