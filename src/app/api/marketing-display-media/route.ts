@@ -6,7 +6,10 @@ export const dynamic = 'force-dynamic';
 const BUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 const API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 const PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-const FS_BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
+
+// Supported media types
+const IMAGE_EXTS = /\.(jpe?g|png|gif|webp|svg)$/i;
+const VIDEO_EXTS = /\.(mp4|webm|mov)$/i;
 
 function bucketCandidates(): string[] {
   const set = new Set<string>();
@@ -28,7 +31,7 @@ function bucketCandidates(): string[] {
 }
 
 async function fetchStorageListing(bucket: string) {
-  const prefix = encodeURIComponent('menu-board-ads/');
+  const prefix = encodeURIComponent('marketing-display/');
   const urls: string[] = [];
   if (API_KEY) {
     urls.push(`https://firebasestorage.googleapis.com/v0/b/${bucket}/o?prefix=${prefix}&key=${API_KEY}`);
@@ -47,27 +50,6 @@ async function fetchStorageListing(bucket: string) {
   throw new Error(`Storage list failed for ${bucket} (last status ${lastStatus})`);
 }
 
-async function getSavedOrder(): Promise<string[]> {
-  try {
-    const urls: string[] = [];
-    if (API_KEY) {
-      urls.push(`${FS_BASE}/menuBoardConfig/adsOrder?key=${API_KEY}`);
-    }
-    urls.push(`${FS_BASE}/menuBoardConfig/adsOrder`);
-
-    for (const url of urls) {
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) continue;
-      const data = await res.json() as { fields?: { order?: { arrayValue?: { values?: { stringValue?: string }[] } } } };
-      return data.fields?.order?.arrayValue?.values?.map(v => v.stringValue ?? '').filter(Boolean) ?? [];
-    }
-
-    return [];
-  } catch {
-    return [];
-  }
-}
-
 export async function GET() {
   try {
     const buckets = bucketCandidates();
@@ -75,7 +57,6 @@ export async function GET() {
       throw new Error('Missing NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET / NEXT_PUBLIC_FIREBASE_PROJECT_ID');
     }
 
-    const savedOrderPromise = getSavedOrder();
     let data: { items?: { name: string }[] } | null = null;
     let selectedBucket = buckets[0];
     let listError = 'none';
@@ -91,23 +72,17 @@ export async function GET() {
     }
 
     if (!data) throw new Error(listError);
-    const savedOrder = await savedOrderPromise;
 
-    const raw = (data.items ?? [])
+    const media = (data.items ?? [])
       .filter(item => !item.name.endsWith('/'))
+      .filter(item => IMAGE_EXTS.test(item.name) || VIDEO_EXTS.test(item.name))
       .map(item => ({
         name: item.name.split('/').pop() ?? item.name,
         url: `https://firebasestorage.googleapis.com/v0/b/${selectedBucket}/o/${encodeURIComponent(item.name)}?alt=media`,
+        type: VIDEO_EXTS.test(item.name) ? 'video' : 'image',
       }));
 
-    // Apply saved order: ordered items first, then any new unseen items appended
-    const ordered = savedOrder
-      .map(name => raw.find(i => i.name === name))
-      .filter((i): i is { name: string; url: string } => !!i);
-    const unseen = raw.filter(i => !savedOrder.includes(i.name));
-    const images = [...ordered, ...unseen];
-
-    return NextResponse.json({ images });
+    return NextResponse.json({ media });
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json({ error: msg }, { status: 500 });

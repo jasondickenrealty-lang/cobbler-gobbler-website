@@ -13,7 +13,6 @@ type NavLink = {
 
 const navLinks: NavLink[] = [
   { href: '/', label: 'Home' },
-  { href: '/contest-signup', label: 'Contest Signup' },
   { href: '/menu', label: 'Menu' },
   { href: WHOLESALE_URL, label: 'Wholesale', external: true },
   { href: '/about', label: 'Our Story' },
