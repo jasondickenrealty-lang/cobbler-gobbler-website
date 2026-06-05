@@ -40,12 +40,10 @@ interface FirestoreRestDoc {
 const FALLBACK_COLORING_PROJECT_ID =
   process.env.COLORING_PAGES_PROJECT_ID?.trim() || 'cobblestone-pos';
 
-// Firebase web API keys are public identifiers; this fallback key is only used
-// by the server route when the primary project config returns no pages.
 const FALLBACK_COLORING_API_KEY =
   process.env.COLORING_PAGES_API_KEY?.trim() ||
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.trim() ||
-  'AIzaSyANRgxNQe16pM9pb2BaORbJkQvPoHP_eR8';
+  null;
 
 function toSafeDownloadCount(value: unknown): number {
   const n = Number(value ?? 0);
@@ -68,7 +66,7 @@ function mapRestDocToPage(doc: FirestoreRestDoc) {
   };
 }
 
-async function fetchPagesFromRest(projectId: string, apiKey: string) {
+async function fetchPagesFromRest(projectId: string, apiKey: string | null) {
   if (!projectId || !apiKey) return [];
 
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/coloringPages?key=${encodeURIComponent(apiKey)}`;
