@@ -10,7 +10,8 @@
     "lint": "next lint",
     "check:sms-compliance": "node ./scripts/verify-sms-compliance-asset.cjs",
     "check:prod": "npm run check:sms-compliance && next build",
-    "deploy": "npm run check:prod && firebase deploy --only apphosting:website --project cobblestone-pos"
+    "deploy": "npm run check:prod && firebase deploy --only apphosting:website --project cobblestone-pos",
+    "vercel:setup-domain": "powershell -ExecutionPolicy Bypass -File ./scripts/setup-vercel-domain.ps1"
   },
   "dependencies": {
     "next": "^16.2.6",

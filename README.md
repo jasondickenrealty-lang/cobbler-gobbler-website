@@ -161,6 +161,16 @@ In Vercel Dashboard:
 vercel --prod
 ```
 
+### 5. Deploy and Attach Domains
+
+From inside `website`, run:
+
+```bash
+npm run vercel:setup-domain
+```
+
+This deploys the linked Vercel project, adds `cobblestonepos.com` and `www.cobblestonepos.com`, and prints the DNS records Vercel expects at your registrar.
+
 ### Safer Deployment Flow (Recommended)
 
 Use this to avoid accidental production deploys and reduce hitting Vercel daily limits:

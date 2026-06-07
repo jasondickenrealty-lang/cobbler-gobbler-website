@@ -137,6 +137,22 @@ export default function HomePage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
 
+        <section className="bg-dark py-10 md:py-14">
+          <div className="mx-auto max-w-5xl px-6">
+            <div className="overflow-hidden rounded-[2rem] shadow-[0_24px_60px_rgba(0,0,0,0.5)]">
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  src="https://www.youtube.com/embed/OnhNHFCokwo?rel=0"
+                  title="Cobblestone Creamery"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 h-full w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="relative isolate overflow-hidden border-b-4 border-gold bg-dark text-white">
           <video
             autoPlay

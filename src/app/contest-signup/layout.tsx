@@ -38,6 +38,7 @@ const eventJsonLd = {
   name: '1st Annual Cobbler Eating Contest',
   description:
     "Competitive eating contest featuring Cobblestone Creamery's Peach Cobbler Cheesecake Bowl at Food Truck Fest in downtown Evansville, Indiana. Only 10 contestants. Fastest finish wins $100 cash.",
+  image: `${SITE_URL}/assets/cobbler-eating-contest-flyer.png`,
   startDate: '2026-05-24',
   endDate: '2026-05-24',
   eventStatus: 'https://schema.org/EventScheduled',
@@ -60,6 +61,11 @@ const eventJsonLd = {
     url: SITE_URL,
     telephone: '(812) 205-3322',
   },
+  performer: {
+    '@type': 'Organization',
+    name: 'Cobblestone Creamery',
+    url: SITE_URL,
+  },
   offers: {
     '@type': 'Offer',
     name: 'Contest Registration',
@@ -67,6 +73,7 @@ const eventJsonLd = {
     priceCurrency: 'USD',
     availability: 'https://schema.org/InStock',
     url: `${SITE_URL}/contest-signup`,
+    validFrom: '2026-05-01',
   },
 };
 
