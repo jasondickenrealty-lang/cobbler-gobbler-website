@@ -1,5 +1,28 @@
 import type { Metadata } from 'next';
 
+// ── SEO A/B Title Variants ──────────────────────────────────────────────────
+// Variant A (current): hours + address in title (high local intent)
+//   'Hours & Location | Cobblestone Creamery — 900 Main St, Evansville, IN'
+// Variant B: directions-focused ("how to get to" intent)
+//   'Directions & Hours | Cobblestone Creamery — Downtown Evansville, IN'
+// Variant C: near-me intent
+//   'Ice Cream Near Me — Cobblestone Creamery | 900 Main St, Evansville IN'
+//
+// ── SEO A/B Description Variants ───────────────────────────────────────────
+// Variant A (current):
+//   "Visit Cobblestone Creamery at 900 Main Street in downtown Evansville,
+//    Indiana 47708. Open 7 days a week. Mon–Thu 11am–9pm, Fri–Sat 11am–10pm,
+//    Sun 12pm–8pm. Get directions and call (812) 205-3322."
+// Variant B: parking + landmark (reduces friction for first-timers)
+//   "Find Cobblestone Creamery in downtown Evansville at 900 Main Street —
+//    easy parking nearby. Open 7 days: Mon–Thu 11am–9pm, Fri–Sat 11am–10pm,
+//    Sun 12pm–8pm. Call (812) 205-3322 or order ahead online."
+// Variant C: neighborhood story (works for 'things to do in evansville' intent)
+//   "Cobblestone Creamery is in the heart of downtown Evansville, IN at
+//    900 Main Street. Open 7 days a week for walk-ins and online pickup
+//    orders. Your next scoop is closer than you think."
+// ───────────────────────────────────────────────────────────────────────────
+
 const SITE_URL = 'https://cobblestonecreamery.com';
 
 export const metadata: Metadata = {

@@ -11,6 +11,8 @@
     "check:sms-compliance": "node ./scripts/verify-sms-compliance-asset.cjs",
     "check:prod": "npm run check:sms-compliance && next build",
     "deploy": "npm run check:prod && firebase deploy --only apphosting:website --project cobblestone-pos",
+    "deploy:pos": "npm run check:prod && firebase deploy --only apphosting:cobblestonepos-site --project cobblestone-pos",
+    "deploy:all": "npm run check:prod && firebase deploy --only apphosting:website,apphosting:cobblestonepos-site --project cobblestone-pos",
     "vercel:setup-domain": "powershell -ExecutionPolicy Bypass -File ./scripts/setup-vercel-domain.ps1"
   },
   "dependencies": {

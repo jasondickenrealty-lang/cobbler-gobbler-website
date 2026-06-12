@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Bebas_Neue, Source_Sans_3 } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ChatWidgetGate from '@/components/ChatWidgetGate';
+import EmailCapturePopup from '@/components/EmailCapturePopup';
 import './globals.css';
 
 const bodyFont = Source_Sans_3({
@@ -16,6 +17,29 @@ const displayFont = Bebas_Neue({
 });
 
 const SITE_URL = 'https://cobblestonecreamery.com';
+
+// ── SEO A/B Title Variants (swap default below to test) ────────────────────
+// Variant A (current): keyword-first, local signal
+//   'Cobblestone Creamery | Ice Cream Shop in Evansville, IN'
+// Variant B: benefit-first
+//   'Fresh Waffle Cones & Milkshakes | Cobblestone Creamery Evansville, IN'
+// Variant C: action-first (best for "ice cream near me" searches)
+//   'Ice Cream in Evansville, IN | Cobblestone Creamery – Order Online'
+//
+// ── SEO A/B Description Variants ───────────────────────────────────────────
+// Variant A (current): shop intro + order CTA
+//   "Cobblestone Creamery — Evansville's locally owned ice cream shop at
+//    900 Main Street. Fresh waffle cones made daily, signature milkshakes,
+//    sundaes, and classic cobblers. Open 7 days a week. Order online for pickup!"
+// Variant B: social proof + location signal (test if CTR improves)
+//   "Evansville's #1 local ice cream shop. Fresh waffle cones, loaded
+//    milkshakes & sundaes at 900 Main Street downtown. Open daily — order
+//    online for fast pickup or walk right in."
+// Variant C: conversational / brand voice
+//   "The kind of ice cream shop that stops you on the sidewalk. Fresh waffle
+//    cones, signature milkshakes, and cobblers in downtown Evansville, IN.
+//    Order ahead or walk in — 900 Main Street, open 7 days."
+// ───────────────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -179,6 +203,7 @@ export default function RootLayout({
       <body className="font-sans text-dark">
         <AuthProvider>
           {children}
+          <EmailCapturePopup />
           <ChatWidgetGate />
         </AuthProvider>
       </body>
