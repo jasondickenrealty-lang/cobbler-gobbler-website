@@ -75,7 +75,7 @@ export default function FundraisingPage() {
                   Host a fundraising night at Cobblestone Creamery! We&apos;ll donate a
                   percentage of all sales during your event back to your organization.
                   It&apos;s a fun, easy way to raise money while your supporters enjoy
-                  handcrafted ice cream.
+                  premium ice cream.
                 </p>
                 <ul className="space-y-3 text-dark/70">
                   <li className="flex items-start gap-3">

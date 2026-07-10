@@ -14,7 +14,7 @@ type NavLink = {
 const navLinks: NavLink[] = [
   { href: '/', label: 'Home' },
   { href: '/menu', label: 'Menu' },
-  { href: WHOLESALE_URL, label: 'Wholesale', external: true },
+  { href: '/current-flavors', label: 'Flavors' },
   { href: '/about', label: 'Our Story' },
   { href: '/fundraising', label: 'Fundraising' },
   { href: '/join-our-team', label: 'Join Our Team' },
@@ -23,6 +23,7 @@ const navLinks: NavLink[] = [
 
 const utilityLinks: NavLink[] = [
   { href: '/free-kids-scoop', label: 'Free Kids Scoop' },
+  { href: WHOLESALE_URL, label: 'Wholesale', external: true },
   { href: FREE_GAME_PLAY_URL, label: 'Game Play', external: true },
 ];
 

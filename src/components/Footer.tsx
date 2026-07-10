@@ -4,6 +4,12 @@ import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL, WHOLESALE_URL } from '@/lib/links
 const quickLinks = [
   { href: '/menu', label: 'Menu' },
   { href: ORDER_ONLINE_URL, label: 'Order Online', external: true },
+  { href: '/current-flavors', label: 'Current Flavors' },
+  { href: '/milkshakes-evansville', label: 'Signature Milkshakes' },
+  { href: '/waffle-cones-evansville', label: 'Waffle Cones' },
+  { href: '/dessert-downtown-evansville', label: 'Dessert Downtown' },
+  { href: '/ice-cream-catering-evansville', label: 'Catering' },
+  { href: '/ice-cream-fundraising-evansville', label: 'Fundraising Nights' },
   { href: '/about', label: 'Our Story' },
   { href: '/free-kids-scoop', label: 'Free Kids Scoop' },
   { href: '/fundraising', label: 'Fundraising' },
@@ -80,6 +86,7 @@ export default function Footer() {
             <div className="mt-5 rounded-[1.75rem] border border-white/[0.12] bg-white/[0.06] p-6">
               <address className="not-italic space-y-3 text-sm uppercase tracking-[0.14em] text-white/[0.72]">
                 <p className="text-white">900 Main Street</p>
+                <p>Inside Main Street Food &amp; Beverage</p>
                 <p>Evansville, Indiana 47708</p>
                 <p>
                   <a href="tel:+18122053322" className="transition-colors hover:text-gold">

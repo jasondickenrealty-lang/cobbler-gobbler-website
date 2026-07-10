@@ -90,9 +90,9 @@ export default function LocationPage() {
           <div className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
             <h1 className="text-4xl md:text-5xl font-serif text-primary mb-6">Visit Our Ice Cream Shop in Downtown Evansville</h1>
             <p className="text-dark/60 text-lg">
-              Cobblestone Creamery is located at 900 Main Street in the heart of downtown Evansville, Indiana.
-              Stop by for handcrafted ice cream, fresh waffle cones, signature milkshakes, sundaes, and classic
-              cobblers — or{' '}
+              Cobblestone Creamery is located at 900 Main Street, inside Main Street Food &amp; Beverage,
+              in the heart of downtown Evansville, Indiana. Stop by for premium ice cream, fresh waffle cones,
+              signature milkshakes, loaded sundaes, and cobbler bowls — or{' '}
               <a href={ORDER_ONLINE_URL} className="text-primary hover:text-gold underline transition-colors">
                 order online for pickup
               </a>.
@@ -111,6 +111,7 @@ export default function LocationPage() {
                 <address className="not-italic text-dark/70 space-y-3">
                   <p className="font-medium text-dark">{businessInfo.name}</p>
                   <p>{businessInfo.address}</p>
+                  <p className="text-dark/60">Inside Main Street Food &amp; Beverage</p>
                   <p>{businessInfo.city}, {businessInfo.state} {businessInfo.zip}</p>
                   <div className="pt-4 space-y-2">
                     <p>
@@ -172,8 +173,44 @@ export default function LocationPage() {
           </div>
         </section>
 
-        {/* Internal links */}
+        {/* Getting here, parking & pickup */}
         <section className="bg-white">
+          <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
+            <div className="grid gap-10 md:grid-cols-3">
+              <div>
+                <h2 className="font-serif text-xl text-primary mb-2">Getting Here</h2>
+                <div className="w-10 h-0.5 bg-gold mb-4"></div>
+                <p className="text-dark/70 leading-relaxed text-sm">
+                  You&apos;ll find us on Main Street in downtown Evansville, inside Main Street Food &amp;
+                  Beverage — a short walk from the Ford Center and the shops and restaurants along the
+                  downtown Main Street corridor.
+                </p>
+              </div>
+              <div>
+                <h2 className="font-serif text-xl text-primary mb-2">Parking</h2>
+                <div className="w-10 h-0.5 bg-gold mb-4"></div>
+                <p className="text-dark/70 leading-relaxed text-sm">
+                  Street parking is available along Main Street and the surrounding downtown blocks, with
+                  additional public parking nearby. Grab a spot and walk right in.
+                </p>
+              </div>
+              <div>
+                <h2 className="font-serif text-xl text-primary mb-2">Order-Ahead Pickup</h2>
+                <div className="w-10 h-0.5 bg-gold mb-4"></div>
+                <p className="text-dark/70 leading-relaxed text-sm">
+                  Skip the line:{' '}
+                  <a href={ORDER_ONLINE_URL} className="text-primary hover:text-gold underline transition-colors">
+                    order online for pickup
+                  </a>{' '}
+                  and your scoops, shakes, and sundaes will be ready when you arrive at 900 Main Street.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Internal links */}
+        <section className="bg-cream">
           <div className="max-w-3xl mx-auto px-6 py-16 text-center">
             <h2 className="font-serif text-2xl text-primary mb-6">Explore Cobblestone Creamery</h2>
             <div className="flex flex-wrap justify-center gap-4">

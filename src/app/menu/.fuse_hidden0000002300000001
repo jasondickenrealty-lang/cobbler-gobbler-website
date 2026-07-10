@@ -57,7 +57,7 @@ export default async function MenuPage() {
       {menuJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(menuJsonLd).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(menuJsonLd) }}
         />
       )}
       <Navbar />

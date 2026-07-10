@@ -9,14 +9,14 @@ const SITE_URL = 'https://cobblestonecreamery.com';
 export const metadata: Metadata = {
   title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery — 900 Main St',
   description:
-    'Cobblestone Creamery is the best ice cream shop in Evansville, Indiana. Handcrafted ice cream, fresh waffle cones, classic cobblers, thick milkshakes, and sundaes at 900 Main Street in downtown Evansville. Open 7 days a week — order online for pickup!',
+    'Cobblestone Creamery is the best ice cream shop in Evansville, Indiana. Premium ice cream, fresh waffle cones, classic cobblers, thick milkshakes, and sundaes at 900 Main Street in downtown Evansville. Open 7 days a week — order online for pickup!',
   alternates: {
     canonical: `${SITE_URL}/ice-cream-evansville-in`,
   },
   openGraph: {
     title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery — 900 Main St',
     description:
-      'Handcrafted ice cream, fresh waffle cones, cobblers, and milkshakes in downtown Evansville, Indiana. Visit Cobblestone Creamery at 900 Main Street or order online for pickup. Open 7 days a week!',
+      'Premium ice cream, fresh waffle cones, cobblers, and milkshakes in downtown Evansville, Indiana. Visit Cobblestone Creamery at 900 Main Street or order online for pickup. Open 7 days a week!',
     url: `${SITE_URL}/ice-cream-evansville-in`,
     images: [{ url: '/logo.png', width: 800, height: 800, alt: 'Best ice cream in Evansville, IN — Cobblestone Creamery at 900 Main Street' }],
   },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Best Ice Cream in Evansville, IN | Cobblestone Creamery',
     description:
-      'Handcrafted ice cream, waffle cones, milkshakes & cobblers at 900 Main Street in downtown Evansville, IN. Open 7 days a week — order online for pickup!',
+      'Premium ice cream, waffle cones, milkshakes & cobblers at 900 Main Street in downtown Evansville, IN. Open 7 days a week — order online for pickup!',
     images: ['/logo.png'],
   },
 };
@@ -57,7 +57,7 @@ const FAQ_ITEMS = [
   {
     question: 'Do you serve anything besides ice cream?',
     answer:
-      'Absolutely! In addition to our handcrafted ice cream, we serve classic cobblers baked fresh with seasonal fruits, thick milkshakes, sundaes, and other delicious desserts.',
+      'Absolutely! In addition to our premium ice cream, we serve classic cobblers with seasonal fruits, thick milkshakes, sundaes, and other delicious desserts.',
   },
   {
     question: 'Do you offer a free kids scoop?',
@@ -100,8 +100,8 @@ export default function IceCreamEvansvillePage() {
             </h1>
             <p className="text-dark/60 text-lg leading-relaxed">
               Cobblestone Creamery is a locally owned ice cream shop in downtown
-              Evansville, Indiana, serving handcrafted ice cream, classic
-              cobblers, thick milkshakes, and seasonal desserts made fresh daily
+              Evansville, Indiana, serving premium ice cream, classic
+              cobblers, thick milkshakes, and seasonal desserts made
               with premium ingredients.
             </p>
           </div>
@@ -115,12 +115,11 @@ export default function IceCreamEvansvillePage() {
             </h2>
             <div className="grid md:grid-cols-2 gap-10">
               <div>
-                <h3 className="font-serif text-xl text-primary mb-3">Made Fresh Every Day</h3>
+                <h3 className="font-serif text-xl text-primary mb-3">Premium Ice Cream</h3>
                 <p className="text-dark/60 leading-relaxed">
-                  Every batch of ice cream is crafted from scratch each morning
-                  in our downtown Evansville shop. We use premium ingredients to
-                  create bold, creative flavors that keep Evansville coming back
-                  for more.
+                  We serve premium ice cream in bold, creative flavors at our
+                  downtown Evansville shop. Made with premium ingredients, our
+                  scoops keep Evansville coming back for more.
                 </p>
               </div>
               <div>
@@ -163,7 +162,7 @@ export default function IceCreamEvansvillePage() {
             </p>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
               {[
-                { name: 'Handcrafted Ice Cream', desc: 'Small-batch scoops in rotating and classic flavors, made fresh daily.' },
+                { name: 'Premium Ice Cream', desc: 'Premium scoops in rotating and classic flavors.' },
                 { name: 'Classic Cobblers', desc: 'Warm, fruit-filled cobblers with buttery crusts baked in-house.' },
                 { name: 'Thick Milkshakes', desc: 'Rich, creamy milkshakes blended with your favorite ice cream flavor.' },
                 { name: 'Sundaes', desc: 'Build your own with house-made toppings, sauces, and whipped cream.' },

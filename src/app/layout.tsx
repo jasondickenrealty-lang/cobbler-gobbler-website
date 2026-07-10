@@ -3,6 +3,7 @@ import { Bebas_Neue, Source_Sans_3 } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ChatWidgetGate from '@/components/ChatWidgetGate';
 import EmailCapturePopup from '@/components/EmailCapturePopup';
+import MobileActionBar from '@/components/MobileActionBar';
 import './globals.css';
 
 const bodyFont = Source_Sans_3({
@@ -18,29 +19,6 @@ const displayFont = Bebas_Neue({
 
 const SITE_URL = 'https://cobblestonecreamery.com';
 
-// ── SEO A/B Title Variants (swap default below to test) ────────────────────
-// Variant A (current): keyword-first, local signal
-//   'Cobblestone Creamery | Ice Cream Shop in Evansville, IN'
-// Variant B: benefit-first
-//   'Fresh Waffle Cones & Milkshakes | Cobblestone Creamery Evansville, IN'
-// Variant C: action-first (best for "ice cream near me" searches)
-//   'Ice Cream in Evansville, IN | Cobblestone Creamery – Order Online'
-//
-// ── SEO A/B Description Variants ───────────────────────────────────────────
-// Variant A (current): shop intro + order CTA
-//   "Cobblestone Creamery — Evansville's locally owned ice cream shop at
-//    900 Main Street. Fresh waffle cones made daily, signature milkshakes,
-//    sundaes, and classic cobblers. Open 7 days a week. Order online for pickup!"
-// Variant B: social proof + location signal (test if CTR improves)
-//   "Evansville's #1 local ice cream shop. Fresh waffle cones, loaded
-//    milkshakes & sundaes at 900 Main Street downtown. Open daily — order
-//    online for fast pickup or walk right in."
-// Variant C: conversational / brand voice
-//   "The kind of ice cream shop that stops you on the sidewalk. Fresh waffle
-//    cones, signature milkshakes, and cobblers in downtown Evansville, IN.
-//    Order ahead or walk in — 900 Main Street, open 7 days."
-// ───────────────────────────────────────────────────────────────────────────
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -48,7 +26,7 @@ export const metadata: Metadata = {
     template: '%s | Cobblestone Creamery',
   },
   description:
-    'Cobblestone Creamery — Evansville\'s locally owned ice cream shop at 900 Main Street. Fresh waffle cones made daily, signature milkshakes, sundaes, and classic cobblers. Open 7 days a week in downtown Evansville, IN. Order online for pickup!',
+    'Cobblestone Creamery — Evansville\'s locally owned ice cream shop at 900 Main Street, inside Main Street Food & Beverage. Premium ice cream, fresh waffle cones, signature milkshakes, loaded sundaes, and cobbler bowls. Open 7 days a week in downtown Evansville, IN. Order online for pickup!',
   icons: {
     icon: '/favicon.ico',
   },
@@ -94,7 +72,7 @@ const jsonLd = {
   '@type': 'IceCreamShop',
   name: 'Cobblestone Creamery',
   alternateName: 'Cobblestone Creamery Evansville',
-  description: 'Locally owned ice cream shop in downtown Evansville, Indiana serving handcrafted ice cream, fresh waffle cones, milkshakes, sundaes, and classic cobblers. Order online for pickup at 900 Main Street.',
+  description: 'Locally owned ice cream shop in downtown Evansville, Indiana, inside Main Street Food & Beverage, serving premium ice cream, fresh waffle cones, signature milkshakes, loaded sundaes, and cobbler bowls. Order online for pickup at 900 Main Street.',
   foundingDate: '2026',
   image: `${SITE_URL}/logo.png`,
   logo: `${SITE_URL}/logo.png`,
@@ -145,6 +123,18 @@ const jsonLd = {
     '@type': 'Menu',
     url: `${SITE_URL}/menu`,
   },
+  containedInPlace: {
+    '@type': 'FoodEstablishment',
+    name: 'Main Street Food & Beverage',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '900 Main Street',
+      addressLocality: 'Evansville',
+      addressRegion: 'IN',
+      postalCode: '47708',
+      addressCountry: 'US',
+    },
+  },
   areaServed: [
     { '@type': 'City', name: 'Evansville', '@id': 'https://www.wikidata.org/wiki/Q79860' },
     { '@type': 'City', name: 'Newburgh' },
@@ -183,6 +173,33 @@ const jsonLd = {
   ],
 };
 
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Cobblestone Creamery',
+  url: SITE_URL,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${SITE_URL}/menu?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Cobblestone Creamery',
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo.png`,
+  email: 'info@cobblestonecreamery.com',
+  telephone: '+18122053322',
+  foundingDate: '2026',
+  sameAs: ['https://www.facebook.com/profile.php?id=61588303764359'],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -199,12 +216,21 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
       </head>
       <body className="font-sans text-dark">
         <AuthProvider>
           {children}
           <EmailCapturePopup />
           <ChatWidgetGate />
+          <MobileActionBar />
         </AuthProvider>
       </body>
     </html>
