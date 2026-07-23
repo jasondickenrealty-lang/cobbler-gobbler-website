@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ORDER_ONLINE_URL } from '@/lib/links';
+import { isDisplayRoute } from '@/lib/displayRoutes';
 
 /**
  * Mobile-only sticky action bar with the four highest-intent local actions:
@@ -13,6 +15,12 @@ const MAPS_URL =
   'https://www.google.com/maps/search/?api=1&query=900+Main+Street+Evansville+Indiana+47708';
 
 export default function MobileActionBar() {
+  const pathname = usePathname();
+
+  // TV boards and kiosks report narrow viewports, so `lg:hidden` alone would
+  // leave this bar sitting across the bottom of the screen.
+  if (isDisplayRoute(pathname)) return null;
+
   return (
     <nav
       aria-label="Quick actions"

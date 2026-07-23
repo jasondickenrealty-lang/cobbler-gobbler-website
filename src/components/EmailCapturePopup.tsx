@@ -1,11 +1,15 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
+import { isDisplayRoute } from '@/lib/displayRoutes';
 
 const STORAGE_KEY = 'cc_email_popup_dismissed';
 const DELAY_MS = 4_000;
 
 export default function EmailCapturePopup() {
+  const pathname = usePathname();
+  const onDisplayRoute = isDisplayRoute(pathname);
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -13,6 +17,8 @@ export default function EmailCapturePopup() {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
+    // Unattended TV/kiosk screens have nobody to dismiss a popup.
+    if (onDisplayRoute) return;
     try {
       if (sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY)) return;
     } catch {
@@ -20,7 +26,7 @@ export default function EmailCapturePopup() {
     }
     const timer = setTimeout(() => setVisible(true), DELAY_MS);
     return () => clearTimeout(timer);
-  }, []);
+  }, [onDisplayRoute]);
 
   const dismiss = useCallback((permanent = false) => {
     setVisible(false);

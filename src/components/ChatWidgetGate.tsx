@@ -1,12 +1,13 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { isDisplayRoute } from '@/lib/displayRoutes';
 import ChatWidget from './ChatWidget';
 
 export default function ChatWidgetGate() {
   const pathname = usePathname();
 
-  if (pathname === '/menu-board') {
+  if (isDisplayRoute(pathname)) {
     return null;
   }
 

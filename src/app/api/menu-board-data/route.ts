@@ -91,8 +91,12 @@ function normalizeMenuItem(
   const categoryId = String(item.categoryId || '').trim();
   const linkedCategory = categoryId ? categoryById.get(categoryId) : null;
   const rawCategory = item.categoryName ?? item.category ?? linkedCategory?.name ?? categoryId;
+  // When the raw value is just an ID, the only usable name comes from the linked
+  // category. If that category is gone the item is orphaned — it can't be placed
+  // on the board, and inventing a label would put deleted-category items on the
+  // TVs where POS settings can't even see them to remove.
   const category = looksLikeGeneratedId(rawCategory)
-    ? String(linkedCategory?.name || 'Menu')
+    ? (linkedCategory?.name ? String(linkedCategory.name).trim() : null)
     : String(rawCategory).trim();
 
   return {
@@ -101,6 +105,13 @@ function normalizeMenuItem(
     categoryOrder: toNumber(linkedCategory?.displayOrder ?? item.categoryOrder, 999),
     price: toNumber(item.basePrice ?? item.price, 0),
   };
+}
+
+/** Drops orphans whose category could not be resolved. */
+function hasResolvedCategory<T extends { category: string | null }>(
+  item: T,
+): item is T & { category: string } {
+  return Boolean(item.category);
 }
 
 async function loadTenantMenuData() {
@@ -118,7 +129,8 @@ async function loadTenantMenuData() {
 
   const items = ((menuData.menuItems ?? menuData.items ?? []) as RawItem[])
     .filter(isVisibleMenuItem)
-    .map(item => normalizeMenuItem(item, categoryById));
+    .map(item => normalizeMenuItem(item, categoryById))
+    .filter(hasResolvedCategory);
   const modifierCategories = modifierData.modifierCategories ?? [];
   const modifiers = modifierData.modifiers ?? [];
   const videoUrl = (settings?.videoUrl as string) ?? null;
@@ -158,7 +170,8 @@ async function loadLegacyFlatMenuData() {
   }
   const items = [...dedupedByName.values()]
     .filter(isVisibleMenuItem)
-    .map(item => normalizeMenuItem(item, categoryById));
+    .map(item => normalizeMenuItem(item, categoryById))
+    .filter(hasResolvedCategory);
   const modifierCategories = modCatDocs;
   const modifiers = modDocs;
   const videoUrl = (settings?.videoUrl as string) ?? null;
