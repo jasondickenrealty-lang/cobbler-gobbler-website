@@ -487,12 +487,6 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
             </div>
           </FitToScreen>
         </div>
-
-        {/* Footer */}
-        <footer className={styles.mainFooter}>
-          <span className={styles.footerAddress}>900 Main Street &bull; Evansville, Indiana</span>
-          <span className={styles.footerAddress}>cobblestonecreamery.com</span>
-        </footer>
       </div>
     </>
   );

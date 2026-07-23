@@ -356,19 +356,6 @@
 }
 
 /* Footer */
-.mainFooter {
-  background: #1a1a1a;
-  padding: 0.35rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
-.footerAddress {
-  color: rgba(255,255,255,0.4);
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
-}
 .liveIndicator {
   display: flex;
   align-items: center;
