@@ -206,7 +206,7 @@
 }
 .modCatName {
   font-family: Georgia, serif;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   color: #1a1a1a;
   margin: 0 0 0.45rem;
   font-weight: 700;
@@ -221,7 +221,7 @@
 .modPill {
   background: rgba(0,0,0,0.06);
   color: #1a1a1a;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.1);
@@ -289,7 +289,7 @@
 .mainHeader {
   background: #1a1a1a;
   padding: 0 2rem;
-  height: 72px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -297,7 +297,7 @@
   position: relative;
 }
 .headerLogo {
-  height: 52px;
+  height: 40px;
   width: auto;
   object-fit: contain;
 }
@@ -358,7 +358,7 @@
 /* Footer */
 .mainFooter {
   background: #1a1a1a;
-  padding: 0.55rem 2rem;
+  padding: 0.35rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -449,4 +449,141 @@
 }
 .adsDotActive {
   background: #fff;
+}
+
+/* ── Static full-menu board ─────────────────────────────────────────────── */
+.boardBody {
+  flex: 1;
+  min-height: 0;
+  padding: 0.9rem 1.6rem;
+  overflow: hidden;
+}
+.fitOuter {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+}
+/*
+ * Design canvas. FitToScreen sets this width at runtime to the value that lets
+ * the board fill BOTH the width and height of the screen once uniformly scaled
+ * (roughly contentHeight × screenAspect), then applies the scale transform.
+ * The 1600px here is only the pre-measurement fallback. flex-shrink:0 stops the
+ * centering flex parent from collapsing the canvas back to its own width, which
+ * would peg the scale to height alone and strand the menu small in the middle.
+ */
+.fitInner {
+  width: 1600px;
+  flex-shrink: 0;
+  transform-origin: top center;
+}
+.boardColumns {
+  column-gap: 1.6rem;
+  width: 100%;
+}
+.card {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  background: rgba(255, 255, 255, 0.93);
+  border-radius: 12px;
+  padding: 0.8rem 1.15rem 0.9rem;
+  margin: 0 0 0.85rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  display: inline-block;
+  width: 100%;
+}
+.cardHeader {
+  margin-bottom: 0.45rem;
+}
+.cardTitle {
+  font-family: Georgia, serif;
+  font-size: 2.4rem;
+  color: #1a1a1a;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* Let names/descriptions wrap inside the narrower static cards */
+.card .itemName {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  font-size: 1.6rem;
+}
+/* Keep descriptions to a single line on the board — wrapping them was the main
+ * thing driving the columns tall and forcing the whole menu to shrink. */
+.card .itemDescription {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card .itemRow {
+  padding: 0.3rem 0;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.card .itemPrice {
+  font-size: 1.7rem;
+}
+.card .itemDescription {
+  font-size: 1rem;
+}
+
+/* Waffle bowl upsell — a callout, deliberately unlike the white menu cards */
+.promoCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, #2C2420 0%, #7B2D3B 100%);
+  border: 2px solid #C8956C;
+  box-shadow: 0 6px 18px rgba(123, 45, 59, 0.28);
+}
+.promoIcon {
+  font-size: 3.2rem;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+.promoBody {
+  flex: 1;
+  min-width: 0;
+}
+.promoTitle {
+  font-family: Georgia, serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #FAF1E9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  margin: 0;
+}
+.promoDetail {
+  font-size: 1.05rem;
+  color: rgba(250, 241, 233, 0.78);
+  margin: 0.25rem 0 0;
+  line-height: 1.3;
+}
+.promoPrice {
+  font-family: Georgia, serif;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #C8956C;
+  flex: 0 0 auto;
+}
+
+/* Item photos — a few accents across the board, not one per item */
+.itemThumb {
+  flex: 0 0 6rem;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 10px;
+  object-fit: cover;
+  background: rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
