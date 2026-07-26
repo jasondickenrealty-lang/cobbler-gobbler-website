@@ -357,18 +357,44 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
         const seen = new Set<string>();
         const catOrder: string[] = [];
         for (const it of sorted) { if (!seen.has(it.category)) { seen.add(it.category); catOrder.push(it.category); } }
+
+        // A real "Waffle Bowl" category set up in the POS makes the bowl's price and
+        // menu position editable there. When present, we render THAT category with the
+        // promo callout styling (not a plain category card) at its POS-ordered spot,
+        // driving the title/detail/price from its item, and suppress the hardcoded
+        // promo below so the bowl never shows twice. Until a POS Waffle Bowl category
+        // exists, the hardcoded promo stays as a fallback so the upsell never
+        // disappears from the TVs.
+        const isWaffleBowlCat = (cat: string) => cat.toLowerCase().includes('waffle bowl');
+        const hasWaffleBowlCategory = catOrder.some(isWaffleBowlCat);
+
         const newCards: Card[] = [];
         for (const cat of catOrder) {
+          if (isWaffleBowlCat(cat)) {
+            const bowlItem = sorted.find(i => i.category === cat);
+            const price = bowlItem && toNumber(bowlItem.price) > 0
+              ? `+$${formatMoney(bowlItem.price)}`
+              : WAFFLE_BOWL_PROMO.price;
+            newCards.push({
+              kind: 'promo' as const,
+              id: `promo-${cat}`,
+              title: bowlItem?.name?.trim() || WAFFLE_BOWL_PROMO.title,
+              detail: bowlItem?.description?.trim() || WAFFLE_BOWL_PROMO.detail,
+              price,
+            });
+            continue;
+          }
           newCards.push({
             kind: 'category' as const,
             id: `cat-${cat}`,
             title: cat,
             items: sorted.filter(i => i.category === cat),
           });
-          if (cat === WAFFLE_BOWL_ANCHOR) newCards.push(WAFFLE_BOWL_PROMO);
+          if (!hasWaffleBowlCategory && cat === WAFFLE_BOWL_ANCHOR) newCards.push(WAFFLE_BOWL_PROMO);
         }
-        // Anchor category missing (renamed/removed) — still show the upsell.
-        if (!newCards.some(c => c.kind === 'promo')) newCards.push(WAFFLE_BOWL_PROMO);
+        // Anchor category missing (renamed/removed) — still show the upsell,
+        // unless a POS Waffle Bowl category is already providing it.
+        if (!hasWaffleBowlCategory && !newCards.some(c => c.kind === 'promo')) newCards.push(WAFFLE_BOWL_PROMO);
 
         // One card per active toppings/modifier group, in display order.
         const activeMods = mods.filter(m => m.isActive !== false);
