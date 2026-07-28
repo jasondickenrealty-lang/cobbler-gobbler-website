@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 export const metadata: Metadata = {
   title: 'Fundraising Nights & Donations | Cobblestone Creamery Evansville, IN',
   description:
-    'Host a fundraising night at Cobblestone Creamery in Evansville, Indiana! We support schools, churches, youth sports teams, nonprofits, and local organizations. We donate a percentage of sales back to your cause. Call (812) 205-3322.',
+    'Host a fundraising night at Cobblestone Creamery in Evansville, Indiana! We support schools, churches, youth sports teams, nonprofits, and local organizations. We donate a percentage of sales back to your cause. Call (812) 499-9866.',
   alternates: {
     canonical: 'https://cobblestonecreamery.com/fundraising',
   },
@@ -151,8 +151,8 @@ export default function FundraisingPage() {
                       info@cobblestonecreamery.com
                     </a>{' '}
                     or call{' '}
-                    <a href="tel:+18122053322" className="text-primary hover:text-gold underline transition-colors">
-                      (812) 205-3322
+                    <a href="tel:+18124999866" className="text-primary hover:text-gold underline transition-colors">
+                      (812) 499-9866
                     </a>{' '}
                     with your organization name, event details, and preferred date. For donation
                     requests, let us know what type of event you&apos;re hosting and how the
@@ -248,10 +248,10 @@ export default function FundraisingPage() {
                 Email Us
               </a>
               <a
-                href="tel:+18122053322"
+                href="tel:+18124999866"
                 className="inline-block bg-white/10 text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-white/20 transition-colors border border-white/20"
               >
-                Call (812) 205-3322
+                Call (812) 499-9866
               </a>
             </div>
           </div>

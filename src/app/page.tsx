@@ -34,7 +34,7 @@ const faqItems = [
   {
     question: 'What are your hours?',
     answer:
-      'We are open Monday through Thursday from 11:00 AM to 9:00 PM, Friday and Saturday from 11:00 AM to 10:00 PM, and Sunday from 12:00 PM to 8:00 PM.',
+      'We are open Monday through Thursday from 11:00 AM to 2:00 PM and 4:00 PM to 9:00 PM, Friday from 11:00 AM to 2:00 PM and 4:00 PM to 10:00 PM, Saturday from 11:00 AM to 10:00 PM, and Sunday from 12:00 PM to 6:00 PM.',
   },
 ];
 
@@ -123,7 +123,7 @@ const clubhouseNotes = [
 
 const visitStats = [
   { label: 'Address', value: '900 Main Street' },
-  { label: 'Call Ahead', value: '(812) 205-3322' },
+  { label: 'Call Ahead', value: '(812) 499-9866' },
   { label: 'Order Pickup', value: 'Fast Checkout' },
   { label: 'Open Late', value: 'Fri + Sat' },
 ];
@@ -539,8 +539,8 @@ export default function HomePage() {
                   <p>900 Main Street</p>
                   <p>Evansville, Indiana 47708</p>
                   <p>
-                    <a href="tel:+18122053322" className="transition-colors hover:text-gold">
-                      (812) 205-3322
+                    <a href="tel:+18124999866" className="transition-colors hover:text-gold">
+                      (812) 499-9866
                     </a>
                   </p>
                 </address>
@@ -581,13 +581,16 @@ export default function HomePage() {
                   <p className="text-sm uppercase tracking-[0.3em] text-dugout-red">Hours</p>
                   <div className="mt-5 grid gap-3 text-base leading-7 text-dark/[0.76]">
                     <p>
-                      <span className="font-semibold text-dark">Monday - Thursday:</span> 11:00 AM - 9:00 PM
+                      <span className="font-semibold text-dark">Monday - Thursday:</span> 11:00 AM - 2:00 PM, 4:00 PM - 9:00 PM
                     </p>
                     <p>
-                      <span className="font-semibold text-dark">Friday - Saturday:</span> 11:00 AM - 10:00 PM
+                      <span className="font-semibold text-dark">Friday:</span> 11:00 AM - 2:00 PM, 4:00 PM - 10:00 PM
                     </p>
                     <p>
-                      <span className="font-semibold text-dark">Sunday:</span> 12:00 PM - 8:00 PM
+                      <span className="font-semibold text-dark">Saturday:</span> 11:00 AM - 10:00 PM
+                    </p>
+                    <p>
+                      <span className="font-semibold text-dark">Sunday:</span> 12:00 PM - 6:00 PM
                     </p>
                   </div>
                   <p className="mt-5 text-base leading-7 text-dark/70">

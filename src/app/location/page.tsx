@@ -27,12 +27,13 @@ const FALLBACK: BusinessInfo = {
   city: 'Evansville',
   state: 'Indiana',
   zip: '47708',
-  phone: '(812) 205-3322',
+  phone: '(812) 499-9866',
   email: VISIT_US_EMAIL,
   hours: {
-    'Monday - Thursday': '11:00 AM – 9:00 PM',
-    'Friday - Saturday': '11:00 AM – 10:00 PM',
-    'Sunday': '12:00 PM – 8:00 PM',
+    'Monday - Thursday': '11:00 AM – 2:00 PM, 4:00 PM – 9:00 PM',
+    'Friday': '11:00 AM – 2:00 PM, 4:00 PM – 10:00 PM',
+    'Saturday': '11:00 AM – 10:00 PM',
+    'Sunday': '12:00 PM – 6:00 PM',
   },
 };
 

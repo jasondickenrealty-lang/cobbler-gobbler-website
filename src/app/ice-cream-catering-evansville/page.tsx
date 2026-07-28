@@ -58,7 +58,7 @@ const serviceJsonLd = {
   provider: {
     '@type': 'IceCreamShop',
     name: 'Cobblestone Creamery',
-    telephone: '+1-812-205-3322',
+    telephone: '+1-812-499-9866',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '900 Main Street',
@@ -79,7 +79,7 @@ const FAQ_ITEMS = [
   {
     question: 'How do I plan ice cream catering for my event?',
     answer:
-      'The best first step is to call us at (812) 205-3322 or place a large pickup order online. Tell us your date, headcount, and the kinds of treats you want, and we will help you put together a plan that fits your event.',
+      'The best first step is to call us at (812) 499-9866 or place a large pickup order online. Tell us your date, headcount, and the kinds of treats you want, and we will help you put together a plan that fits your event.',
   },
   {
     question: 'What can you include in an event order?',
@@ -125,7 +125,7 @@ export default function IceCreamCateringEvansvillePage() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="tel:+18122053322"
+                href="tel:+18124999866"
                 className="inline-block bg-gold text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
                 Call to Plan Your Event
@@ -185,7 +185,7 @@ export default function IceCreamCateringEvansvillePage() {
             </h2>
             <p>
               Planning is simple. Give us a call at{' '}
-              <a href="tel:+18122053322" className="text-primary hover:text-gold transition-colors font-medium">(812) 205-3322</a>{' '}
+              <a href="tel:+18124999866" className="text-primary hover:text-gold transition-colors font-medium">(812) 499-9866</a>{' '}
               to talk through the details, or{' '}
               <a href={ORDER_ONLINE_URL} className="text-primary hover:text-gold transition-colors font-medium">order ice cream for pickup</a>{' '}
               if a large to-go order fits your gathering. You can also{' '}
@@ -212,15 +212,16 @@ export default function IceCreamCateringEvansvillePage() {
                 <p>Inside Main Street Food &amp; Beverage</p>
                 <p>900 Main Street, Evansville, Indiana 47708</p>
                 <p className="pt-2">
-                  <a href="tel:+18122053322" className="text-primary hover:text-gold transition-colors font-medium">
-                    (812) 205-3322
+                  <a href="tel:+18124999866" className="text-primary hover:text-gold transition-colors font-medium">
+                    (812) 499-9866
                   </a>
                 </p>
               </address>
               <div className="mt-4 space-y-1 text-dark/70">
-                <p>Monday &ndash; Thursday: 11am &ndash; 9pm</p>
-                <p>Friday &ndash; Saturday: 11am &ndash; 10pm</p>
-                <p>Sunday: 12pm &ndash; 8pm</p>
+                <p>Monday &ndash; Thursday: 11am &ndash; 2pm, 4pm &ndash; 9pm</p>
+                <p>Friday: 11am &ndash; 2pm, 4pm &ndash; 10pm</p>
+                <p>Saturday: 11am &ndash; 10pm</p>
+                <p>Sunday: 12pm &ndash; 6pm</p>
               </div>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                 <a
@@ -232,7 +233,7 @@ export default function IceCreamCateringEvansvillePage() {
                   Get Directions
                 </a>
                 <a
-                  href="tel:+18122053322"
+                  href="tel:+18124999866"
                   className="inline-block border border-primary/30 text-primary px-6 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/5 transition-colors text-center"
                 >
                   Call Now
@@ -271,7 +272,7 @@ export default function IceCreamCateringEvansvillePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="tel:+18122053322"
+                href="tel:+18124999866"
                 className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
                 Call Now

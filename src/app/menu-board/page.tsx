@@ -192,13 +192,32 @@ function FitToScreen({ children, deps }: { children: React.ReactNode; deps: unkn
     const inner = innerRef.current;
     if (!outer || !inner) return;
 
-    // Lay the board out at a given canvas width and report its natural size.
+    // The multi-column element itself. column-fill does not inherit, so it has
+    // to be switched on that element rather than on the canvas wrapper.
+    const cols = inner.querySelector<HTMLElement>('[data-board-columns]');
+
+    // Lay the board out at a given canvas width with balanced columns, letting
+    // height fall out of the content, and report its natural size.
     // Transform is cleared for the measurement so scrollWidth/Height are honest.
     const measureAt = (w: number) => {
+      if (cols) cols.style.columnFill = 'balance';
       inner.style.width = `${w}px`;
+      inner.style.height = '';
       inner.style.transform = 'none';
       void inner.offsetHeight; // force reflow so the new width takes effect
       return { iw: inner.scrollWidth, ih: inner.scrollHeight };
+    };
+
+    // Lay the board out on a fixed canvas with columns filling in order.
+    // Anything that does not fit spills into extra columns off the right edge,
+    // which is what `overflows` detects.
+    const layoutAt = (w: number, h: number) => {
+      if (cols) cols.style.columnFill = '';
+      inner.style.width = `${w}px`;
+      inner.style.height = `${h}px`;
+      inner.style.transform = 'none';
+      void inner.offsetHeight;
+      return { overflows: cols ? cols.scrollWidth > cols.clientWidth + 1 : false };
     };
 
     const fit = () => {
@@ -212,24 +231,42 @@ function FitToScreen({ children, deps }: { children: React.ReactNode; deps: unkn
       // limited by height and shrink into a small block floating in the middle,
       // wasting all the horizontal space.
       //
-      // Instead, pick the canvas width that makes the board fill BOTH axes once
-      // uniformly scaled. When scaled to fit the height, rendered width is
-      // ow · (contentHeight / oh)⁻¹ … the sweet spot is canvasWidth ≈
-      // contentHeight × screenAspect. Content height barely moves with width
-      // once descriptions stop wrapping, so measure a wide layout for the height
-      // floor, aim for that width, then refine once for the mild coupling.
+      // Instead, pick a canvas whose shape matches the screen, so scaling fills
+      // both axes at once. With canvasWidth = canvasHeight × screenAspect the
+      // two fit ratios are equal, and the board fills the screen exactly.
+      // Measuring balanced first gives a good starting height: it is the
+      // shortest the columns could ever be.
       let m = measureAt(ow * 1.6);
       if (!m.ih) return;
-      let w = m.ih * aspect;
-      m = measureAt(w);
-      w = (m.ih || 1) * aspect;
-      // Guardrails so a bad measurement can't blow the board up or collapse it.
-      w = Math.max(ow * 0.5, Math.min(w, ow * 3));
-      m = measureAt(w);
-      if (!m.iw || !m.ih) return;
+      m = measureAt(m.ih * aspect);
+      let h = m.ih;
+      if (!h) return;
 
-      const next = Math.min((ow / m.iw) * FIT_SAFETY, (oh / m.ih) * FIT_SAFETY, MAX_FIT_SCALE);
+      // Filling columns in order needs more height than balancing them, because
+      // a card that overhangs the bottom moves on whole and leaves the gap. Grow
+      // the canvas until every card fits in the columns we have.
+      let fits = false;
+      for (let i = 0; i < 28 && !fits; i++) {
+        const w = Math.max(ow * 0.5, Math.min(h * aspect, ow * 3));
+        fits = !layoutAt(w, h).overflows;
+        if (!fits) h *= 1.06;
+      }
+
+      if (!fits) {
+        // Could not place every card in order — fall back to balanced columns so
+        // the board still shows the whole menu rather than clipping it.
+        const b = measureAt(Math.max(ow * 0.5, Math.min(h * aspect, ow * 3)));
+        if (!b.iw || !b.ih) return;
+        const back = Math.min((ow / b.iw) * FIT_SAFETY, (oh / b.ih) * FIT_SAFETY, MAX_FIT_SCALE);
+        inner.style.transform = `scale(${back})`;
+        setScale(prev => (Math.abs(prev - back) > 0.005 ? back : prev));
+        return;
+      }
+
+      const w = Math.max(ow * 0.5, Math.min(h * aspect, ow * 3));
+      const next = Math.min((ow / w) * FIT_SAFETY, (oh / h) * FIT_SAFETY, MAX_FIT_SCALE);
       inner.style.width = `${w}px`;
+      inner.style.height = `${h}px`;
       inner.style.transform = `scale(${next})`;
       setScale(prev => (Math.abs(prev - next) > 0.005 ? next : prev));
     };
@@ -241,7 +278,25 @@ function FitToScreen({ children, deps }: { children: React.ReactNode; deps: unkn
     const ro = new ResizeObserver(fit);
     ro.observe(outer);
     window.addEventListener('resize', fit);
-    return () => { ro.disconnect(); window.removeEventListener('resize', fit); };
+
+    // Photos land after the first layout pass and make their cards taller. The
+    // columns are sized from those heights now, so a stale measurement would
+    // push the last cards off the right edge instead of merely unbalancing the
+    // board. Re-fit as each one arrives.
+    const pending = Array.from(inner.querySelectorAll('img')).filter(img => !img.complete);
+    pending.forEach(img => {
+      img.addEventListener('load', fit);
+      img.addEventListener('error', fit);
+    });
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', fit);
+      pending.forEach(img => {
+        img.removeEventListener('load', fit);
+        img.removeEventListener('error', fit);
+      });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
@@ -502,7 +557,7 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
         {/* Static, auto-fitted menu board */}
         <div className={styles.boardBody}>
           <FitToScreen deps={[visibleCards, columnCount]}>
-            <div className={styles.boardColumns} style={{ columnCount }}>
+            <div className={styles.boardColumns} data-board-columns style={{ columnCount }}>
               {visibleCards.map(card =>
                 card.kind === 'category'
                   ? <CategoryCard key={card.id} card={card} photoItemIds={photoItemIds} />

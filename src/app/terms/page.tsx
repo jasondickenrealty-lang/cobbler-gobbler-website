@@ -102,8 +102,8 @@ export default function TermsPage() {
                   info@cobblestonecreamery.com
                 </a>{' '}
                 or{' '}
-                <a href="tel:8122053322" className="text-primary hover:text-gold transition-colors">
-                  (812) 205-3322
+                <a href="tel:8124999866" className="text-primary hover:text-gold transition-colors">
+                  (812) 499-9866
                 </a>.
               </p>
               <p>
@@ -169,8 +169,8 @@ export default function TermsPage() {
                   </a>
                 </p>
                 <p>
-                  <a href="tel:8122053322" className="text-primary hover:text-gold transition-colors">
-                    (812) 205-3322
+                  <a href="tel:8124999866" className="text-primary hover:text-gold transition-colors">
+                    (812) 499-9866
                   </a>
                 </p>
               </div>

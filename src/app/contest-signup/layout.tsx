@@ -59,7 +59,7 @@ const eventJsonLd = {
     '@type': 'Organization',
     name: 'Cobblestone Creamery',
     url: SITE_URL,
-    telephone: '(812) 205-3322',
+    telephone: '(812) 499-9866',
   },
   performer: {
     '@type': 'Organization',

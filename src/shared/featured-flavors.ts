@@ -14,8 +14,8 @@ export const FEATURED_FLAVORS: FeaturedFlavor[] = [
   { id: 'chocolate', name: 'Chocolate', image: '/menu-cones/chocolate.jpeg' },
   { id: 'superman', name: 'Superman', image: '/menu-cones/superman.png' },
   { id: 'mint-choc-chip', name: 'Mint Chocolate Chip', image: '/menu-cones/mint_chocolate_chip.jpeg' },
-  { id: 'cake-batter', name: 'Cake Batter', image: '/menu-cones/cake-batter.png' },
-  { id: 'cookies-and-cream', name: 'Cookies and Cream', image: '/menu-cones/oreo.jpg' },
+  { id: 'coffee', name: 'Coffee', image: '/menu-cones/coffee.png' },
+  { id: 'butter-pecan', name: 'Butter Pecan', image: '/menu-cones/butter-pecan.jpeg' },
   { id: 'strawberry', name: 'Strawberry', image: '/menu-cones/strawberry.jpg' },
   { id: 'triple-peanut-butter-cup', name: 'Triple Peanut Butter Cup', image: '/menu-cones/triple-peanut-butter-cup.png' },
 ]

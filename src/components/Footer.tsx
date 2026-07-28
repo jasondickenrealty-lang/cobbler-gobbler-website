@@ -19,9 +19,10 @@ const quickLinks = [
 ];
 
 const hours = [
-  'Monday - Thursday: 11:00 AM - 9:00 PM',
-  'Friday - Saturday: 11:00 AM - 10:00 PM',
-  'Sunday: 12:00 PM - 8:00 PM',
+  'Monday - Thursday: 11:00 AM - 2:00 PM, 4:00 PM - 9:00 PM',
+  'Friday: 11:00 AM - 2:00 PM, 4:00 PM - 10:00 PM',
+  'Saturday: 11:00 AM - 10:00 PM',
+  'Sunday: 12:00 PM - 6:00 PM',
 ];
 
 export default function Footer() {
@@ -89,8 +90,8 @@ export default function Footer() {
                 <p>Inside Main Street Food &amp; Beverage</p>
                 <p>Evansville, Indiana 47708</p>
                 <p>
-                  <a href="tel:+18122053322" className="transition-colors hover:text-gold">
-                    (812) 205-3322
+                  <a href="tel:+18124999866" className="transition-colors hover:text-gold">
+                    (812) 499-9866
                   </a>
                 </p>
                 <p>

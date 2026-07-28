@@ -41,8 +41,8 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-2 text-[0.72rem] uppercase tracking-[0.28em] text-white/[0.72]">
           <p>Downtown Evansville, Indiana</p>
           <div className="flex items-center gap-4 text-white/[0.78]">
-            <a href="tel:+18122053322" className="transition-colors hover:text-gold">
-              (812) 205-3322
+            <a href="tel:+18124999866" className="transition-colors hover:text-gold">
+              (812) 499-9866
             </a>
             {utilityLinks.map((link) =>
               link.external ? (

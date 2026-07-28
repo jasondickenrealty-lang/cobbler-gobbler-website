@@ -52,7 +52,7 @@ const webPageJsonLd = {
   about: {
     '@type': 'IceCreamShop',
     name: 'Cobblestone Creamery',
-    telephone: '+1-812-205-3322',
+    telephone: '+1-812-499-9866',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '900 Main Street',
@@ -83,7 +83,7 @@ const FAQ_ITEMS = [
   {
     question: 'Do you have dairy-free options?',
     answer:
-      'We carry dairy-free options alongside our ice cream. Because availability rotates, the live menu or a quick call to (812) 205-3322 is the best way to confirm what is on hand.',
+      'We carry dairy-free options alongside our ice cream. Because availability rotates, the live menu or a quick call to (812) 499-9866 is the best way to confirm what is on hand.',
   },
 ];
 
@@ -178,8 +178,8 @@ export default function CurrentFlavorsPage() {
               A few beloved classics tend to stick around because Evansville
               would not have it any other way, while other flavors come and go to
               keep things interesting. The flavors featured above, from Vanilla
-              Bean and Chocolate to Superman, Mint Chocolate Chip, Cake Batter,
-              Cookies and Cream, Strawberry, and Triple Peanut Butter Cup, are
+              Bean and Chocolate to Superman, Mint Chocolate Chip, Coffee,
+              Butter Pecan, Strawberry, and Triple Peanut Butter Cup, are
               favorites we are proud to scoop.
             </p>
             <p>

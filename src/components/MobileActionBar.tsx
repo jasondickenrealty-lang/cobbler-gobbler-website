@@ -39,7 +39,7 @@ export default function MobileActionBar() {
           Order
         </a>
         <a
-          href="tel:+18122053322"
+          href="tel:+18124999866"
           className="flex flex-col items-center gap-1 py-2.5 transition-colors hover:text-gold"
           aria-label="Call Cobblestone Creamery"
         >

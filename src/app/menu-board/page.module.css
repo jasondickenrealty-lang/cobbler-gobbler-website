@@ -469,6 +469,13 @@
 .boardColumns {
   column-gap: 1.6rem;
   width: 100%;
+  /* Fill each column to the bottom before starting the next one, rather than
+   * balancing all three to equal height. Balancing pushed a category into the
+   * next column the moment the three columns would have been uneven, so a
+   * category could not be kept directly under the one above it. This needs a
+   * definite height, which FitToScreen sets on .fitInner at runtime. */
+  height: 100%;
+  column-fill: auto;
 }
 .card {
   break-inside: avoid;
@@ -479,7 +486,12 @@
   padding: 0.8rem 1.15rem 0.9rem;
   margin: 0 0 0.85rem;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  display: inline-block;
+  /* flow-root, not inline-block: an inline-level card is laid out on line
+   * boxes, and the columns then break between lines rather than packing the
+   * cards. That left a category stranded at the top of the next column with
+   * room to spare in the one before it, no matter how tall the board was.
+   * flow-root keeps the block formatting context inline-block gave us. */
+  display: flow-root;
   width: 100%;
 }
 .cardHeader {
@@ -503,12 +515,15 @@
   text-overflow: clip;
   font-size: 1.6rem;
 }
-/* Keep descriptions to a single line on the board — wrapping them was the main
- * thing driving the columns tall and forcing the whole menu to shrink. */
+/* Descriptions wrap and show in full — a truncated description is worse than a
+ * slightly smaller board. FitToScreen grows the canvas and scales the whole
+ * board down to absorb the extra height. */
 .card .itemDescription {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  font-size: 1rem;
 }
 .card .itemRow {
   padding: 0.3rem 0;
@@ -517,9 +532,6 @@
 }
 .card .itemPrice {
   font-size: 1.7rem;
-}
-.card .itemDescription {
-  font-size: 1rem;
 }
 
 /* Waffle bowl upsell — a callout, deliberately unlike the white menu cards */

@@ -47,7 +47,7 @@ const FAQ_ITEMS = [
   {
     question: 'What are your hours?',
     answer:
-      'We are open Monday through Thursday from 11am to 9pm, Friday and Saturday from 11am to 10pm, and Sunday from 12pm to 8pm.',
+      'We are open Monday through Thursday from 11am to 2pm and 4pm to 9pm, Friday from 11am to 2pm and 4pm to 10pm, Saturday from 11am to 10pm, and Sunday from 12pm to 6pm.',
   },
   {
     question: 'Can I order ice cream online for pickup?',
@@ -199,8 +199,8 @@ export default function IceCreamEvansvillePage() {
                   <p>900 Main Street</p>
                   <p>Evansville, Indiana 47708</p>
                   <p className="pt-2">
-                    <a href="tel:8122053322" className="text-primary hover:text-gold transition-colors font-medium">
-                      (812) 205-3322
+                    <a href="tel:8124999866" className="text-primary hover:text-gold transition-colors font-medium">
+                      (812) 499-9866
                     </a>
                   </p>
                   <p>
@@ -211,9 +211,10 @@ export default function IceCreamEvansvillePage() {
                 </address>
                 <div className="mt-6 space-y-2 text-dark/70">
                   <p className="font-medium text-dark">Hours:</p>
-                  <p>Monday &ndash; Thursday: 11am &ndash; 9pm</p>
-                  <p>Friday &ndash; Saturday: 11am &ndash; 10pm</p>
-                  <p>Sunday: 12pm &ndash; 8pm</p>
+                  <p>Monday &ndash; Thursday: 11am &ndash; 2pm, 4pm &ndash; 9pm</p>
+                  <p>Friday: 11am &ndash; 2pm, 4pm &ndash; 10pm</p>
+                  <p>Saturday: 11am &ndash; 10pm</p>
+                  <p>Sunday: 12pm &ndash; 6pm</p>
                 </div>
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">
                   <Link

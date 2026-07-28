@@ -56,7 +56,7 @@ const serviceJsonLd = {
   provider: {
     '@type': 'IceCreamShop',
     name: 'Cobblestone Creamery',
-    telephone: '+1-812-205-3322',
+    telephone: '+1-812-499-9866',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '900 Main Street',
@@ -82,7 +82,7 @@ const FAQ_ITEMS = [
   {
     question: 'How do we book a fundraising night in Evansville?',
     answer:
-      'Head to our Fundraising page to get started, or call us at (812) 205-3322. Reach out with your group name, your preferred date, and roughly how many supporters you expect, and we will help you set it up.',
+      'Head to our Fundraising page to get started, or call us at (812) 499-9866. Reach out with your group name, your preferred date, and roughly how many supporters you expect, and we will help you set it up.',
   },
   {
     question: 'Is this the same as your main fundraising program?',
@@ -130,7 +130,7 @@ export default function IceCreamFundraisingEvansvillePage() {
                 Plan an Evansville Fundraising Night
               </Link>
               <a
-                href="tel:+18122053322"
+                href="tel:+18124999866"
                 className="inline-block bg-primary text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
               >
                 Call to Ask a Question
@@ -186,7 +186,7 @@ export default function IceCreamFundraisingEvansvillePage() {
               Head over to{' '}
               <Link href="/fundraising" className="text-primary hover:text-gold transition-colors font-medium">plan an Evansville fundraising night</Link>{' '}
               to get started, or call us at{' '}
-              <a href="tel:+18122053322" className="text-primary hover:text-gold transition-colors font-medium">(812) 205-3322</a>{' '}
+              <a href="tel:+18124999866" className="text-primary hover:text-gold transition-colors font-medium">(812) 499-9866</a>{' '}
               with any questions. While you are planning, you can{' '}
               <Link href="/menu" className="text-primary hover:text-gold transition-colors font-medium">view the full ice cream menu</Link>{' '}
               your supporters will enjoy, or{' '}
@@ -209,15 +209,16 @@ export default function IceCreamFundraisingEvansvillePage() {
                 <p>Inside Main Street Food &amp; Beverage</p>
                 <p>900 Main Street, Evansville, Indiana 47708</p>
                 <p className="pt-2">
-                  <a href="tel:+18122053322" className="text-primary hover:text-gold transition-colors font-medium">
-                    (812) 205-3322
+                  <a href="tel:+18124999866" className="text-primary hover:text-gold transition-colors font-medium">
+                    (812) 499-9866
                   </a>
                 </p>
               </address>
               <div className="mt-4 space-y-1 text-dark/70">
-                <p>Monday &ndash; Thursday: 11am &ndash; 9pm</p>
-                <p>Friday &ndash; Saturday: 11am &ndash; 10pm</p>
-                <p>Sunday: 12pm &ndash; 8pm</p>
+                <p>Monday &ndash; Thursday: 11am &ndash; 2pm, 4pm &ndash; 9pm</p>
+                <p>Friday: 11am &ndash; 2pm, 4pm &ndash; 10pm</p>
+                <p>Saturday: 11am &ndash; 10pm</p>
+                <p>Sunday: 12pm &ndash; 6pm</p>
               </div>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                 <Link

@@ -50,7 +50,7 @@ const webPageJsonLd = {
   provider: {
     '@type': 'IceCreamShop',
     name: 'Cobblestone Creamery',
-    telephone: '+1-812-205-3322',
+    telephone: '+1-812-499-9866',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '900 Main Street',
@@ -76,7 +76,7 @@ const FAQ_ITEMS = [
   {
     question: 'Do you offer dairy-free milkshake options?',
     answer:
-      'We carry dairy-free options on our menu. Because our lineup rotates, the best way to confirm what is available on a given day is to check the full menu or give us a call at (812) 205-3322.',
+      'We carry dairy-free options on our menu. Because our lineup rotates, the best way to confirm what is available on a given day is to check the full menu or give us a call at (812) 499-9866.',
   },
   {
     question: 'Where do I find you for a milkshake in downtown Evansville?',
@@ -199,15 +199,16 @@ export default function MilkshakesEvansvillePage() {
                 <p>Inside Main Street Food &amp; Beverage</p>
                 <p>900 Main Street, Evansville, Indiana 47708</p>
                 <p className="pt-2">
-                  <a href="tel:+18122053322" className="text-primary hover:text-gold transition-colors font-medium">
-                    (812) 205-3322
+                  <a href="tel:+18124999866" className="text-primary hover:text-gold transition-colors font-medium">
+                    (812) 499-9866
                   </a>
                 </p>
               </address>
               <div className="mt-4 space-y-1 text-dark/70">
-                <p>Monday &ndash; Thursday: 11am &ndash; 9pm</p>
-                <p>Friday &ndash; Saturday: 11am &ndash; 10pm</p>
-                <p>Sunday: 12pm &ndash; 8pm</p>
+                <p>Monday &ndash; Thursday: 11am &ndash; 2pm, 4pm &ndash; 9pm</p>
+                <p>Friday: 11am &ndash; 2pm, 4pm &ndash; 10pm</p>
+                <p>Saturday: 11am &ndash; 10pm</p>
+                <p>Sunday: 12pm &ndash; 6pm</p>
               </div>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                 <a
@@ -219,7 +220,7 @@ export default function MilkshakesEvansvillePage() {
                   Get Directions
                 </a>
                 <a
-                  href="tel:+18122053322"
+                  href="tel:+18124999866"
                   className="inline-block border border-primary/30 text-primary px-6 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/5 transition-colors text-center"
                 >
                   Call Now
