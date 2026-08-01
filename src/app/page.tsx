@@ -154,10 +154,10 @@ export default function HomePage() {
           <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(201,145,47,0.25),transparent_62%)]" />
           <div className="absolute bottom-0 left-0 right-0 h-14 bg-[linear-gradient(90deg,rgba(255,255,255,0.08),transparent_20%,transparent_80%,rgba(255,255,255,0.08))]" />
 
-          <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 md:pb-24 md:pt-24">
+          <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 md:pb-24 md:pt-24">
             <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
               <div className="max-w-3xl">
-                <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-gold/50 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.34em] text-gold">
+                <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-white/10 px-3 py-2 text-[0.62rem] uppercase tracking-[0.16em] text-gold sm:gap-3 sm:px-4 sm:text-xs sm:tracking-[0.34em]">
                   <span className="h-2 w-2 rounded-full bg-gold" />
                   Downtown Evansville Ice Cream Shop
                 </p>

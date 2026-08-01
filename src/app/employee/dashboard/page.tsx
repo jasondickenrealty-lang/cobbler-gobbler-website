@@ -19,7 +19,7 @@ export default function DashboardPage() {
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4 text-accent">Welcome Back!</h2>
               <div className="space-y-2 text-gray-700">
-                <p><span className="font-semibold">Email:</span> {user?.email}</p>
+                <p className="break-all"><span className="font-semibold">Email:</span> {user?.email}</p>
                 <p><span className="font-semibold">Role:</span> <span className="capitalize">{userData?.role}</span></p>
                 <p><span className="font-semibold">Status:</span> {userData?.active ? '✅ Active' : '❌ Inactive'}</p>
               </div>

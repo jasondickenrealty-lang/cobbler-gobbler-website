@@ -155,9 +155,13 @@ export default function LoyaltySignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
+                  inputMode="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
                   required
                   placeholder="you@example.com"
-                  className="w-full rounded-lg border border-cream bg-light-cream px-4 py-3 text-dark placeholder:text-dark/30 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+                  className="w-full rounded-lg border border-cream bg-light-cream px-4 py-3 text-base text-dark placeholder:text-dark/30 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                 />
               </label>
 
@@ -169,7 +173,8 @@ export default function LoyaltySignupPage() {
                   type="date"
                   value={birthday}
                   onChange={(e) => setBirthday(e.target.value)}
-                  className="w-full rounded-lg border border-cream bg-light-cream px-4 py-3 text-dark focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+                  autoComplete="bday"
+                  className="w-full min-w-0 appearance-none rounded-lg border border-cream bg-light-cream px-4 py-3 text-base text-dark focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                 />
               </label>
 
@@ -179,7 +184,7 @@ export default function LoyaltySignupPage() {
                   type="checkbox"
                   checked={smsOptIn}
                   onChange={(e) => setSmsOptIn(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 accent-gold flex-shrink-0"
+                  className="mt-0.5 h-5 w-5 accent-gold flex-shrink-0"
                 />
                 <span className="text-sm text-dark/70 leading-relaxed">
                   I agree to receive recurring SMS messages from Cobblestone Creamery regarding

@@ -1,17 +1,27 @@
 /**
- * Server-side menu loader — single source of truth is the Firestore `menu`,
- * `modifierCategories`, and `modifiers` collections (the same data the POS and
- * ordering app use). Runs on the server so the full menu is rendered into the
- * HTML response and is fully crawlable by Google — no client-side "Loading…"
- * state required.
+ * Server-side menu loader — the source of truth is the same public API the TV
+ * menu boards and the online-ordering app read (`/api/v1/menu` and
+ * `/api/v1/modifiers`), which serves the POS `categories`, `menuItems`,
+ * `modifierCategories` and `modifiers` collections through the Admin SDK.
  *
- * Everything is wrapped in try/catch and guards against a null `db` (which can
- * happen during build-time module evaluation) so a menu fetch failure degrades
- * to a graceful fallback instead of breaking the build or the page.
+ * This used to read those collections directly with the Firestore client SDK.
+ * They are root-level collections and the security rules end in a default-deny,
+ * so an unauthenticated server render always came back empty and the menu page
+ * silently fell back to "download the PDF" instead of listing the menu.
+ *
+ * Runs on the server so the full menu is rendered into the HTML response and is
+ * fully crawlable by Google — no client-side "Loading…" state required.
+ *
+ * Everything is wrapped in try/catch so a menu fetch failure degrades to a
+ * graceful fallback instead of breaking the build or the page.
  */
 
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from './firebase';
+const API_BASE = (
+  process.env.NEXT_PUBLIC_API_BASE ||
+  'https://us-central1-cobblestone-pos.cloudfunctions.net/api'
+).replace(/\/$/, '');
+
+const REVALIDATE_SECONDS = 600;
 
 export interface MenuItem {
   id: string;
@@ -23,6 +33,12 @@ export interface MenuItem {
   imageUrl?: string;
   displayOrder?: number;
   categoryOrder?: number;
+}
+
+/** A menu category as shown on the page — name plus its optional blurb. */
+export interface MenuCategory {
+  name: string;
+  description: string;
 }
 
 export interface ModifierCategory {
@@ -42,7 +58,7 @@ export interface Modifier {
 export interface MenuData {
   ok: boolean;
   items: MenuItem[];
-  categories: string[];
+  categories: MenuCategory[];
   modifierCategories: ModifierCategory[];
   modifiers: Modifier[];
 }
@@ -63,50 +79,126 @@ const EMPTY: MenuData = {
   modifiers: [],
 };
 
-export async function getMenuData(): Promise<MenuData> {
-  if (!db) return EMPTY;
+type RawDoc = Record<string, unknown> & { id?: string };
 
+function str(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function num(value: unknown, fallback = 0): number {
+  const n = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+async function fetchJson(path: string): Promise<Record<string, unknown>> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    next: { revalidate: REVALIDATE_SECONDS },
+  });
+  if (!res.ok) throw new Error(`API ${path}: ${res.status}`);
+  return (await res.json()) as Record<string, unknown>;
+}
+
+function isVisible(item: RawDoc): boolean {
+  return item.available !== false && item.isAvailable !== false && item.isActive !== false;
+}
+
+export async function getMenuData(): Promise<MenuData> {
   try {
-    const [menuSnapshot, mcSnapshot, modSnapshot] = await Promise.all([
-      getDocs(query(collection(db, 'menu'), where('available', '==', true))),
-      getDocs(collection(db, 'modifierCategories')),
-      getDocs(collection(db, 'modifiers')),
+    const [menuData, modifierData] = await Promise.all([
+      fetchJson('/api/v1/menu'),
+      fetchJson('/api/v1/modifiers').catch(() => ({}) as Record<string, unknown>),
     ]);
 
-    const items = menuSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as MenuItem[];
+    const rawCategories = (menuData.categories ?? []) as RawDoc[];
+    const rawItems = (menuData.menuItems ?? menuData.items ?? []) as RawDoc[];
+
+    // Items reference their category by id; a few legacy ones only carry the
+    // name. Index both so neither kind loses its category (and its blurb).
+    const categoryById = new Map<string, RawDoc>();
+    const categoryByName = new Map<string, RawDoc>();
+    for (const category of rawCategories) {
+      const id = str(category.id);
+      const name = str(category.name).toLowerCase();
+      if (id && !categoryById.has(id)) categoryById.set(id, category);
+      if (name && !categoryByName.has(name)) categoryByName.set(name, category);
+    }
+
+    const items: MenuItem[] = rawItems
+      .filter(isVisible)
+      .map((item) => {
+        const linked =
+          categoryById.get(str(item.categoryId)) ??
+          categoryByName.get(str(item.categoryName ?? item.category).toLowerCase()) ??
+          null;
+        const category = str(linked?.name) || str(item.categoryName ?? item.category);
+
+        return {
+          id: str(item.id),
+          name: str(item.name),
+          description: str(item.description),
+          price: num(item.basePrice ?? item.price, 0),
+          category,
+          available: true,
+          imageUrl: str(item.imageUrl) || undefined,
+          displayOrder: num(item.displayOrder, 999),
+          categoryOrder: num(linked?.displayOrder ?? item.categoryOrder, 999),
+        };
+      })
+      // An item whose category was deleted has nowhere to sit on the page.
+      .filter((item) => Boolean(item.category));
 
     items.sort((a, b) => {
       const catOrderA = a.categoryOrder ?? 999;
       const catOrderB = b.categoryOrder ?? 999;
       if (catOrderA !== catOrderB) return catOrderA - catOrderB;
 
-      const catCompare = (a.category || '').localeCompare(b.category || '');
+      const catCompare = a.category.localeCompare(b.category);
       if (catCompare !== 0) return catCompare;
 
       const orderA = a.displayOrder ?? 999;
       const orderB = b.displayOrder ?? 999;
       if (orderA !== orderB) return orderA - orderB;
 
-      return (a.name || '').localeCompare(b.name || '');
+      return a.name.localeCompare(b.name);
     });
 
-    const categories: string[] = [];
-    for (const item of items) {
-      if (item.category && !categories.includes(item.category)) {
-        categories.push(item.category);
+    const descriptionByCategory = new Map<string, string>();
+    for (const category of rawCategories) {
+      const name = str(category.name);
+      if (name && !descriptionByCategory.has(name)) {
+        descriptionByCategory.set(name, str(category.description));
       }
     }
 
-    const modifierCategories = mcSnapshot.docs
-      .map((doc) => ({ id: doc.id, ...doc.data() }) as ModifierCategory)
+    // Categories in menu order, limited to the ones that actually have items.
+    const categories: MenuCategory[] = [];
+    const seen = new Set<string>();
+    for (const item of items) {
+      if (seen.has(item.category)) continue;
+      seen.add(item.category);
+      categories.push({
+        name: item.category,
+        description: descriptionByCategory.get(item.category) ?? '',
+      });
+    }
+
+    const modifierCategories = ((modifierData.modifierCategories ?? []) as RawDoc[])
+      .map((doc) => ({
+        id: str(doc.id),
+        name: str(doc.name),
+        displayOrder: num(doc.displayOrder, 999),
+      }))
       .sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999));
 
-    const modifiers = modSnapshot.docs
-      .map((doc) => ({ id: doc.id, ...doc.data() }) as Modifier)
-      .filter((m) => m.isActive !== false);
+    const modifiers = ((modifierData.modifiers ?? []) as RawDoc[])
+      .filter((doc) => doc.isActive !== false)
+      .map((doc) => ({
+        id: str(doc.id),
+        name: str(doc.name),
+        price: num(doc.price, 0),
+        modifierCategoryId: str(doc.modifierCategoryId),
+        isActive: true,
+      }));
 
     return {
       ok: true,
@@ -115,8 +207,11 @@ export async function getMenuData(): Promise<MenuData> {
       modifierCategories,
       modifiers,
     };
-  } catch (error: any) {
-    console.error('getMenuData failed:', error?.message || 'unknown error');
+  } catch (error: unknown) {
+    console.error(
+      'getMenuData failed:',
+      error instanceof Error ? error.message : 'unknown error',
+    );
     return EMPTY;
   }
 }

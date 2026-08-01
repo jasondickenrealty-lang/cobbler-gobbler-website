@@ -82,20 +82,24 @@ export default function EmailCapturePopup() {
       role="dialog"
       aria-modal="true"
       aria-labelledby="popup-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      /* overflow-y-auto + items-start on small screens: the card is ~470px
+         tall, so on a landscape phone (or once the iOS keyboard opens) a
+         centred non-scrolling flex box clipped both the submit button and the
+         close button, leaving the user stuck. */
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto overscroll-contain p-4 py-8 sm:items-center"
       onClick={(e) => { if (e.target === e.currentTarget) dismiss(false); }}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true" />
 
       {/* Card */}
-      <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_64px_rgba(0,0,0,0.28)]">
+      <div className="relative my-auto w-full max-w-md overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_64px_rgba(0,0,0,0.28)]">
         {/* Top bar */}
-        <div className="bg-[linear-gradient(135deg,#10243f_0%,#1d466f_100%)] px-8 pt-8 pb-6 text-center">
-          <p className="text-[0.7rem] uppercase tracking-[0.32em] text-[#c9912f]">Cobblestone Crew</p>
+        <div className="bg-[linear-gradient(135deg,#10243f_0%,#1d466f_100%)] px-6 pt-7 pb-5 text-center sm:px-8 sm:pt-8 sm:pb-6">
+          <p className="text-[0.62rem] uppercase tracking-[0.2em] text-[#c9912f] sm:text-[0.7rem] sm:tracking-[0.32em]">Cobblestone Crew</p>
           <h2
             id="popup-title"
-            className="mt-2 text-4xl font-bold uppercase tracking-wider text-white"
+            className="mt-2 text-3xl font-bold uppercase tracking-wider text-white sm:text-4xl"
             style={{ fontFamily: 'var(--font-display, system-ui)' }}
           >
             Get A Free Topping
@@ -106,7 +110,7 @@ export default function EmailCapturePopup() {
         </div>
 
         {/* Form area */}
-        <div className="px-8 py-7">
+        <div className="px-6 py-6 sm:px-8 sm:py-7">
           {status === 'success' ? (
             <div className="py-4 text-center">
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-3xl">
@@ -127,7 +131,10 @@ export default function EmailCapturePopup() {
                   onChange={(e) => setFirstName(e.target.value)}
                   maxLength={80}
                   autoComplete="given-name"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-[#10243f] focus:ring-2 focus:ring-[#10243f]/10"
+                  autoCapitalize="words"
+                  /* 16px minimum — text-sm (14px) makes iOS Safari zoom the
+                     page in on focus and it never zooms back out. */
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base text-gray-800 placeholder-gray-400 outline-none focus:border-[#10243f] focus:ring-2 focus:ring-[#10243f]/10"
                 />
                 <input
                   type="email"
@@ -137,7 +144,12 @@ export default function EmailCapturePopup() {
                   required
                   maxLength={120}
                   autoComplete="email"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-[#10243f] focus:ring-2 focus:ring-[#10243f]/10"
+                  inputMode="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="send"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base text-gray-800 placeholder-gray-400 outline-none focus:border-[#10243f] focus:ring-2 focus:ring-[#10243f]/10"
                 />
               </div>
 
@@ -164,7 +176,7 @@ export default function EmailCapturePopup() {
         <button
           onClick={() => dismiss(true)}
           aria-label="Close"
-          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
+          className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-lg text-white/70 transition-colors hover:bg-white/20 hover:text-white"
         >
           ✕
         </button>

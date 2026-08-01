@@ -84,9 +84,26 @@ function looksLikeGeneratedId(value: unknown): boolean {
   return false;
 }
 
+function toTrimmedString(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+/** Category name -> category doc, so items that only carry a name still resolve. */
+function indexCategoriesByName(
+  categories: (Record<string, unknown> & { id: string })[],
+): Map<string, Record<string, unknown> & { id: string }> {
+  const byName = new Map<string, Record<string, unknown> & { id: string }>();
+  for (const category of categories) {
+    const name = toTrimmedString(category.name).toLowerCase();
+    if (name && !byName.has(name)) byName.set(name, category);
+  }
+  return byName;
+}
+
 function normalizeMenuItem(
   item: RawItem,
   categoryById: Map<string, Record<string, unknown> & { id: string }>,
+  categoryByName?: Map<string, Record<string, unknown> & { id: string }>,
 ) {
   const categoryId = String(item.categoryId || '').trim();
   const linkedCategory = categoryId ? categoryById.get(categoryId) : null;
@@ -99,10 +116,16 @@ function normalizeMenuItem(
     ? (linkedCategory?.name ? String(linkedCategory.name).trim() : null)
     : String(rawCategory).trim();
 
+  // Legacy items store the category as a plain name with no categoryId, so the
+  // id lookup misses and the description would silently never reach the board.
+  const namedCategory = linkedCategory
+    ?? (category ? categoryByName?.get(category.toLowerCase()) ?? null : null);
+
   return {
     ...item,
     category,
-    categoryOrder: toNumber(linkedCategory?.displayOrder ?? item.categoryOrder, 999),
+    categoryDescription: toTrimmedString(namedCategory?.description ?? item.categoryDescription),
+    categoryOrder: toNumber(namedCategory?.displayOrder ?? item.categoryOrder, 999),
     price: toNumber(item.basePrice ?? item.price, 0),
   };
 }
@@ -127,9 +150,11 @@ async function loadTenantMenuData() {
     categoryById.set(String(category.id), category);
   }
 
+  const categoryByName = indexCategoriesByName(categories);
+
   const items = ((menuData.menuItems ?? menuData.items ?? []) as RawItem[])
     .filter(isVisibleMenuItem)
-    .map(item => normalizeMenuItem(item, categoryById))
+    .map(item => normalizeMenuItem(item, categoryById, categoryByName))
     .filter(hasResolvedCategory);
   const modifierCategories = modifierData.modifierCategories ?? [];
   const modifiers = modifierData.modifiers ?? [];
@@ -168,9 +193,12 @@ async function loadLegacyFlatMenuData() {
     const key = ((item.name as string | undefined) ?? item.id).toString().trim().toLowerCase();
     if (!dedupedByName.has(key)) dedupedByName.set(key, item);
   }
+  const categoryByName = indexCategoriesByName(
+    categories as (Record<string, unknown> & { id: string })[],
+  );
   const items = [...dedupedByName.values()]
     .filter(isVisibleMenuItem)
-    .map(item => normalizeMenuItem(item, categoryById))
+    .map(item => normalizeMenuItem(item, categoryById, categoryByName))
     .filter(hasResolvedCategory);
   const modifierCategories = modCatDocs;
   const modifiers = modDocs;

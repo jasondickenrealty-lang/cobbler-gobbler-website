@@ -204,6 +204,10 @@ export default function ContestSignupPage() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
                 required
                 className="rounded-xl border border-[#ffd88c]/30 bg-[#2c1711] px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-[#ffc83a] focus:outline-none"
                 placeholder="you@example.com"
@@ -244,7 +248,7 @@ export default function ContestSignupPage() {
                 checked={legalAccepted}
                 onChange={(event) => setLegalAccepted(event.target.checked)}
                 required
-                className="mt-1 h-4 w-4"
+                className="mt-1 h-5 w-5"
               />
               <span className="text-sm text-[#ffe6c9]">
                 I confirm that I am age 16+ and agree to the contest rules, liability terms, and media release above. If I am 16-17, my parent or legal guardian will be present to sign consent at check-in.

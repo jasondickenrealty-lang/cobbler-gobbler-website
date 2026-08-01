@@ -49,18 +49,18 @@ export default function EmployeeNavbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <span className="hidden sm:block text-sm capitalize">{userData?.role}</span>
             <button
               onClick={handleSignOut}
-              className="bg-red-600 px-3 py-2 rounded text-sm hover:bg-red-700 transition"
+              className="inline-flex min-h-[44px] items-center rounded bg-red-600 px-3 py-2 text-sm transition hover:bg-red-700"
             >
               Sign Out
             </button>
             {/* Hamburger button — mobile only */}
             <button
               onClick={() => setMobileOpen((o) => !o)}
-              className="md:hidden flex flex-col justify-center gap-1 p-2 rounded hover:bg-white/10 transition"
+              className="md:hidden flex h-11 w-11 flex-col items-center justify-center gap-1 rounded hover:bg-white/10 transition"
               aria-label="Toggle navigation menu"
               aria-expanded={mobileOpen ? 'true' : 'false'}
             >
@@ -81,7 +81,7 @@ export default function EmployeeNavbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition hover:bg-white/10 ${
+                className={`block min-h-[44px] px-3 py-3 rounded-lg text-sm font-medium transition hover:bg-white/10 ${
                   pathname === link.href ? 'bg-white/20' : ''
                 }`}
               >

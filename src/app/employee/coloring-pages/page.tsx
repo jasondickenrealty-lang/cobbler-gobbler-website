@@ -285,19 +285,19 @@ export default function EmployeeColoringPagesPage() {
             ) : (
               <ul className="space-y-3">
                 {pages.map((page) => (
-                  <li key={page.id} className="flex items-center justify-between gap-4 border-b border-dark/10 pb-3">
+                  <li key={page.id} className="flex flex-col items-start gap-2 border-b border-dark/10 pb-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                     <div>
                       <p className="text-dark">{page.title}</p>
                       <p className="text-xs text-dark/50">
                         {page.active === false ? 'Unpublished' : 'Published'} | {(page.downloadCount ?? 0).toLocaleString()} {(page.downloadCount ?? 0) === 1 ? 'download' : 'downloads'}
                       </p>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 sm:gap-4">
                       <a
                         href={page.downloadUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-primary font-medium hover:underline"
+                        className="inline-flex min-h-[44px] items-center px-1 text-primary font-medium hover:underline"
                       >
                         View File
                       </a>
@@ -305,7 +305,7 @@ export default function EmployeeColoringPagesPage() {
                         type="button"
                         onClick={() => handleTogglePublish(page)}
                         disabled={!canManage || processingId === page.id}
-                        className="text-sm text-primary hover:underline disabled:opacity-50"
+                        className="inline-flex min-h-[44px] items-center px-1 text-sm text-primary hover:underline disabled:opacity-50"
                       >
                         {page.active === false ? 'Republish' : 'Unpublish'}
                       </button>
@@ -313,7 +313,7 @@ export default function EmployeeColoringPagesPage() {
                         type="button"
                         onClick={() => handleDelete(page)}
                         disabled={!canManage || processingId === page.id}
-                        className="text-sm text-red-700 hover:underline disabled:opacity-50"
+                        className="inline-flex min-h-[44px] items-center px-1 text-sm text-red-700 hover:underline disabled:opacity-50"
                       >
                         Delete
                       </button>

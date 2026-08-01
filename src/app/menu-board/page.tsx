@@ -52,9 +52,6 @@ function useSelfUpdatingBoard() {
   }, []);
 }
 
-// Staff-only / leftover modifier groups that shouldn't appear on a customer-facing board.
-const HIDDEN_MODIFIER_CATEGORIES = new Set(['remove ingredient', 'combo shake', 'new mods']);
-
 // Standalone upsell card, shown right after the scoops it applies to.
 const WAFFLE_BOWL_PROMO = {
   kind: 'promo' as const,
@@ -141,13 +138,37 @@ interface MenuItem {
   imageUrl?: string;
   displayOrder?: number;
   categoryOrder?: number;
+  /** Description of the category this item belongs to, set in POS → Menu Management. */
+  categoryDescription?: string;
 }
-interface ModifierCategory { id: string; name: string; displayOrder?: number; }
-interface Modifier { id: string; name: string; price: number; modifierCategoryId: string; isActive?: boolean; }
+/**
+ * Where a modifier group appears on these boards, set per group in POS →
+ * Menu Management → Modifiers. Anything without a placement stays off the
+ * screens, so a new group never lands on the TVs by surprise.
+ */
+type BoardPlacement = 'hidden' | 'card' | 'item';
+interface ModifierCategory {
+  id: string;
+  name: string;
+  displayOrder?: number;
+  boardPlacement?: BoardPlacement;
+  boardAnchorItemId?: string;
+}
+interface Modifier {
+  id: string;
+  name: string;
+  price: number;
+  modifierCategoryId: string;
+  isActive?: boolean;
+  showOnMenuBoard?: boolean;
+}
+
+// A group rendered inline under one menu item rather than as its own card.
+interface ItemAddOnGroup { id: string; label: string; mods: Modifier[] }
 
 // A "card" is one self-contained block on the board: a menu category or a toppings group.
 type Card =
-  | { kind: 'category'; id: string; title: string; items: MenuItem[] }
+  | { kind: 'category'; id: string; title: string; description?: string; items: MenuItem[]; addOns: Record<string, ItemAddOnGroup[]> }
   | { kind: 'topping'; id: string; title: string; mods: Modifier[] }
   | { kind: 'promo'; id: string; title: string; detail: string; price: string };
 
@@ -162,7 +183,14 @@ function formatMoney(value: unknown): string {
 
 // Rough visual "weight" of a card, used to balance the two screens.
 function cardWeight(card: Card): number {
-  if (card.kind === 'category') return card.items.length + 1.5;
+  if (card.kind === 'category') {
+    // Inline add-on lines make a category card taller. Ignoring them skews the
+    // split and can push one screen's content off the bottom.
+    // A category description adds a wrapped line or two under the title, so it
+    // counts toward the weight alongside the add-on lines.
+    const addOnRows = Object.values(card.addOns).reduce((sum, groups) => sum + groups.length, 0);
+    return card.items.length + addOnRows * 0.6 + 1.5 + (card.description ? 0.6 : 0);
+  }
   if (card.kind === 'promo') return 2;
   return 1 + card.mods.length * 0.3;
 }
@@ -322,6 +350,7 @@ function CategoryCard({
       <div className={styles.cardHeader}>
         <h2 className={styles.cardTitle}>{card.title}</h2>
         <div className={styles.goldBar} />
+        {card.description && <p className={styles.cardDescription}>{card.description}</p>}
       </div>
       <div>
         {card.items.map((item, i) => (
@@ -333,6 +362,20 @@ function CategoryCard({
             <div className={styles.itemInfo}>
               <p className={styles.itemName}>{item.name}</p>
               {item.description && <p className={styles.itemDescription}>{item.description}</p>}
+              {(card.addOns[item.id] ?? []).map(group => (
+                <p key={group.id} className={styles.itemAddOns}>
+                  <span className={styles.itemAddOnsLabel}>{group.label}</span>
+                  {group.mods.map((mod, mi) => (
+                    <span key={mod.id} className={styles.itemAddOn}>
+                      {mi > 0 && <span className={styles.itemAddOnSep}>·</span>}
+                      {mod.name}
+                      {toNumber(mod.price) > 0 && (
+                        <span className={styles.itemAddOnPrice}>+${formatMoney(mod.price)}</span>
+                      )}
+                    </span>
+                  ))}
+                </p>
+              ))}
             </div>
             <p className={styles.itemPrice}>${formatMoney(item.price)}</p>
           </div>
@@ -423,6 +466,41 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
         const isWaffleBowlCat = (cat: string) => cat.toLowerCase().includes('waffle bowl');
         const hasWaffleBowlCategory = catOrder.some(isWaffleBowlCat);
 
+        // Modifier groups are opt-in: a group is only on the boards if someone
+        // gave it a placement in Menu Management. That keeps staff-only groups
+        // and add-ons that already have their own menu card off the screens
+        // without anyone editing this file.
+        const boardMods = mods.filter(m => m.isActive !== false && m.showOnMenuBoard !== false);
+        const placedCats = [...modCats]
+          .sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999))
+          .map(mc => ({ mc, mods: boardMods.filter(m => m.modifierCategoryId === mc.id) }))
+          .filter(({ mods: groupMods }) => groupMods.length > 0);
+
+        // Groups pinned under one specific menu item, keyed by that item's id.
+        const addOnsByItemId: Record<string, ItemAddOnGroup[]> = {};
+        const cardGroups: { mc: ModifierCategory; mods: Modifier[] }[] = [];
+        for (const entry of placedCats) {
+          const { mc, mods: groupMods } = entry;
+          if (mc.boardPlacement === 'card') { cardGroups.push(entry); continue; }
+          if (mc.boardPlacement !== 'item') continue;
+
+          const anchorId = (mc.boardAnchorItemId ?? '').trim();
+          const anchor = anchorId ? sorted.find(i => i.id === anchorId) : undefined;
+          // The anchor can fail three ways: the item was deleted, it is marked
+          // unavailable so it never reaches the board, or it lives in the Waffle
+          // Bowl category, which renders as a promo callout with no item rows to
+          // hang an add-on line under. In every case fall back to the group's own
+          // card — the operator asked for these on the TVs, and showing them in a
+          // slightly different place beats them vanishing with no explanation.
+          if (!anchor || isWaffleBowlCat(anchor.category)) { cardGroups.push(entry); continue; }
+
+          (addOnsByItemId[anchorId] ??= []).push({
+            id: `addon-${mc.id}`,
+            label: (mc.name ?? '').trim(),
+            mods: groupMods,
+          });
+        }
+
         const newCards: Card[] = [];
         for (const cat of catOrder) {
           if (isWaffleBowlCat(cat)) {
@@ -439,11 +517,20 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
             });
             continue;
           }
+          const catItems = sorted.filter(i => i.category === cat);
+          const catAddOns: Record<string, ItemAddOnGroup[]> = {};
+          for (const item of catItems) {
+            if (addOnsByItemId[item.id]) catAddOns[item.id] = addOnsByItemId[item.id];
+          }
           newCards.push({
             kind: 'category' as const,
             id: `cat-${cat}`,
             title: cat,
-            items: sorted.filter(i => i.category === cat),
+            // Every item in a category carries the same category description; take
+            // the first non-empty one so a stale blank on one item can't hide it.
+            description: catItems.find(i => i.categoryDescription?.trim())?.categoryDescription?.trim(),
+            items: catItems,
+            addOns: catAddOns,
           });
           if (!hasWaffleBowlCategory && cat === WAFFLE_BOWL_ANCHOR) newCards.push(WAFFLE_BOWL_PROMO);
         }
@@ -451,17 +538,11 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
         // unless a POS Waffle Bowl category is already providing it.
         if (!hasWaffleBowlCategory && !newCards.some(c => c.kind === 'promo')) newCards.push(WAFFLE_BOWL_PROMO);
 
-        // One card per active toppings/modifier group, in display order.
-        const activeMods = mods.filter(m => m.isActive !== false);
-        [...modCats]
-          .filter(mc => !HIDDEN_MODIFIER_CATEGORIES.has((mc.name ?? '').trim().toLowerCase()))
-          .sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999))
-          .forEach(mc => {
-            const groupMods = activeMods.filter(m => m.modifierCategoryId === mc.id);
-            if (groupMods.length) {
-              newCards.push({ kind: 'topping' as const, id: `mod-${mc.id}`, title: mc.name, mods: groupMods });
-            }
-          });
+        // One card per group set to "own card" (plus any anchored group whose
+        // item could not be found), in display order.
+        for (const { mc, mods: groupMods } of cardGroups) {
+          newCards.push({ kind: 'topping' as const, id: `mod-${mc.id}`, title: mc.name, mods: groupMods });
+        }
 
         if (active) { setCards(newCards); setErrorMsg(''); setLoading(false); }
       } catch (err) {

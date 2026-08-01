@@ -12,7 +12,7 @@ export default function FacebookAuthSuccessPage({ searchParams }: Props) {
   const pagesCount = Number(searchParams?.pagesCount || '0');
 
   return (
-    <main className="min-h-screen bg-cream flex items-center justify-center px-6">
+    <main className="min-h-dvh bg-cream flex items-center justify-center px-6 py-10">
       <div className="max-w-xl w-full bg-white rounded-xl shadow-sm border border-gold/20 p-8 text-center">
         <div className="text-5xl mb-4">{isOk ? '✓' : '!'}</div>
         <h1 className="font-serif text-3xl text-primary mb-3">

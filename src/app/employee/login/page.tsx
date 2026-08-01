@@ -36,7 +36,7 @@ export default function EmployeeLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-accent">
+    <div className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-primary to-accent px-4 py-10">
       <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary mb-2">🍨 Employee Portal</h1>

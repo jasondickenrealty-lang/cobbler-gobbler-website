@@ -28,11 +28,11 @@ const hours = [
 export default function Footer() {
   return (
     <footer className="mt-auto border-t-4 border-gold bg-primary text-white">
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_0.9fr_0.9fr]">
           <div className="max-w-xl">
-            <p className="mb-3 text-sm uppercase tracking-[0.34em] text-gold">Cobblestone Creamery</p>
-            <h3 className="font-serif text-4xl uppercase tracking-[0.08em] text-chalk">
+            <p className="mb-3 text-xs uppercase tracking-[0.2em] text-gold sm:text-sm sm:tracking-[0.34em]">Cobblestone Creamery</p>
+            <h3 className="font-serif text-3xl uppercase tracking-[0.08em] text-chalk sm:text-4xl">
               Dessert With
               <span className="block text-gold">Some Ballpark Energy</span>
             </h3>
@@ -44,13 +44,13 @@ export default function Footer() {
             <div className="mt-6 flex flex-wrap gap-3">
               <a
                 href={ORDER_ONLINE_URL}
-                className="rounded-full bg-dugout-red px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#ca4438]"
+                className="inline-flex min-h-[44px] items-center rounded-full bg-dugout-red px-5 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#ca4438]"
               >
                 Order Online
               </a>
               <Link
                 href="/location"
-                className="rounded-full border border-white/[0.18] bg-white/[0.06] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:border-gold/60 hover:text-gold"
+                className="inline-flex min-h-[44px] items-center rounded-full border border-white/[0.18] bg-white/[0.06] px-5 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:border-gold/60 hover:text-gold"
               >
                 Visit Us
               </Link>
@@ -58,14 +58,16 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-[0.3em] text-gold">Quick Links</h4>
-            <div className="mt-5 grid gap-3">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold sm:text-sm sm:tracking-[0.3em]">Quick Links</h4>
+            {/* py-2.5 turns each link into a ~44px tap target; gap drops to 0 so the
+                 column height stays the same as before. */}
+            <div className="mt-3 grid gap-0">
               {quickLinks.map((link) =>
                 link.external ? (
                   <a
                     key={`${link.label}-${link.href}`}
                     href={link.href}
-                    className="text-sm uppercase tracking-[0.16em] text-white/[0.72] transition-colors hover:text-gold"
+                    className="block py-2.5 text-sm uppercase tracking-[0.16em] text-white/[0.72] transition-colors hover:text-gold"
                   >
                     {link.label}
                   </a>
@@ -73,7 +75,7 @@ export default function Footer() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-sm uppercase tracking-[0.16em] text-white/[0.72] transition-colors hover:text-gold"
+                    className="block py-2.5 text-sm uppercase tracking-[0.16em] text-white/[0.72] transition-colors hover:text-gold"
                   >
                     {link.label}
                   </Link>
@@ -83,21 +85,25 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-[0.3em] text-gold">Visit The Shop</h4>
-            <div className="mt-5 rounded-[1.75rem] border border-white/[0.12] bg-white/[0.06] p-6">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold sm:text-sm sm:tracking-[0.3em]">Visit The Shop</h4>
+            <div className="mt-5 rounded-[1.75rem] border border-white/[0.12] bg-white/[0.06] p-5 sm:p-6">
               <address className="not-italic space-y-3 text-sm uppercase tracking-[0.14em] text-white/[0.72]">
                 <p className="text-white">900 Main Street</p>
                 <p>Inside Main Street Food &amp; Beverage</p>
                 <p>Evansville, Indiana 47708</p>
                 <p>
-                  <a href="tel:+18124999866" className="transition-colors hover:text-gold">
+                  <a href="tel:+18124999866" className="inline-flex min-h-[44px] items-center transition-colors hover:text-gold">
                     (812) 499-9866
                   </a>
                 </p>
                 <p>
                   <a
                     href="mailto:info@cobblestonecreamery.com"
-                    className="transition-colors hover:text-gold"
+                    /* normal-case + no tracking + break-all: uppercased with
+                       0.14em tracking this 28-char address measured ~310px
+                       against a 262px card and scrolled the whole page
+                       sideways on a 360px phone. */
+                    className="inline-flex min-h-[44px] items-center break-all normal-case tracking-normal transition-colors hover:text-gold"
                   >
                     info@cobblestonecreamery.com
                   </a>
@@ -118,22 +124,22 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs uppercase tracking-[0.18em] text-white/[0.45] md:flex-row md:items-center md:justify-between">
           <p>&copy; {new Date().getFullYear()} Cobblestone Creamery. All rights reserved.</p>
-          <div className="flex flex-wrap items-center gap-4">
-            <Link href="/privacy" className="transition-colors hover:text-white/[0.72]">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-0">
+            <Link href="/privacy" className="inline-flex min-h-[44px] items-center transition-colors hover:text-white/[0.72]">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="transition-colors hover:text-white/[0.72]">
+            <Link href="/terms" className="inline-flex min-h-[44px] items-center transition-colors hover:text-white/[0.72]">
               Terms &amp; Conditions
             </Link>
             <a
               href="https://www.facebook.com/profile.php?id=61588303764359"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-white/[0.72]"
+              className="inline-flex min-h-[44px] items-center transition-colors hover:text-white/[0.72]"
             >
               Facebook
             </a>
-            <Link href="/employee/login" className="transition-colors hover:text-white/[0.72]">
+            <Link href="/employee/login" className="inline-flex min-h-[44px] items-center transition-colors hover:text-white/[0.72]">
               Employee Portal
             </Link>
           </div>

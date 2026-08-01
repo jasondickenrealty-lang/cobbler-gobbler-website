@@ -53,7 +53,7 @@ export default function PrivacyPage() {
             <div>
               <h2 className="font-serif text-2xl text-primary mb-4">Information We Collect</h2>
               <p className="mb-4">We may collect the following personal information:</p>
-              <ul className="list-disc list-inside space-y-2 ml-2">
+              <ul className="list-disc list-outside space-y-2 pl-5">
                 <li>Name and contact information (email address, phone number)</li>
                 <li>Delivery address when placing orders</li>
                 <li>Order history and preferences</li>
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
                 When you opt in to our SMS messaging program, you consent to receive recurring
                 automated text messages from Cobblestone Creamery. These messages may include:
               </p>
-              <ul className="list-disc list-inside space-y-2 ml-2 mb-4">
+              <ul className="list-disc list-outside space-y-2 pl-5 mb-4">
                 <li>Order confirmations and status updates</li>
                 <li>Promotional offers and discounts</li>
                 <li>Loyalty rewards notifications</li>
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
             <div>
               <h2 className="font-serif text-2xl text-primary mb-4">How We Use Your Information</h2>
               <p className="mb-4">We use the information we collect to:</p>
-              <ul className="list-disc list-inside space-y-2 ml-2">
+              <ul className="list-disc list-outside space-y-2 pl-5">
                 <li>Process and fulfill your orders</li>
                 <li>Send transactional messages (order confirmations, delivery updates)</li>
                 <li>Send promotional messages if you have opted in</li>
@@ -144,7 +144,7 @@ export default function PrivacyPage() {
             <div>
               <h2 className="font-serif text-2xl text-primary mb-4">Your Rights</h2>
               <p>You have the right to:</p>
-              <ul className="list-disc list-inside space-y-2 ml-2 mt-4">
+              <ul className="list-disc list-outside space-y-2 pl-5 mt-4">
                 <li>Access and review the personal information we hold about you</li>
                 <li>Request correction of inaccurate information</li>
                 <li>Request deletion of your personal information</li>

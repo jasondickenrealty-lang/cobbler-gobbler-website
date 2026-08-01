@@ -104,25 +104,30 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-5 right-5 z-[9999] font-sans">
+    // On mobile the fixed action bar owns the bottom ~62px, so `.chat-launcher-offset`
+    // (globals.css) lifts the widget clear of it and drops back to the normal
+    // offset at lg, where that bar is gone.
+    <div className="chat-launcher-offset fixed right-4 z-[9999] font-sans sm:right-5">
       {!open ? (
         <button
           onClick={() => setOpen(true)}
-          className="rounded-full bg-pink-600 hover:bg-pink-700 text-white px-4 py-3 shadow-lg"
+          className="min-h-[44px] rounded-full bg-pink-600 hover:bg-pink-700 text-white px-5 py-3 shadow-lg"
           aria-label="Open chat"
         >
           Chat
         </button>
       ) : (
-        <div className="w-[340px] sm:w-[380px] h-[520px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden">
+        // Fluid width so it never exceeds a 320-360px screen, and dvh-based
+        // height so the iOS keyboard can't push the composer out of reach.
+        <div className="w-[calc(100vw-2rem)] max-w-[340px] sm:max-w-[380px] h-[min(520px,calc(100dvh-8rem))] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 bg-gray-900 text-white">
             <div>
               <div className="font-semibold">Moona</div>
               <div className="text-xs opacity-80">I can help with flavors, orders, and store info—or take complaints and suggestions.</div>
             </div>
-            <div className="flex gap-2">
-              <button onClick={clear} className="text-xs px-2 py-1 rounded bg-gray-700 hover:bg-gray-600">Clear</button>
-              <button onClick={() => setOpen(false)} className="text-xs px-2 py-1 rounded bg-gray-700 hover:bg-gray-600">Close</button>
+            <div className="flex shrink-0 gap-2">
+              <button onClick={clear} className="min-h-[36px] text-xs px-3 py-2 rounded bg-gray-700 hover:bg-gray-600">Clear</button>
+              <button onClick={() => setOpen(false)} className="min-h-[36px] text-xs px-3 py-2 rounded bg-gray-700 hover:bg-gray-600">Close</button>
             </div>
           </div>
 
@@ -174,15 +179,19 @@ export default function ChatWidget() {
                   if (e.key === 'Enter') send();
                 }}
                 placeholder={busy ? 'Sending…' : 'Type a message'}
-                className="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                enterKeyHint="send"
+                autoCapitalize="sentences"
+                /* text-base (16px) on mobile: anything smaller makes iOS
+                   Safari auto-zoom the page on focus and never zoom back. */
+                className="min-w-0 flex-1 rounded-xl border border-gray-300 px-3 py-2 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
               <button
                 onClick={send}
                 disabled={!canSend}
                 className={
                   canSend
-                    ? 'rounded-xl bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 text-sm'
-                    : 'rounded-xl bg-gray-300 text-gray-600 px-4 py-2 text-sm cursor-not-allowed'
+                    ? 'shrink-0 min-h-[44px] rounded-xl bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 text-sm'
+                    : 'shrink-0 min-h-[44px] rounded-xl bg-gray-300 text-gray-600 px-4 py-2 text-sm cursor-not-allowed'
                 }
               >
                 Send

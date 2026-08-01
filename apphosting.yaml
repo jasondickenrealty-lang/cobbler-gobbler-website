@@ -42,7 +42,7 @@ env:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_ORDER_ONLINE_URL
-    value: https://order.cobblestonecreamery.com/auth
+    value: https://order.cobblestonecreamery.com/menu
     availability:
       - BUILD
       - RUNTIME

@@ -135,7 +135,7 @@ export default function LocationPage() {
                 <div className="w-10 h-0.5 bg-gold mb-6"></div>
                 <div className="space-y-3">
                   {businessInfo.hours && Object.entries(businessInfo.hours).map(([day, hours]) => (
-                    <div key={day} className="flex justify-between text-dark/70">
+                    <div key={day} className="flex flex-col gap-0.5 text-dark/70 sm:flex-row sm:justify-between sm:gap-4">
                       <span className="font-medium text-dark">{day}</span>
                       <span>{hours}</span>
                     </div>
@@ -166,7 +166,7 @@ export default function LocationPage() {
                 href={googleMapsOpenUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block text-sm font-medium tracking-wide uppercase text-primary border-b-2 border-gold pb-1 hover:text-gold transition-colors"
+                className="inline-flex min-h-[44px] items-center px-2 text-sm font-medium tracking-wide uppercase text-primary border-b-2 border-gold hover:text-gold transition-colors"
               >
                 Open in Google Maps
               </a>

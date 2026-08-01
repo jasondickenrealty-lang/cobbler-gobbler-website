@@ -129,11 +129,12 @@ export default function JoinOurTeamPage() {
                   </label>
                   <input
                     id="firstName"
+                    autoComplete="given-name"
                     type="text"
                     required
                     value={form.firstName}
                     onChange={(e) => handleChange('firstName', e.target.value)}
-                    className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
                 <div>
@@ -142,11 +143,12 @@ export default function JoinOurTeamPage() {
                   </label>
                   <input
                     id="lastName"
+                    autoComplete="family-name"
                     type="text"
                     required
                     value={form.lastName}
                     onChange={(e) => handleChange('lastName', e.target.value)}
-                    className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
               </div>
@@ -158,11 +160,16 @@ export default function JoinOurTeamPage() {
                   </label>
                   <input
                     id="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
                     type="email"
                     required
                     value={form.email}
                     onChange={(e) => handleChange('email', e.target.value)}
-                    className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
                 <div>
@@ -171,11 +178,13 @@ export default function JoinOurTeamPage() {
                   </label>
                   <input
                     id="phone"
+                    autoComplete="tel"
+                    inputMode="tel"
                     type="tel"
                     required
                     value={form.phone}
                     onChange={(e) => handleChange('phone', e.target.value)}
-                    className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
               </div>
@@ -206,9 +215,10 @@ export default function JoinOurTeamPage() {
                   <input
                     id="startDate"
                     type="date"
+                    autoComplete="off"
                     value={form.startDate}
                     onChange={(e) => handleChange('startDate', e.target.value)}
-                    className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
               </div>
@@ -223,7 +233,7 @@ export default function JoinOurTeamPage() {
                   rows={4}
                   value={form.availability}
                   onChange={(e) => handleChange('availability', e.target.value)}
-                  className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                   placeholder="Example: Monday-Friday after 3 PM, open weekends"
                 />
               </div>
@@ -237,7 +247,7 @@ export default function JoinOurTeamPage() {
                   rows={4}
                   value={form.experience}
                   onChange={(e) => handleChange('experience', e.target.value)}
-                  className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                   placeholder="Tell us about customer service, food service, leadership, or other experience."
                 />
               </div>
@@ -252,7 +262,7 @@ export default function JoinOurTeamPage() {
                   rows={4}
                   value={form.whyJoin}
                   onChange={(e) => handleChange('whyJoin', e.target.value)}
-                  className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
 
@@ -265,7 +275,7 @@ export default function JoinOurTeamPage() {
                   rows={4}
                   value={form.additionalInfo}
                   onChange={(e) => handleChange('additionalInfo', e.target.value)}
-                  className="w-full rounded border border-dark/20 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full min-w-0 rounded border border-dark/20 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
 

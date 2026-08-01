@@ -49,7 +49,7 @@ export default async function GoogleReviewsWidget() {
       <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.32em] text-dugout-red">What Guests Are Saying</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-dugout-red sm:text-sm sm:tracking-[0.32em]">What Guests Are Saying</p>
             <h2 className="mt-2 font-serif text-4xl uppercase tracking-[0.08em] text-primary md:text-5xl">
               Reviews
             </h2>
@@ -61,7 +61,7 @@ export default async function GoogleReviewsWidget() {
               href={data.googleUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-5 rounded-[1.75rem] border border-dark/[0.08] bg-light-cream px-6 py-5 shadow-sm transition-shadow hover:shadow-md self-start md:self-auto"
+              className="flex flex-wrap items-center gap-4 rounded-[1.75rem] border border-dark/[0.08] bg-light-cream px-5 py-5 shadow-sm transition-shadow hover:shadow-md self-start sm:gap-5 sm:px-6 md:self-auto"
             >
               <div className="text-center">
                 <p className="font-serif text-5xl font-bold text-primary">{data.rating.toFixed(1)}</p>

@@ -38,10 +38,14 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b-4 border-gold bg-primary text-white shadow-[0_14px_30px_rgba(11,22,40,0.16)]">
       <div className="border-b border-white/10 bg-dark/[0.45]">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-2 text-[0.72rem] uppercase tracking-[0.28em] text-white/[0.72]">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 text-[0.6rem] uppercase tracking-[0.14em] text-white/[0.72] sm:px-6 sm:text-[0.72rem] sm:tracking-[0.28em]">
           <p>Downtown Evansville, Indiana</p>
+          {/* The three utility links push this strip to 4-5 wrapped rows on a
+              360px phone and eat the whole above-the-fold. They all live in
+              the hamburger menu below, so on mobile only the phone number —
+              the one tap-to-act item — stays here. */}
           <div className="flex items-center gap-4 text-white/[0.78]">
-            <a href="tel:+18124999866" className="transition-colors hover:text-gold">
+            <a href="tel:+18124999866" className="py-1 transition-colors hover:text-gold">
               (812) 499-9866
             </a>
             {utilityLinks.map((link) =>
@@ -49,7 +53,7 @@ export default function Navbar() {
                 <a
                   key={`${link.label}-${link.href}`}
                   href={link.href}
-                  className="transition-colors hover:text-gold"
+                  className="hidden py-1 transition-colors hover:text-gold md:inline-block"
                 >
                   {link.label}
                 </a>
@@ -57,7 +61,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="transition-colors hover:text-gold"
+                  className="hidden py-1 transition-colors hover:text-gold md:inline-block"
                 >
                   {link.label}
                 </Link>
@@ -67,20 +71,22 @@ export default function Navbar() {
         </div>
       </div>
 
-      <nav className="mx-auto max-w-7xl px-6">
-        <div className="flex min-h-[84px] items-center justify-between gap-6">
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6">
+        {/* min-w-0 on the brand link so it can shrink instead of shoving the
+            hamburger off-screen at 360px. */}
+        <div className="flex min-h-[72px] items-center justify-between gap-3 sm:min-h-[84px] sm:gap-6">
           <Link
             href="/"
-            className="flex items-center gap-4 text-white transition-transform duration-200 hover:translate-y-[-1px]"
+            className="flex min-w-0 items-center gap-3 text-white transition-transform duration-200 hover:translate-y-[-1px] sm:gap-4"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-gold/70 bg-white/10 text-2xl text-gold">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-gold/70 bg-white/10 text-xl text-gold sm:h-14 sm:w-14 sm:text-2xl">
               CC
             </div>
-            <div>
-              <p className="font-serif text-4xl leading-none tracking-[0.14em] text-chalk">
+            <div className="min-w-0">
+              <p className="font-serif text-[1.75rem] leading-none tracking-[0.08em] text-chalk sm:text-4xl sm:tracking-[0.14em]">
                 Cobblestone
               </p>
-              <p className="-mt-1 text-[0.7rem] uppercase tracking-[0.34em] text-gold/90">
+              <p className="-mt-1 text-[0.6rem] uppercase tracking-[0.24em] text-gold/90 sm:text-[0.7rem] sm:tracking-[0.34em]">
                 Creamery
               </p>
             </div>
@@ -122,8 +128,9 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileOpen((open) => !open)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white lg:hidden"
+              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white lg:hidden"
               aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileOpen ? (
@@ -138,7 +145,10 @@ export default function Navbar() {
       </nav>
 
       {mobileOpen && (
-        <div className="border-t border-white/10 bg-scoreboard/95 px-6 pb-6 pt-4 lg:hidden">
+        // max-h + scroll so the 10-item menu is still fully reachable on a
+        // short screen (landscape phone / small Android) instead of running
+        // off the bottom with no way to scroll it.
+        <div className="max-h-[calc(100dvh-7rem)] overflow-y-auto overscroll-contain border-t border-white/10 bg-scoreboard/95 px-4 pb-6 pt-4 sm:px-6 lg:hidden">
           <div className="grid gap-3">
             {navLinks.map((link) =>
               link.external ? (

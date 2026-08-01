@@ -60,6 +60,20 @@
   top: 4px;
   height: 48px;
   opacity: 0.9;
+  /* A short shift can compute to ~16px wide, which is untappable on a phone. */
+  min-width: 44px;
+}
+
+/* --- Phone layout ---------------------------------------------------------
+   The timeline itself already lives in an overflow-x-auto track, so the
+   1440px width below is fine. The problem on a 360px screen was the frozen
+   name column: at 180px it ate 55% of the viewport and left a ~148px window
+   onto an 18-hour day. Narrowing it to 104px roughly doubles the visible
+   timeline. Desktop is untouched. */
+@media (max-width: 640px) {
+  .schedule-labels-column {
+    width: 104px;
+  }
 }
 
 .schedule-open-row {

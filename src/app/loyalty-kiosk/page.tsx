@@ -111,7 +111,7 @@ export default function LoyaltyKioskPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-light-cream px-8 text-center">
+      <div className="min-h-dvh flex flex-col items-center justify-center bg-light-cream px-6 py-10 text-center sm:px-8">
         <Image
           src="/logo.png"
           alt="Cobblestone Creamery"
@@ -141,7 +141,7 @@ export default function LoyaltyKioskPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-light-cream">
+    <div className="min-h-dvh flex flex-col bg-light-cream">
 
       {/* Header */}
       <header className="flex flex-col items-center pt-10 pb-6 border-b border-cream bg-white">
@@ -168,13 +168,14 @@ export default function LoyaltyKioskPage() {
         >
 
           <div>
-            <label className="block text-base font-semibold uppercase tracking-widest text-primary mb-2">
+            <label htmlFor="kiosk-name" className="block text-base font-semibold uppercase tracking-widest text-primary mb-2">
               Full Name <span className="text-dugout-red">*</span>
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              id="kiosk-name"
               autoComplete="name"
               required
               placeholder="Your full name"
@@ -183,13 +184,14 @@ export default function LoyaltyKioskPage() {
           </div>
 
           <div>
-            <label className="block text-base font-semibold uppercase tracking-widest text-primary mb-2">
+            <label htmlFor="kiosk-phone" className="block text-base font-semibold uppercase tracking-widest text-primary mb-2">
               Phone Number <span className="text-dugout-red">*</span>
             </label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              id="kiosk-phone"
               autoComplete="tel"
               required
               placeholder="(812) 555-1234"
@@ -198,14 +200,19 @@ export default function LoyaltyKioskPage() {
           </div>
 
           <div>
-            <label className="block text-base font-semibold uppercase tracking-widest text-primary mb-2">
+            <label htmlFor="kiosk-email" className="block text-base font-semibold uppercase tracking-widest text-primary mb-2">
               Email Address <span className="text-dugout-red">*</span>
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              id="kiosk-email"
               autoComplete="email"
+              inputMode="email"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               required
               placeholder="you@example.com"
               className="w-full rounded-xl border-2 border-cream bg-white px-5 py-4 text-xl text-dark placeholder:text-dark/30 focus:border-gold focus:outline-none"

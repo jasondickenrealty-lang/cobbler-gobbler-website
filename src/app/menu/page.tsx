@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ORDER_ONLINE_URL } from '@/lib/links';
 import { FEATURED_FLAVORS } from '@/shared/featured-flavors';
-import { getMenuData, categoryAnchorId, type MenuItem } from '@/lib/menu-data';
+import { getMenuData, categoryAnchorId, type MenuItem, type MenuCategory } from '@/lib/menu-data';
 
 // Server-render the menu and refresh from Firestore at most every 10 minutes.
 // This puts the real menu in the HTML response so Google can read it directly.
@@ -14,7 +14,7 @@ const FULL_MENU_PDF_URL = '/menu/cobblestone-full-menu.pdf';
 
 const SITE_URL = 'https://cobblestonecreamery.com';
 
-function buildMenuJsonLd(items: MenuItem[], categories: string[]) {
+function buildMenuJsonLd(items: MenuItem[], categories: MenuCategory[]) {
   if (categories.length === 0) return null;
   return {
     '@context': 'https://schema.org',
@@ -23,9 +23,10 @@ function buildMenuJsonLd(items: MenuItem[], categories: string[]) {
     url: `${SITE_URL}/menu`,
     hasMenuSection: categories.map((category) => ({
       '@type': 'MenuSection',
-      name: category,
+      name: category.name,
+      ...(category.description ? { description: category.description } : {}),
       hasMenuItem: items
-        .filter((item) => item.category === category)
+        .filter((item) => item.category === category.name)
         .map((item) => ({
           '@type': 'MenuItem',
           name: item.name,
@@ -98,7 +99,7 @@ export default async function MenuPage() {
               <h2 className="font-serif text-3xl md:text-4xl text-primary">Featured Cones</h2>
               <div className="w-12 h-0.5 bg-gold mt-3 mx-auto"></div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 place-items-center">
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 md:grid-cols-3 lg:grid-cols-5 place-items-center">
               {FEATURED_FLAVORS.map((cone) => (
                 <figure key={cone.id} className="text-center">
                   <Image
@@ -106,7 +107,7 @@ export default async function MenuPage() {
                     alt={`${cone.name} ice cream cone at Cobblestone Creamery in downtown Evansville`}
                     width={231}
                     height={432}
-                    className="w-[180px] h-[260px] object-contain mx-auto drop-shadow-sm"
+                    className="w-full max-w-[180px] h-auto object-contain mx-auto drop-shadow-sm"
                   />
                   <figcaption className="mt-3 text-sm text-dark/70">{cone.name}</figcaption>
                 </figure>
@@ -146,11 +147,11 @@ export default async function MenuPage() {
                     <nav className="space-y-2" aria-label="Menu categories">
                       {categories.map((category) => (
                         <a
-                          key={category}
-                          href={`#${categoryAnchorId(category)}`}
+                          key={category.name}
+                          href={`#${categoryAnchorId(category.name)}`}
                           className="block text-sm uppercase tracking-wide text-dark/70 hover:text-primary transition-colors"
                         >
-                          {category}
+                          {category.name}
                         </a>
                       ))}
                     </nav>
@@ -163,11 +164,11 @@ export default async function MenuPage() {
                     <div className="flex flex-wrap gap-2">
                       {categories.map((category) => (
                         <a
-                          key={category}
-                          href={`#${categoryAnchorId(category)}`}
-                          className="inline-block rounded-full border border-gold/30 px-3 py-1.5 text-xs uppercase tracking-wide text-dark/70 hover:text-primary hover:border-gold transition-colors"
+                          key={category.name}
+                          href={`#${categoryAnchorId(category.name)}`}
+                          className="inline-flex min-h-[44px] items-center rounded-full border border-gold/30 px-4 py-2.5 text-sm uppercase tracking-wide text-dark/70 hover:text-primary hover:border-gold transition-colors"
                         >
-                          {category}
+                          {category.name}
                         </a>
                       ))}
                     </div>
@@ -175,15 +176,24 @@ export default async function MenuPage() {
 
                   <div className="space-y-16">
                     {categories.map((category) => (
-                      <div key={category} id={categoryAnchorId(category)} className="scroll-mt-24">
+                      <div
+                        key={category.name}
+                        id={categoryAnchorId(category.name)}
+                        className="scroll-mt-24"
+                      >
                         <div className="mb-8">
                           <h2 className="font-serif text-2xl md:text-3xl text-primary capitalize">
-                            {category}
+                            {category.name}
                           </h2>
                           <div className="w-12 h-0.5 bg-gold mt-3"></div>
+                          {category.description && (
+                            <p className="text-dark/60 mt-3 max-w-2xl leading-relaxed">
+                              {category.description}
+                            </p>
+                          )}
                         </div>
                         <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
-                          {getItemsByCategory(category).map((item) => (
+                          {getItemsByCategory(category.name).map((item) => (
                             <div key={item.id} className="group">
                               {item.imageUrl && (
                                 // eslint-disable-next-line @next/next/no-img-element

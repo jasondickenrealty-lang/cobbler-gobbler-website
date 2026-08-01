@@ -83,7 +83,7 @@ export default function AnnouncementsPage() {
                       {announcement.priority}
                     </span>
                   </div>
-                  <p className="text-gray-700 mb-3">{announcement.message}</p>
+                  <p className="text-gray-700 mb-3 break-words">{announcement.message}</p>
                   <div className="text-sm text-gray-600">
                     <span>Posted: {announcement.createdAt}</span>
                     {announcement.createdBy && <span> • By: {announcement.createdBy}</span>}

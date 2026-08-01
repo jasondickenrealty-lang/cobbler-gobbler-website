@@ -137,7 +137,7 @@ export default function FreeKidsScoopPage() {
                       <button
                         type="button"
                         onClick={() => handleDownload(page)}
-                        className="inline-block text-center bg-gold text-white px-5 py-2.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors cursor-pointer"
+                        className="text-center bg-gold text-white inline-flex min-h-[44px] items-center justify-center px-5 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors cursor-pointer"
                       >
                         Download
                       </button>

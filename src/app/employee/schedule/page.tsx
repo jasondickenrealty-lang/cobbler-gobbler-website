@@ -514,7 +514,7 @@ export default function SchedulePage() {
                 <button
                   type="button"
                   onClick={() => viewMode === 'day' ? handleDayChange(-1) : handleWeekChange(-1)}
-                  className="w-9 h-9 shrink-0 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
+                  className="w-11 h-11 shrink-0 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
                 >&#8249;</button>
 
                 <div className="font-semibold text-gray-700 bg-gray-100 px-3 py-2 rounded-full text-sm flex-1 text-center min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -524,7 +524,7 @@ export default function SchedulePage() {
                 <button
                   type="button"
                   onClick={() => viewMode === 'day' ? handleDayChange(1) : handleWeekChange(1)}
-                  className="w-9 h-9 shrink-0 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
+                  className="w-11 h-11 shrink-0 rounded-lg border border-gray-300 bg-white text-gray-700 text-xl flex items-center justify-center hover:bg-gray-50 transition-colors"
                 >&#8250;</button>
 
                 <button
@@ -654,15 +654,15 @@ export default function SchedulePage() {
 
       {/* ---- Time Off Modal ---- */}
       {showTimeOffModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto overscroll-contain bg-black/50 px-4 py-8 sm:items-center">
+          <div className="my-auto bg-white rounded-2xl shadow-xl w-full max-w-md p-5 sm:p-6 max-h-[calc(100dvh-4rem)] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-800">Request Time Off</h2>
-              <button type="button" onClick={() => setShowTimeOffModal(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+              <button type="button" onClick={() => setShowTimeOffModal(false)} className="-m-2 flex h-11 w-11 shrink-0 items-center justify-center text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
             </div>
 
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                   <input
@@ -671,7 +671,7 @@ export default function SchedulePage() {
                     type="date"
                     value={timeOffForm.startDate}
                     onChange={e => setTimeOffForm(f => ({ ...f, startDate: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full min-w-0 appearance-none border border-gray-300 rounded-lg px-3 py-2.5 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <div>
@@ -683,7 +683,7 @@ export default function SchedulePage() {
                     value={timeOffForm.endDate}
                     min={timeOffForm.startDate}
                     onChange={e => setTimeOffForm(f => ({ ...f, endDate: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full min-w-0 appearance-none border border-gray-300 rounded-lg px-3 py-2.5 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -695,7 +695,7 @@ export default function SchedulePage() {
                   aria-label="Time off request type"
                   value={timeOffForm.type}
                   onChange={e => setTimeOffForm(f => ({ ...f, type: e.target.value as TimeOffType }))}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full min-w-0 appearance-none border border-gray-300 rounded-lg px-3 py-2.5 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <option value="vacation">Vacation</option>
                   <option value="sick">Sick</option>
@@ -711,7 +711,7 @@ export default function SchedulePage() {
                   onChange={e => setTimeOffForm(f => ({ ...f, reason: e.target.value }))}
                   rows={3}
                   placeholder="Any additional details..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                 />
               </div>
 
@@ -743,11 +743,11 @@ export default function SchedulePage() {
 
       {/* ---- Availability Modal ---- */}
       {showAvailModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto overscroll-contain bg-black/50 px-4 py-8 sm:items-center">
+          <div className="my-auto bg-white rounded-2xl shadow-xl w-full max-w-lg p-5 sm:p-6 max-h-[calc(100dvh-4rem)] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-800">My Weekly Availability</h2>
-              <button type="button" onClick={() => setShowAvailModal(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+              <button type="button" onClick={() => setShowAvailModal(false)} className="-m-2 flex h-11 w-11 shrink-0 items-center justify-center text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
             </div>
 
             {availLoading ? (
@@ -760,8 +760,8 @@ export default function SchedulePage() {
                   const d = availability[day];
                   return (
                     <div key={day} className={`rounded-xl border p-3 transition-colors ${d.available ? 'border-emerald-300 bg-emerald-50' : 'border-gray-200 bg-gray-50'}`}>
-                      <div className="flex items-center justify-between">
-                        <label className="flex items-center gap-3 cursor-pointer select-none">
+                      <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <label className="flex min-h-[44px] items-center gap-3 cursor-pointer select-none">
                           <div
                             onClick={() => toggleDayAvail(day)}
                             className={`w-10 h-6 rounded-full transition-colors cursor-pointer flex items-center px-1 ${d.available ? 'bg-emerald-500' : 'bg-gray-300'}`}
@@ -772,13 +772,13 @@ export default function SchedulePage() {
                         </label>
 
                         {d.available && (
-                          <div className="flex items-center gap-2 text-sm">
+                          <div className="flex w-full flex-wrap items-center gap-2 text-sm sm:w-auto sm:flex-nowrap">
                             <input
                               aria-label={`${DAY_LABELS[day]} start time`}
                               type="time"
                               value={d.startTime}
                               onChange={e => setAvailability(prev => ({ ...prev, [day]: { ...prev[day], startTime: e.target.value } }))}
-                              className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                              className="min-h-[44px] min-w-0 appearance-none border border-gray-300 rounded-lg px-2 py-2 text-base sm:min-h-0 sm:py-1 sm:text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
                             />
                             <span className="text-gray-400 text-xs">to</span>
                             <input
@@ -786,7 +786,7 @@ export default function SchedulePage() {
                               type="time"
                               value={d.endTime}
                               onChange={e => setAvailability(prev => ({ ...prev, [day]: { ...prev[day], endTime: e.target.value } }))}
-                              className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                              className="min-h-[44px] min-w-0 appearance-none border border-gray-300 rounded-lg px-2 py-2 text-base sm:min-h-0 sm:py-1 sm:text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
                             />
                           </div>
                         )}
@@ -794,16 +794,16 @@ export default function SchedulePage() {
                       </div>
 
                       {d.available && (
-                        <div className="mt-2 pl-[52px]">
+                        <div className="mt-2 sm:pl-[52px]">
                           {d.splitStart !== undefined ? (
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                               <span className="text-xs text-gray-400 w-8 shrink-0">Also</span>
                               <input
                                 aria-label={`${DAY_LABELS[day]} split shift start time`}
                                 type="time"
                                 value={d.splitStart}
                                 onChange={e => setAvailability(prev => ({ ...prev, [day]: { ...prev[day], splitStart: e.target.value } }))}
-                                className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                                className="min-h-[44px] min-w-0 appearance-none border border-gray-300 rounded-lg px-2 py-2 text-base sm:min-h-0 sm:py-1 sm:text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
                               />
                               <span className="text-gray-400 text-xs">to</span>
                               <input
@@ -811,12 +811,12 @@ export default function SchedulePage() {
                                 type="time"
                                 value={d.splitEnd ?? '17:00'}
                                 onChange={e => setAvailability(prev => ({ ...prev, [day]: { ...prev[day], splitEnd: e.target.value } }))}
-                                className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                                className="min-h-[44px] min-w-0 appearance-none border border-gray-300 rounded-lg px-2 py-2 text-base sm:min-h-0 sm:py-1 sm:text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
                               />
                               <button
                                 type="button"
                                 onClick={() => removeSplit(day)}
-                                className="text-gray-300 hover:text-red-400 text-base leading-none ml-1 transition-colors"
+                                className="flex h-11 w-11 shrink-0 items-center justify-center text-gray-300 hover:text-red-400 text-base leading-none transition-colors"
                                 aria-label="Remove split shift"
                               >✕</button>
                             </div>
@@ -824,7 +824,7 @@ export default function SchedulePage() {
                             <button
                               type="button"
                               onClick={() => addSplit(day)}
-                              className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1 transition-colors"
+                              className="inline-flex min-h-[44px] items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
                             >
                               <span className="text-base leading-none">+</span> Add split shift
                             </button>
@@ -842,7 +842,7 @@ export default function SchedulePage() {
                     onChange={e => setAvailNotes(e.target.value)}
                     rows={2}
                     placeholder="e.g. Can't work before 10am on Tuesdays"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
                   />
                 </div>
 

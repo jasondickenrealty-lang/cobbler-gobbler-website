@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Bebas_Neue, Source_Sans_3 } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ChatWidgetGate from '@/components/ChatWidgetGate';
@@ -18,6 +18,18 @@ const displayFont = Bebas_Neue({
 });
 
 const SITE_URL = 'https://cobblestonecreamery.com';
+
+// `viewportFit: 'cover'` is what makes env(safe-area-inset-*) return real
+// values on notched iPhones — without it the safe-area padding on the mobile
+// action bar evaluates to 0 and the bar sits under the home indicator.
+// initialScale/width are Next's defaults, pinned here so they're explicit.
+// Deliberately no maximum-scale / user-scalable=no: pinch zoom stays on.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#10243f',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

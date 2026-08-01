@@ -92,21 +92,21 @@ export default function ContestSignupsPage() {
               <table className="min-w-full text-left text-sm">
                 <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-600">
                   <tr>
-                    <th className="px-4 py-3">Name</th>
-                    <th className="px-4 py-3">Phone</th>
-                    <th className="px-4 py-3">Email</th>
-                    <th className="px-4 py-3">Event Date</th>
-                    <th className="px-4 py-3">Signed Up At</th>
+                    <th className="whitespace-nowrap px-4 py-3">Name</th>
+                    <th className="whitespace-nowrap px-4 py-3">Phone</th>
+                    <th className="whitespace-nowrap px-4 py-3">Email</th>
+                    <th className="whitespace-nowrap px-4 py-3">Event Date</th>
+                    <th className="whitespace-nowrap px-4 py-3">Signed Up At</th>
                   </tr>
                 </thead>
                 <tbody>
                   {signups.map((signup) => (
                     <tr key={signup.id} className="border-t border-gray-100">
-                      <td className="px-4 py-3 font-medium text-gray-900">{signup.name || '-'}</td>
-                      <td className="px-4 py-3 text-gray-700">{signup.phone || '-'}</td>
-                      <td className="px-4 py-3 text-gray-700">{signup.email || '-'}</td>
-                      <td className="px-4 py-3 text-gray-700">{signup.eventDate || '2026-05-24'}</td>
-                      <td className="px-4 py-3 text-gray-700">{formatCreatedAt(signup.createdAt)}</td>
+                      <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900">{signup.name || '-'}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-gray-700">{signup.phone || '-'}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-gray-700">{signup.email || '-'}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-gray-700">{signup.eventDate || '2026-05-24'}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-gray-700">{formatCreatedAt(signup.createdAt)}</td>
                     </tr>
                   ))}
                 </tbody>
