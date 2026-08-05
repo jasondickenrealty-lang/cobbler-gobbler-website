@@ -123,12 +123,17 @@ export default function PrivacyPage() {
 
             <div>
               <h2 className="font-serif text-2xl text-primary mb-4">Information Sharing</h2>
-              <p>
+              <p className="mb-4">
                 We do not sell, trade, or rent your personal information to third parties. We may share
                 your information only with trusted service providers who assist us in operating our business
                 (e.g., payment processing, order delivery, SMS messaging services). These providers are
                 obligated to keep your information confidential and use it solely for the services they
                 provide to us.
+              </p>
+              <p>
+                No mobile information will be shared with third parties or affiliates for marketing or
+                promotional purposes. All other use case categories exclude text messaging originator opt-in
+                data and consent; this information will not be shared with any third parties.
               </p>
             </div>
 

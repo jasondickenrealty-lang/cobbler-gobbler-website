@@ -44,21 +44,57 @@ export default function SmsOptInPage() {
             <div>
               <h2 className="font-serif text-2xl text-primary mb-4">How Users Opt In</h2>
               <p className="mb-6">
-                During account creation on our online ordering platform at{' '}
+                Cobblestone Creamery collects SMS consent through three channels, all of them web forms. In
+                every case the consent checkbox is unchecked by default and must be actively selected by the
+                customer. Consent is never required to make a purchase, to create an account, or to join our
+                loyalty program. We do not collect SMS consent on paper, over the phone, or by any means
+                other than the forms described below.
+              </p>
+
+              <h3 className="font-medium text-dark mb-2">1. Online ordering account creation</h3>
+              <p className="mb-6">
+                When creating an account on our online ordering platform at{' '}
                 <a href={ORDER_ONLINE_URL} className="text-primary hover:text-gold transition-colors font-medium">
                   order.cobblestonecreamery.com
-                </a>, customers are presented with an optional SMS consent checkbox. The checkbox is unchecked by
-                default and must be actively selected by the user. Consent is not required to make a purchase.
+                </a>, customers are presented with an optional SMS consent checkbox alongside the sign-up form.
+                A link to this Privacy Policy is shown directly beneath the checkbox.
               </p>
 
               {/* DO NOT DELETE: This image is required for SMS compliance and must remain accessible at /assets/cobblestone-sms-optin.png */}
-              <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+              <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm mb-8">
                 <img
                   src="/assets/cobblestone-sms-optin.png"
                   alt="Screenshot of Cobblestone Creamery account creation form showing SMS opt-in checkbox"
                   className="w-full h-auto"
                 />
               </div>
+
+              <h3 className="font-medium text-dark mb-2">2. Online loyalty program sign-up</h3>
+              <p className="mb-6">
+                Customers who join our loyalty rewards program from our website do so at{' '}
+                <a href="/loyalty-signup" className="text-primary hover:text-gold transition-colors font-medium">
+                  cobblestonecreamery.com/loyalty-signup
+                </a>. The form carries the same optional, unchecked SMS consent checkbox, and states that
+                membership does not require opting in to text messages.
+              </p>
+
+              <h3 className="font-medium text-dark mb-2">3. In-store loyalty sign-up kiosk</h3>
+              <p className="mb-6">
+                Customers who join the loyalty program in person at 900 Main Street, Evansville, Indiana do so
+                on a self-service kiosk screen at the counter. The kiosk displays the web form hosted at{' '}
+                <a href="/loyalty-kiosk" className="text-primary hover:text-gold transition-colors font-medium">
+                  cobblestonecreamery.com/loyalty-kiosk
+                </a>, which reviewers may view directly. After entering their name, phone number, and email,
+                the customer is shown an optional SMS consent checkbox that is unchecked by default. Staff do
+                not select the checkbox on a customer&apos;s behalf, and declining it does not affect loyalty
+                enrollment. No paper sign-up forms are used.
+              </p>
+
+              <p>
+                Customers who opt in through any of these channels can later turn SMS messages on or off at
+                any time from the account settings page on our online ordering platform, in addition to
+                replying <strong>STOP</strong> to any message.
+              </p>
             </div>
 
             <div>

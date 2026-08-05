@@ -11,7 +11,6 @@ const quickLinks = [
   { href: '/ice-cream-catering-evansville', label: 'Catering' },
   { href: '/ice-cream-fundraising-evansville', label: 'Fundraising Nights' },
   { href: '/about', label: 'Our Story' },
-  { href: '/free-kids-scoop', label: 'Free Kids Scoop' },
   { href: '/fundraising', label: 'Fundraising' },
   { href: WHOLESALE_URL, label: 'Wholesale', external: true },
   { href: FREE_GAME_PLAY_URL, label: 'Game Play', external: true },

@@ -22,7 +22,6 @@ const navLinks: NavLink[] = [
 ];
 
 const utilityLinks: NavLink[] = [
-  { href: '/free-kids-scoop', label: 'Free Kids Scoop' },
   { href: WHOLESALE_URL, label: 'Wholesale', external: true },
   { href: FREE_GAME_PLAY_URL, label: 'Game Play', external: true },
 ];

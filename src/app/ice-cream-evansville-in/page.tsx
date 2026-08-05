@@ -60,9 +60,9 @@ const FAQ_ITEMS = [
       'Absolutely! In addition to our premium ice cream, we serve classic cobblers with seasonal fruits, thick milkshakes, sundaes, and other delicious desserts.',
   },
   {
-    question: 'Do you offer a free kids scoop?',
+    question: 'Do you have a rewards program?',
     answer:
-      'Yes! Download one of our coloring pages from the Free Kids Scoop page, color it at home, and bring it in for a free kids scoop of ice cream.',
+      'Yes! Join our loyalty program online or on the tablet in the shop to earn points on qualifying purchases and unlock rewards.',
   },
 ];
 
@@ -133,9 +133,9 @@ export default function IceCreamEvansvillePage() {
               <div>
                 <h3 className="font-serif text-xl text-primary mb-3">Family-Friendly Fun</h3>
                 <p className="text-dark/60 leading-relaxed">
-                  From our free kids scoop coloring page program to our monthly
-                  games with prizes, Cobblestone Creamery is a place where
-                  families in Evansville create sweet memories together.
+                  From our loyalty rewards to our monthly games with prizes,
+                  Cobblestone Creamery is a place where families in Evansville
+                  create sweet memories together.
                 </p>
               </div>
               <div>

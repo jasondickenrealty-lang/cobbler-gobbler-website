@@ -54,7 +54,7 @@ const faqJsonLd = {
 const quickHits = [
   { label: 'Fresh At Cobblestone', value: 'Waffle Cones' },
   { label: 'Cobblestone Pickup', value: 'Fast Ordering' },
-  { label: 'Cobblestone Family Favorite', value: 'Kids Scoop Offers' },
+  { label: 'Cobblestone Family Favorite', value: 'Kid-Sized Scoops' },
 ];
 
 const experienceCards = [
@@ -236,7 +236,7 @@ export default function HomePage() {
                       Kids Scoop
                     </p>
                     <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      Keep the family tradition moving with specials built for younger guests.
+                      Kid-sized portions and simple favorites built for younger guests.
                     </p>
                   </div>
                   <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
@@ -278,18 +278,18 @@ export default function HomePage() {
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              <Link
-                href="/free-kids-scoop"
+              <a
+                href={ORDER_ONLINE_URL}
                 className="rounded-[1.75rem] border border-primary/[0.12] bg-white px-6 py-6 shadow-[0_16px_30px_rgba(16,36,63,0.08)] transition-transform duration-200 hover:translate-y-[-2px]"
               >
-                <p className="text-[0.72rem] uppercase tracking-[0.28em] text-dugout-red">Promo</p>
+                <p className="text-[0.72rem] uppercase tracking-[0.28em] text-dugout-red">Pickup</p>
                 <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-primary">
-                  Free Kids Scoop
+                  Order Online
                 </p>
                 <p className="mt-3 text-sm leading-6 text-dark/70">
-                  Color a page at home and bring it in — your kid gets a free scoop of ice cream on us.
+                  Build your order ahead of time and pick it up ready to go at 900 Main Street.
                 </p>
-              </Link>
+              </a>
               <a
                 href={FREE_GAME_PLAY_URL}
                 className="rounded-[1.75rem] border border-primary/[0.12] bg-primary px-6 py-6 text-white shadow-[0_16px_30px_rgba(16,36,63,0.16)] transition-transform duration-200 hover:translate-y-[-2px]"
@@ -444,7 +444,7 @@ export default function HomePage() {
                   <span className="block text-gold">Community Nights</span>
                 </h2>
                 <p className="mt-5 max-w-2xl text-lg leading-8 text-white/[0.76]">
-                  From the free kids scoop program to community fundraising events —
+                  From rewards for our regulars to community fundraising events —
                   there is always something happening at Cobblestone Creamery in
                   downtown Evansville, Indiana.
                 </p>
@@ -452,18 +452,18 @@ export default function HomePage() {
 
               <div className="grid gap-4">
                 <div className="rounded-[1.8rem] border border-white/[0.14] bg-white/10 p-6 backdrop-blur-sm">
-                    <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Cobblestone Family Promo</p>
+                    <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Cobblestone Rewards</p>
                   <h3 className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
-                    Free Kids Scoop
+                    Join Our Loyalty Program
                   </h3>
                   <p className="mt-3 text-base leading-7 text-white/[0.72]">
-                    Download a coloring page, color it at home, and bring it in. Your kid gets a free scoop of ice cream.
+                    Earn points on qualifying purchases and unlock rewards. Sign up online or on the tablet in the shop.
                   </p>
                   <Link
-                    href="/free-kids-scoop"
+                    href="/loyalty-signup"
                     className="mt-5 inline-flex text-sm font-semibold uppercase tracking-[0.2em] text-gold"
                   >
-                    View Cobblestone Promo
+                    Sign Up Free
                   </Link>
                 </div>
                 <div className="rounded-[1.8rem] border border-white/[0.14] bg-dark/[0.28] p-6 backdrop-blur-sm">

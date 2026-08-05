@@ -9,6 +9,11 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/free-kids-scoop', destination: '/', permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
