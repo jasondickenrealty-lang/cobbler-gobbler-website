@@ -19,5 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/join-our-team`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
+    // Carrier reviewers check that the SMS consent proof page is indexable.
+    { url: `${baseUrl}/sms-optin`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
   ];
 }

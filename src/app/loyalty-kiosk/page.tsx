@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import { SMS_CONSENT_DISCLOSURE, PRIVACY_POLICY_URL, TERMS_URL } from '@/lib/smsConsent';
 
 const API_BASE = (
   process.env.NEXT_PUBLIC_API_BASE ||
@@ -231,9 +232,10 @@ export default function LoyaltyKioskPage() {
             </div>
             <span className="text-base text-dark/70 leading-relaxed">
               <span className="block font-semibold text-dark mb-1">Sign me up for text message updates (optional)</span>
-              I agree to receive recurring SMS messages from Cobblestone Creamery about promotions,
-              loyalty rewards, and store announcements. Consent is not required to participate.
-              Message &amp; data rates may apply. Reply <strong>STOP</strong> to unsubscribe.
+              {SMS_CONSENT_DISCLOSURE}
+              <span className="mt-2 block text-sm text-dark/50">
+                Privacy Policy: {PRIVACY_POLICY_URL} Terms: {TERMS_URL}
+              </span>
             </span>
           </label>
 

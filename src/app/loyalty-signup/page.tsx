@@ -4,6 +4,7 @@ import { FormEvent, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { SMS_CONSENT_DISCLOSURE, PRIVACY_POLICY_URL, TERMS_URL } from '@/lib/smsConsent';
 
 const API_BASE = (
   process.env.NEXT_PUBLIC_API_BASE ||
@@ -187,14 +188,17 @@ export default function LoyaltySignupPage() {
                   className="mt-0.5 h-5 w-5 accent-gold flex-shrink-0"
                 />
                 <span className="text-sm text-dark/70 leading-relaxed">
-                  I agree to receive recurring SMS messages from Cobblestone Creamery regarding
-                  promotions, loyalty rewards, order updates, and store announcements. Consent is
-                  not a condition of purchase. Message and data rates may apply. Reply{' '}
-                  <strong>STOP</strong> to unsubscribe or <strong>HELP</strong> for help.{' '}
-                  <a href="/sms-optin" className="text-primary underline hover:text-gold transition-colors">
-                    SMS details
-                  </a>
-                  .
+                  {SMS_CONSENT_DISCLOSURE}
+                  <span className="mt-2 block text-xs text-dark/50">
+                    Privacy Policy:{' '}
+                    <a href={PRIVACY_POLICY_URL} className="underline hover:text-gold transition-colors">
+                      {PRIVACY_POLICY_URL}
+                    </a>{' '}
+                    Terms:{' '}
+                    <a href={TERMS_URL} className="underline hover:text-gold transition-colors">
+                      {TERMS_URL}
+                    </a>
+                  </span>
                 </span>
               </label>
 
