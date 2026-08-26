@@ -1,9 +1,13 @@
 import type { Metadata, Viewport } from 'next';
 import { Bebas_Neue, Source_Sans_3 } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { SiteContentProvider } from '@/contexts/SiteContentContext';
+import AnnouncementBanner from '@/components/AnnouncementBanner';
+import PreviewBanner from '@/components/PreviewBanner';
 import ChatWidgetGate from '@/components/ChatWidgetGate';
 import EmailCapturePopup from '@/components/EmailCapturePopup';
 import MobileActionBar from '@/components/MobileActionBar';
+import { getSiteContent, type DayHours } from '@/lib/siteContent';
 import './globals.css';
 
 const bodyFont = Source_Sans_3({
@@ -79,7 +83,50 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
+/** Schema.org day abbreviations, for the compact `openingHours` strings. */
+const DAY_ABBR: Record<string, string> = {
+  Monday: 'Mo',
+  Tuesday: 'Tu',
+  Wednesday: 'We',
+  Thursday: 'Th',
+  Friday: 'Fr',
+  Saturday: 'Sa',
+  Sunday: 'Su',
+};
+
+/**
+ * Structured hours for Google, built from the live config so an owner's edit
+ * updates the rich result too. A split day emits one entry per window — that
+ * is how Schema.org says "closed 2-4pm", and without it Google would tell
+ * searchers the shop is open straight through the gap.
+ */
+function openingHoursStrings(hours: DayHours[]): string[] {
+  return hours.flatMap((entry) => {
+    const abbr = DAY_ABBR[entry.day];
+    if (!abbr || !entry.open || !entry.close) return [];
+    const out = [`${abbr} ${entry.open}-${entry.close}`];
+    if (entry.open2 && entry.close2) out.push(`${abbr} ${entry.open2}-${entry.close2}`);
+    return out;
+  });
+}
+
+function openingHoursSpecification(hours: DayHours[]) {
+  return hours.flatMap((entry) => {
+    if (!entry.open || !entry.close) return [];
+    const windows = [{ opens: entry.open, closes: entry.close }];
+    if (entry.open2 && entry.close2) {
+      windows.push({ opens: entry.open2, closes: entry.close2 });
+    }
+    return windows.map((w) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: entry.day,
+      opens: w.opens,
+      closes: w.closes,
+    }));
+  });
+}
+
+const baseJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'IceCreamShop',
   name: 'Cobblestone Creamery',
@@ -105,52 +152,6 @@ const jsonLd = {
     longitude: -87.5711,
   },
   hasMap: 'https://www.google.com/maps/search/?api=1&query=900+Main+Street+Evansville+Indiana+47708',
-  openingHours: [
-    'Mo-Th 11:00-14:00',
-    'Mo-Th 16:00-21:00',
-    'Fr 11:00-14:00',
-    'Fr 16:00-22:00',
-    'Sa 11:00-22:00',
-    'Su 12:00-18:00',
-  ],
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-      opens: '11:00',
-      closes: '14:00',
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-      opens: '16:00',
-      closes: '21:00',
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: 'Friday',
-      opens: '11:00',
-      closes: '14:00',
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: 'Friday',
-      opens: '16:00',
-      closes: '22:00',
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: 'Saturday',
-      opens: '11:00',
-      closes: '22:00',
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: 'Sunday',
-      opens: '12:00',
-      closes: '18:00',
-    },
-  ],
   menu: `${SITE_URL}/menu`,
   hasMenu: {
     '@type': 'Menu',
@@ -233,11 +234,21 @@ const organizationJsonLd = {
   sameAs: ['https://www.facebook.com/profile.php?id=61588303764359'],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // One fetch per render, shared with every page below via Next's fetch cache
+  // and handed to client components through SiteContentProvider.
+  const content = await getSiteContent();
+
+  const jsonLd = {
+    ...baseJsonLd,
+    openingHours: openingHoursStrings(content.hours),
+    openingHoursSpecification: openingHoursSpecification(content.hours),
+  };
+
   return (
     <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`}>
       <head>
@@ -260,10 +271,16 @@ export default function RootLayout({
       </head>
       <body className="font-sans text-dark">
         <AuthProvider>
-          {children}
-          <EmailCapturePopup />
-          <ChatWidgetGate />
-          <MobileActionBar />
+          <SiteContentProvider content={content}>
+            {content.isPreview ? (
+              <PreviewBanner pendingChanges={content.pendingChanges} />
+            ) : null}
+            <AnnouncementBanner />
+            {children}
+            <EmailCapturePopup />
+            <ChatWidgetGate />
+            <MobileActionBar />
+          </SiteContentProvider>
         </AuthProvider>
       </body>
     </html>

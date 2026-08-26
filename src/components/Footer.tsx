@@ -1,5 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL, WHOLESALE_URL } from '@/lib/links';
+import { useSiteContent } from '@/contexts/SiteContentContext';
+import { hoursLines } from '@/lib/siteContent';
 
 const quickLinks = [
   { href: '/menu', label: 'Menu' },
@@ -17,14 +21,12 @@ const quickLinks = [
   { href: '/location', label: 'Visit Us' },
 ];
 
-const hours = [
-  'Monday - Thursday: 11:00 AM - 2:00 PM, 4:00 PM - 9:00 PM',
-  'Friday: 11:00 AM - 2:00 PM, 4:00 PM - 10:00 PM',
-  'Saturday: 11:00 AM - 10:00 PM',
-  'Sunday: 12:00 PM - 6:00 PM',
-];
-
 export default function Footer() {
+  // Hours come from the config the owner edits in the admin panel; the
+  // provider falls back to the previously hardcoded week if it is unreachable.
+  const { hours, hoursNote } = useSiteContent();
+  const lines = hoursLines(hours);
+
   return (
     <footer className="mt-auto border-t-4 border-gold bg-primary text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
@@ -112,9 +114,12 @@ export default function Footer() {
               <div className="mt-6 border-t border-white/10 pt-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold">Hours</p>
                 <div className="mt-3 space-y-2 text-sm text-white/70">
-                  {hours.map((line) => (
-                    <p key={line}>{line}</p>
+                  {lines.map((line) => (
+                    <p key={line.label}>
+                      {line.label}: {line.value}
+                    </p>
                   ))}
+                  {hoursNote && <p className="text-white/[0.55]">{hoursNote}</p>}
                 </div>
               </div>
             </div>

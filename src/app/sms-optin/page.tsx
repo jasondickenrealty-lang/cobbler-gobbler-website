@@ -152,20 +152,47 @@ export default function SmsOptInPage() {
               </figure>
             </div>
 
-            {/* 4. In-store sign-up */}
+            {/* 3b. Loyalty sign-up — listed as an opt-in method on the campaign, so it
+                has to be documented here too. Every method named in the submission
+                needs its own section on this page or the campaign fails opt-in review. */}
             <div>
-              <h2 className="font-serif text-2xl text-primary mb-4">In-Store Sign-Up Form</h2>
+              <h2 className="font-serif text-2xl text-primary mb-4">Loyalty Sign-Up Opt-In</h2>
               <p className="mb-6">
-                Customers who join in person at 900 Main Street, Evansville, IN 47708 sign
-                themselves up on a self-service kiosk screen at the counter. The kiosk displays the
-                web form below, which is publicly viewable at{' '}
+                Customers who join the loyalty program online do so at{' '}
+                <a href="/loyalty-signup" className="text-primary hover:text-gold transition-colors font-medium">
+                  cobblestonecreamery.com/loyalty-signup
+                </a>
+                , a public page a reviewer may load directly with no login and no purchase. The form
+                carries the same optional SMS consent checkbox, unchecked by default and never
+                pre-selected. Leaving it unchecked does not prevent the customer from joining the
+                loyalty program.
+              </p>
+
+              <p className="mb-4 font-medium text-dark">
+                Disclosure text shown next to the checkbox:
+              </p>
+              <DisclosureBlock />
+            </div>
+
+            {/* 4. Self-service web form at the counter. Deliberately NOT framed as an
+                "in-store" or kiosk opt-in: carriers treat in-store, paper, verbal and QR
+                flows as offline consent they cannot verify, which fails opt-in review.
+                This is the same public web form the customer fills in themselves, so it
+                is described as the web form it actually is. */}
+            <div>
+              <h2 className="font-serif text-2xl text-primary mb-4">Self-Service Web Form at the Counter</h2>
+              <p className="mb-6">
+                Customers who join at 900 Main Street, Evansville, IN 47708 fill in the same public
+                web form themselves, on a tablet at the counter. Consent is collected by that web
+                form at{' '}
                 <a href="/loyalty-kiosk" className="text-primary hover:text-gold transition-colors font-medium">
                   cobblestonecreamery.com/loyalty-kiosk
-                </a>{' '}
-                and may be loaded directly by a reviewer. The customer enters their own name, phone
-                number, and email, then chooses whether to check the SMS consent box, which is
-                unchecked by default. Staff do not check the box on a customer&apos;s behalf, and
-                declining it does not affect loyalty enrollment.
+                </a>
+                , which a reviewer may load directly and which is the identical page shown on the
+                tablet. The customer enters their own name, phone number, and email, then chooses
+                whether to check the SMS consent box, which is unchecked by default. Staff do not
+                check the box on a customer&apos;s behalf, and declining it does not affect loyalty
+                enrollment.
               </p>
               <p className="mb-6">
                 <strong className="text-dark">Cobblestone Creamery does not collect SMS consent on
@@ -178,15 +205,15 @@ export default function SmsOptInPage() {
                 <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                   <img
                     src="/sms-optin-form.jpg"
-                    alt="Photo of the in-store self-service sign-up kiosk form at Cobblestone Creamery showing the unchecked SMS consent checkbox and full disclosure text"
+                    alt="Screenshot of the Cobblestone Creamery self-service loyalty web form at cobblestonecreamery.com/loyalty-kiosk showing the unchecked SMS consent checkbox and full disclosure text"
                     width={1000}
                     height={1200}
                     className="w-full h-auto"
                   />
                 </div>
                 <figcaption className="text-sm text-dark/50 mt-2">
-                  In-store sign-up kiosk at 900 Main Street — SMS consent checkbox, unchecked by
-                  default. Also available at{' '}
+                  Self-service web form at cobblestonecreamery.com/loyalty-kiosk, used on a tablet at
+                  900 Main Street — SMS consent checkbox, unchecked by default. Also available at{' '}
                   <a href="/sms-optin-form.jpg" className="text-primary hover:text-gold transition-colors underline">
                     cobblestonecreamery.com/sms-optin-form.jpg
                   </a>

@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import GoogleReviewsWidget from '@/components/GoogleReviewsWidget';
 import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL } from '@/lib/links';
+import { getSiteContent, hoursLines, hoursSentence } from '@/lib/siteContent';
 
 const faqItems = [
   {
@@ -38,18 +39,32 @@ const faqItems = [
   },
 ];
 
-const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqItems.map((item) => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.answer,
-    },
-  })),
-};
+/**
+ * The hours FAQ answer is written from the live config so it can never drift
+ * from the hours shown further down the page (or in the footer). Everything
+ * else in the list is static copy.
+ */
+function resolveFaqItems(hoursAnswer: string) {
+  if (!hoursAnswer) return faqItems;
+  return faqItems.map((item) =>
+    item.question === 'What are your hours?' ? { ...item, answer: hoursAnswer } : item,
+  );
+}
+
+function buildFaqJsonLd(items: typeof faqItems) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
 
 const quickHits = [
   { label: 'Fresh At Cobblestone', value: 'Waffle Cones' },
@@ -128,7 +143,12 @@ const visitStats = [
   { label: 'Open Late', value: 'Fri + Sat' },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { hours, hoursNote } = await getSiteContent();
+  const hoursDisplay = hoursLines(hours);
+  const resolvedFaqItems = resolveFaqItems(hoursSentence(hours));
+  const faqJsonLd = buildFaqJsonLd(resolvedFaqItems);
+
   return (
     <>
       <Navbar />
@@ -580,18 +600,12 @@ export default function HomePage() {
                 <div className="mt-6 rounded-[1.75rem] border border-dark/[0.08] bg-white p-6 shadow-[0_14px_26px_rgba(16,36,63,0.08)]">
                   <p className="text-sm uppercase tracking-[0.3em] text-dugout-red">Hours</p>
                   <div className="mt-5 grid gap-3 text-base leading-7 text-dark/[0.76]">
-                    <p>
-                      <span className="font-semibold text-dark">Monday - Thursday:</span> 11:00 AM - 2:00 PM, 4:00 PM - 9:00 PM
-                    </p>
-                    <p>
-                      <span className="font-semibold text-dark">Friday:</span> 11:00 AM - 2:00 PM, 4:00 PM - 10:00 PM
-                    </p>
-                    <p>
-                      <span className="font-semibold text-dark">Saturday:</span> 11:00 AM - 10:00 PM
-                    </p>
-                    <p>
-                      <span className="font-semibold text-dark">Sunday:</span> 12:00 PM - 6:00 PM
-                    </p>
+                    {hoursDisplay.map((line) => (
+                      <p key={line.label}>
+                        <span className="font-semibold text-dark">{line.label}:</span> {line.value}
+                      </p>
+                    ))}
+                    {hoursNote && <p className="text-dark/60">{hoursNote}</p>}
                   </div>
                   <p className="mt-5 text-base leading-7 text-dark/70">
                     Positioned in the heart of downtown Evansville, the shop is built for
@@ -658,7 +672,7 @@ export default function HomePage() {
             </div>
 
             <div className="mt-12 grid gap-5">
-              {faqItems.map((item) => (
+              {resolvedFaqItems.map((item) => (
                 <article
                   key={item.question}
                   className="rounded-[1.75rem] border border-dark/[0.08] bg-white px-6 py-6 shadow-[0_14px_26px_rgba(16,36,63,0.06)]"

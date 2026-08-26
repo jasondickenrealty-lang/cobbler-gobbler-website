@@ -156,7 +156,7 @@
 .itemName {
   color: #1a1a1a;
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
   line-height: 1.2;
   white-space: nowrap;
@@ -166,6 +166,7 @@
 .itemDescription {
   color: rgba(0,0,0,0.75);
   font-size: 0.8rem;
+  font-weight: 700;
   margin: 0.15rem 0 0;
   line-height: 1.3;
   white-space: nowrap;
@@ -177,6 +178,7 @@
 .itemAddOns {
   margin: 0.2rem 0 0;
   font-size: 0.82rem;
+  font-weight: 700;
   line-height: 1.35;
   color: rgba(0,0,0,0.78);
   display: flex;
@@ -202,14 +204,14 @@
   margin-right: 0.15rem;
 }
 .itemAddOnPrice {
-  color: #C8956C;
+  color: #1a1a1a;
   font-weight: 700;
   font-size: 0.72rem;
 }
 
 .itemPrice {
   font-family: Georgia, serif;
-  color: #C8956C;
+  color: #1a1a1a;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
@@ -257,6 +259,7 @@
   background: rgba(0,0,0,0.06);
   color: #1a1a1a;
   font-size: 1.05rem;
+  font-weight: 700;
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.1);
@@ -265,7 +268,7 @@
   gap: 0.25rem;
 }
 .modPrice {
-  color: #C8956C;
+  color: #1a1a1a;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -548,6 +551,7 @@
 .cardDescription {
   color: rgba(0, 0, 0, 0.78);
   font-size: 1.05rem;
+  font-weight: 700;
   font-style: italic;
   line-height: 1.3;
   margin: 0.4rem 0 0;
@@ -610,6 +614,7 @@
 }
 .promoDetail {
   font-size: 1.05rem;
+  font-weight: 700;
   color: rgba(250, 241, 233, 0.95);
   margin: 0.25rem 0 0;
   line-height: 1.3;

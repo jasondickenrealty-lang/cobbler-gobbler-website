@@ -62,6 +62,18 @@ const WAFFLE_BOWL_PROMO = {
 };
 const WAFFLE_BOWL_ANCHOR = 'Udderly Classic Scoops';
 
+// Second callout, rendered with the same promo styling and pinned directly
+// under the waffle one. Hardcoded for the same reason the waffle promo is:
+// it is an upsell on the scoops, not a menu category of its own.
+const COOKIE_DOUGH_PROMO = {
+  kind: 'promo' as const,
+  id: 'promo-cookie-dough',
+  title: 'Add Cookie Dough',
+  detail: 'Scooped fresh — add to any scoop',
+  price: '+$1.00',
+  icon: '🍪',
+};
+
 // ── Screen 3: Ads / Photos / Specials ──────────────────────────────────────
 interface AdImage { name: string; url: string; }
 
@@ -170,7 +182,7 @@ interface ItemAddOnGroup { id: string; label: string; mods: Modifier[] }
 type Card =
   | { kind: 'category'; id: string; title: string; description?: string; items: MenuItem[]; addOns: Record<string, ItemAddOnGroup[]> }
   | { kind: 'topping'; id: string; title: string; mods: Modifier[] }
-  | { kind: 'promo'; id: string; title: string; detail: string; price: string };
+  | { kind: 'promo'; id: string; title: string; detail: string; price: string; icon?: string };
 
 function toNumber(value: unknown, fallback = 0): number {
   const n = typeof value === 'number' ? value : Number(value);
@@ -207,6 +219,31 @@ function bestSplit(cards: Card[]): number {
     if (diff < bestDiff) { bestDiff = diff; best = k; }
   }
   return best;
+}
+
+// Screen 1 ends wherever the weight balance lands, which left a tall gap in its
+// last column. Naming a card here forces screen 1 to run THROUGH that card, so
+// screen 2 starts with the next one. Matching ignores case, spaces and dashes.
+// Blank or no match = fall back to the automatic balance, so a renamed or
+// deleted category can never blank out a screen. `?split=<n>` beats both, for
+// trying a break point on a TV without a deploy.
+const SCREEN_1_LAST_CARD = 'Moo-Shakes';
+
+function normalizeTitle(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function splitPoint(cards: Card[], override: string | null): number {
+  const manual = Number(override);
+  if (override && Number.isInteger(manual) && manual > 0 && manual < cards.length) return manual;
+
+  const pin = normalizeTitle(SCREEN_1_LAST_CARD);
+  if (pin) {
+    const i = cards.findIndex(c => normalizeTitle(c.title) === pin);
+    // Last card overall would leave screen 2 empty — let the balancer decide.
+    if (i >= 0 && i + 1 < cards.length) return i + 1;
+  }
+  return bestSplit(cards);
 }
 
 // ── Auto-fit: scale a block so it always fits its parent on one static slide ──
@@ -388,7 +425,7 @@ function CategoryCard({
 function PromoCard({ card }: { card: Extract<Card, { kind: 'promo' }> }) {
   return (
     <div className={`${styles.card} ${styles.promoCard}`}>
-      <span className={styles.promoIcon}>🧇</span>
+      <span className={styles.promoIcon}>{card.icon ?? '🧇'}</span>
       <div className={styles.promoBody}>
         <h3 className={styles.promoTitle}>{card.title}</h3>
         <p className={styles.promoDetail}>{card.detail}</p>
@@ -419,12 +456,13 @@ function ToppingCard({ card }: { card: Extract<Card, { kind: 'topping' }> }) {
 function MenuBoardInner() {
   const searchParams = useSearchParams();
   const screen = searchParams.get('screen');
+  const split = searchParams.get('split');
   useSelfUpdatingBoard();
   if (screen === '3') return <AdsScreen />;
-  return <MenuBoardMain screen={screen} />;
+  return <MenuBoardMain screen={screen} split={split} />;
 }
 
-function MenuBoardMain({ screen }: { screen: string | null }) {
+function MenuBoardMain({ screen, split }: { screen: string | null; split: string | null }) {
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
@@ -515,6 +553,7 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
               detail: bowlItem?.description?.trim() || WAFFLE_BOWL_PROMO.detail,
               price,
             });
+            newCards.push(COOKIE_DOUGH_PROMO);
             continue;
           }
           const catItems = sorted.filter(i => i.category === cat);
@@ -532,11 +571,11 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
             items: catItems,
             addOns: catAddOns,
           });
-          if (!hasWaffleBowlCategory && cat === WAFFLE_BOWL_ANCHOR) newCards.push(WAFFLE_BOWL_PROMO);
+          if (!hasWaffleBowlCategory && cat === WAFFLE_BOWL_ANCHOR) newCards.push(WAFFLE_BOWL_PROMO, COOKIE_DOUGH_PROMO);
         }
         // Anchor category missing (renamed/removed) — still show the upsell,
         // unless a POS Waffle Bowl category is already providing it.
-        if (!hasWaffleBowlCategory && !newCards.some(c => c.kind === 'promo')) newCards.push(WAFFLE_BOWL_PROMO);
+        if (!hasWaffleBowlCategory && !newCards.some(c => c.kind === 'promo')) newCards.push(WAFFLE_BOWL_PROMO, COOKIE_DOUGH_PROMO);
 
         // One card per group set to "own card" (plus any anchored group whose
         // item could not be found), in display order.
@@ -558,9 +597,9 @@ function MenuBoardMain({ screen }: { screen: string | null }) {
   // Auto-balance the cards across the two menu TVs by weight.
   const visibleCards = useMemo(() => {
     if (screen !== '1' && screen !== '2') return cards;
-    const k = bestSplit(cards);
+    const k = splitPoint(cards, split);
     return screen === '1' ? cards.slice(0, k) : cards.slice(k);
-  }, [screen, cards]);
+  }, [screen, cards, split]);
 
   // A few photos as accents rather than one per item — at most one per category,
   // spread down the board. Chosen from the card list itself so it stays stable
