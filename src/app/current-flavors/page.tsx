@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ORDER_ONLINE_URL } from '@/lib/links';
-import { FEATURED_FLAVORS } from '@/shared/featured-flavors';
+import { getSiteContent, flavorAlt } from '@/lib/siteContent';
 
 const SITE_URL = 'https://cobblestonecreamery.com';
 const MAPS_URL =
@@ -97,7 +97,9 @@ const faqJsonLd = {
   })),
 };
 
-export default function CurrentFlavorsPage() {
+export default async function CurrentFlavorsPage() {
+  const { featuredFlavors } = await getSiteContent();
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
@@ -134,7 +136,8 @@ export default function CurrentFlavorsPage() {
           </div>
         </section>
 
-        {/* Flavor grid */}
+        {/* Flavor grid — hidden entirely when the owner has cleared the lineup. */}
+        {featuredFlavors.length > 0 && (
         <section className="bg-white">
           <div className="max-w-5xl mx-auto px-6 py-16 md:py-20">
             <h2 className="text-3xl font-serif text-primary mb-4 text-center">
@@ -145,12 +148,12 @@ export default function CurrentFlavorsPage() {
               for again and again.
             </p>
             <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {FEATURED_FLAVORS.map((flavor) => (
-                <div key={flavor.id} className="bg-cream rounded-lg overflow-hidden border border-gold/20">
+              {featuredFlavors.map((flavor) => (
+                <div key={flavor.name} className="bg-cream rounded-lg overflow-hidden border border-gold/20">
                   <div className="relative aspect-square bg-white">
                     <Image
                       src={flavor.image}
-                      alt={`${flavor.name} ice cream at Cobblestone Creamery`}
+                      alt={flavorAlt(flavor)}
                       width={400}
                       height={400}
                       className="h-full w-full object-cover"
@@ -164,6 +167,7 @@ export default function CurrentFlavorsPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Prose */}
         <section className="bg-cream">

@@ -12,7 +12,7 @@
  */
 
 import { createContext, useContext } from 'react';
-import { FALLBACK_CONTENT, type SiteContent } from '@/lib/siteContent';
+import { FALLBACK_CONTENT, type SiteContent } from '@/lib/siteContentShared';
 
 const SiteContentContext = createContext<SiteContent>(FALLBACK_CONTENT);
 

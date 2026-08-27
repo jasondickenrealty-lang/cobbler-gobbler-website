@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ORDER_ONLINE_URL } from '@/lib/links';
-import { FEATURED_FLAVORS } from '@/shared/featured-flavors';
+import { getSiteContent, flavorAlt } from '@/lib/siteContent';
 import { getMenuData, categoryAnchorId, type MenuItem, type MenuCategory } from '@/lib/menu-data';
 
 // Server-render the menu and refresh from Firestore at most every 10 minutes.
@@ -47,6 +47,7 @@ function buildMenuJsonLd(items: MenuItem[], categories: MenuCategory[]) {
 
 export default async function MenuPage() {
   const { ok, items, categories, modifierCategories, modifiers } = await getMenuData();
+  const { featuredFlavors } = await getSiteContent();
   const hasMenu = ok && items.length > 0;
   const menuJsonLd = buildMenuJsonLd(items, categories);
 
@@ -92,7 +93,8 @@ export default async function MenuPage() {
           </div>
         </section>
 
-        {/* Featured Cones */}
+        {/* Featured Cones — hidden entirely when the owner has cleared the lineup. */}
+        {featuredFlavors.length > 0 && (
         <section className="bg-cream/30 border-y border-gold/20">
           <div className="max-w-6xl mx-auto px-6 py-14 md:py-16">
             <div className="text-center mb-10">
@@ -100,11 +102,11 @@ export default async function MenuPage() {
               <div className="w-12 h-0.5 bg-gold mt-3 mx-auto"></div>
             </div>
             <div className="grid grid-cols-2 gap-4 sm:gap-8 md:grid-cols-3 lg:grid-cols-5 place-items-center">
-              {FEATURED_FLAVORS.map((cone) => (
-                <figure key={cone.id} className="text-center">
+              {featuredFlavors.map((cone) => (
+                <figure key={cone.name} className="text-center">
                   <Image
                     src={cone.image}
-                    alt={`${cone.name} ice cream cone at Cobblestone Creamery in downtown Evansville`}
+                    alt={flavorAlt(cone)}
                     width={231}
                     height={432}
                     className="w-full max-w-[180px] h-auto object-contain mx-auto drop-shadow-sm"
@@ -115,6 +117,7 @@ export default async function MenuPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Menu Items */}
         <section className="bg-white">

@@ -6,7 +6,7 @@
  * is that the owner is never confused about whether the public can see this.
  */
 
-import { PREVIEW_CHANGE_LIMIT } from '@/lib/siteContent';
+import { PREVIEW_CHANGE_LIMIT } from '@/lib/siteContentShared';
 
 export default function PreviewBanner({ pendingChanges }: { pendingChanges: string[] }) {
   const shown = pendingChanges.slice(0, PREVIEW_CHANGE_LIMIT);

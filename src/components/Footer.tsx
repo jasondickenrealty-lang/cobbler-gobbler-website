@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL, WHOLESALE_URL } from '@/lib/links';
 import { useSiteContent } from '@/contexts/SiteContentContext';
-import { hoursLines } from '@/lib/siteContent';
+import { hoursLines } from '@/lib/siteContentShared';
 
 const quickLinks = [
   { href: '/menu', label: 'Menu' },

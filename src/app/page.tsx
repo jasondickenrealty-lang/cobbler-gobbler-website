@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import GoogleReviewsWidget from '@/components/GoogleReviewsWidget';
-import { FREE_GAME_PLAY_URL, ORDER_ONLINE_URL } from '@/lib/links';
-import { getSiteContent, hoursLines, hoursSentence } from '@/lib/siteContent';
+import { ORDER_ONLINE_URL } from '@/lib/links';
+import { getSiteContent, hoursLines, hoursSentence, flavorAlt } from '@/lib/siteContent';
 
 const faqItems = [
   {
@@ -69,7 +69,6 @@ function buildFaqJsonLd(items: typeof faqItems) {
 const quickHits = [
   { label: 'Fresh At Cobblestone', value: 'Waffle Cones' },
   { label: 'Cobblestone Pickup', value: 'Fast Ordering' },
-  { label: 'Cobblestone Family Favorite', value: 'Kid-Sized Scoops' },
 ];
 
 const experienceCards = [
@@ -103,32 +102,22 @@ const experienceCards = [
   },
 ];
 
-const fanFavorites = [
-  {
-    title: 'Triple Peanut Butter Cup',
-    blurb: 'Rich, stacked, and built like a cleanup hitter.',
-    image: '/menu-cones/triple-peanut-butter-cup.png',
-    alt: 'Triple Peanut Butter Cup ice cream',
-  },
-  {
-    title: 'Superman',
-    blurb: 'Bright color, nostalgic flavor, and instant kid approval.',
-    image: '/menu-cones/superman.png',
-    alt: 'Superman ice cream flavor',
-  },
-  {
-    title: 'Strawberry',
-    blurb: 'Classic scoop-shop sweetness with a little summer feel.',
-    image: '/menu-cones/strawberry.jpg',
-    alt: 'Strawberry ice cream',
-  },
-  {
-    title: 'Mint Chocolate Chip',
-    blurb: 'Cool, crisp, and one of the first tubs to disappear.',
-    image: '/menu-cones/mint_chocolate_chip.jpeg',
-    alt: 'Mint chocolate chip ice cream',
-  },
-];
+/**
+ * House copy for the flavors that shipped with the site. The cards themselves
+ * are driven by the owner-editable lineup now, so a flavor keeps its blurb if
+ * it is still on the list, a new flavor uses whatever blurb the owner wrote,
+ * and a flavor with neither just shows its name.
+ */
+const HOUSE_BLURBS: Record<string, string> = {
+  'triple peanut butter cup': 'Rich, stacked, and built like a cleanup hitter.',
+  'superman': 'Bright color, nostalgic flavor, and instant kid approval.',
+  'strawberry': 'Classic scoop-shop sweetness with a little summer feel.',
+  'mint chocolate chip': 'Cool, crisp, and one of the first tubs to disappear.',
+  'vanilla bean': 'The one everything else gets measured against.',
+  'chocolate': 'Deep, cold, and exactly what it promises.',
+  'coffee': 'A little grown-up, a lot of reason to come back.',
+  'butter pecan': 'Buttery, toasted, and quietly the regulars\' pick.',
+};
 
 const clubhouseNotes = [
   'Built in downtown Evansville for guests who want an ice cream shop with real personality.',
@@ -144,7 +133,13 @@ const visitStats = [
 ];
 
 export default async function HomePage() {
-  const { hours, hoursNote } = await getSiteContent();
+  const { hours, hoursNote, featuredFlavors } = await getSiteContent();
+
+  // Four cards is what this layout is built for; the lineup can be longer.
+  const fanFavorites = featuredFlavors.slice(0, 4).map((flavor) => ({
+    ...flavor,
+    blurb: flavor.blurb || HOUSE_BLURBS[flavor.name.toLowerCase()] || '',
+  }));
   const hoursDisplay = hoursLines(hours);
   const resolvedFaqItems = resolveFaqItems(hoursSentence(hours));
   const faqJsonLd = buildFaqJsonLd(resolvedFaqItems);
@@ -175,7 +170,7 @@ export default async function HomePage() {
           <div className="absolute bottom-0 left-0 right-0 h-14 bg-[linear-gradient(90deg,rgba(255,255,255,0.08),transparent_20%,transparent_80%,rgba(255,255,255,0.08))]" />
 
           <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 md:pb-24 md:pt-24">
-            <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+            <div className="grid gap-12">
               <div className="max-w-3xl">
                 <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-white/10 px-3 py-2 text-[0.62rem] uppercase tracking-[0.16em] text-gold sm:gap-3 sm:px-4 sm:text-xs sm:tracking-[0.34em]">
                   <span className="h-2 w-2 rounded-full bg-gold" />
@@ -223,7 +218,7 @@ export default async function HomePage() {
                   </Link>
                 </div>
 
-                <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-3">
+                <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-2">
                   {quickHits.map((item) => (
                     <div
                       key={item.label}
@@ -235,48 +230,6 @@ export default async function HomePage() {
                       <p className="mt-2 text-base font-semibold text-white">{item.value}</p>
                     </div>
                   ))}
-                </div>
-              </div>
-
-              <div className="rounded-[2rem] border border-white/[0.12] bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))] p-6 shadow-[0_18px_48px_rgba(0,0,0,0.26)] backdrop-blur-sm">
-                <p className="text-sm uppercase tracking-[0.34em] text-gold">Tonight&apos;s Lineup</p>
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
-                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Guest Favorite</p>
-                    <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
-                      Fresh Scoops
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      Fresh waffle cones, rotating flavors, and quick pickup ordering.
-                    </p>
-                  </div>
-                  <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
-                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Kids&apos; Favorite</p>
-                    <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
-                      Kids Scoop
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      Kid-sized portions and simple favorites built for younger guests.
-                    </p>
-                  </div>
-                  <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
-                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Community</p>
-                    <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
-                      Fundraisers
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      Sports teams, schools, and local groups can team up with Cobblestone for events.
-                    </p>
-                  </div>
-                  <div className="rounded-[1.5rem] border border-white/10 bg-dark/[0.35] p-5">
-                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">Cobblestone Bonus Play</p>
-                    <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
-                      Monthly Game
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-white/[0.72]">
-                      Orders can unlock Cobblestone game play, surprise wins, and reasons to come back again.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -297,7 +250,7 @@ export default async function HomePage() {
                 that feels like a neighborhood hangout, not a chain.
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4">
               <a
                 href={ORDER_ONLINE_URL}
                 className="rounded-[1.75rem] border border-primary/[0.12] bg-white px-6 py-6 shadow-[0_16px_30px_rgba(16,36,63,0.08)] transition-transform duration-200 hover:translate-y-[-2px]"
@@ -308,18 +261,6 @@ export default async function HomePage() {
                 </p>
                 <p className="mt-3 text-sm leading-6 text-dark/70">
                   Build your order ahead of time and pick it up ready to go at 900 Main Street.
-                </p>
-              </a>
-              <a
-                href={FREE_GAME_PLAY_URL}
-                className="rounded-[1.75rem] border border-primary/[0.12] bg-primary px-6 py-6 text-white shadow-[0_16px_30px_rgba(16,36,63,0.16)] transition-transform duration-200 hover:translate-y-[-2px]"
-              >
-                <p className="text-[0.72rem] uppercase tracking-[0.28em] text-gold">Rewards</p>
-                <p className="mt-2 font-serif text-3xl uppercase tracking-[0.08em] text-chalk">
-                  Game Play
-                </p>
-                <p className="mt-3 text-sm leading-6 text-white/[0.72]">
-                  Every order can unlock a chance to play and win. Check back each month for a new game.
                 </p>
               </a>
             </div>
@@ -506,6 +447,7 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {fanFavorites.length > 0 && (
         <section className="bg-light-cream">
           <div className="mx-auto max-w-7xl px-6 py-20 md:py-24">
             <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
@@ -527,23 +469,26 @@ export default async function HomePage() {
             <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
               {fanFavorites.map((item) => (
                 <article
-                  key={item.title}
+                  key={item.name}
                   className="overflow-hidden rounded-[2rem] border border-dark/[0.08] bg-white shadow-[0_16px_30px_rgba(16,36,63,0.08)]"
                 >
                   <div className="relative h-64">
-                    <Image src={item.image} alt={item.alt} fill className="object-cover" />
+                    <Image src={item.image} alt={flavorAlt(item)} fill className="object-cover" />
                   </div>
                   <div className="p-6">
                     <h3 className="font-serif text-3xl uppercase tracking-[0.08em] text-primary">
-                      {item.title}
+                      {item.name}
                     </h3>
-                    <p className="mt-3 text-base leading-7 text-dark/[0.72]">{item.blurb}</p>
+                    {item.blurb && (
+                      <p className="mt-3 text-base leading-7 text-dark/[0.72]">{item.blurb}</p>
+                    )}
                   </div>
                 </article>
               ))}
             </div>
           </div>
         </section>
+        )}
 
         <section className="border-y border-dark/10 bg-white" id="visit-us">
           <div className="mx-auto max-w-7xl px-6 py-20 md:py-24">

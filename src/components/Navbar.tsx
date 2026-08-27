@@ -16,7 +16,6 @@ const navLinks: NavLink[] = [
   { href: '/menu', label: 'Menu' },
   { href: '/current-flavors', label: 'Flavors' },
   { href: '/about', label: 'Our Story' },
-  { href: '/fundraising', label: 'Fundraising' },
   { href: '/join-our-team', label: 'Join Our Team' },
   { href: '/location', label: 'Visit Us' },
 ];
