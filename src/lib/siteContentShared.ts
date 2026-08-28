@@ -26,6 +26,9 @@ export const TENANT_ID = process.env.NEXT_PUBLIC_TENANT_ID || 'cobblestone';
 /** Holds the owner's private preview token. httpOnly; set by /api/preview. */
 export const PREVIEW_COOKIE = 'cbs_preview_token';
 
+/** Ceiling on the flavor lineup. Mirrored by MAX_FLAVORS in functions/utils/siteTools.js. */
+export const MAX_FLAVORS = 16;
+
 /** How many changed-section names the preview banner lists before "+N more". */
 export const PREVIEW_CHANGE_LIMIT = 4;
 
@@ -57,8 +60,12 @@ export interface HeroContent {
 export interface FeaturedFlavor {
   /** "Mint Chocolate Chip" */
   name: string;
-  /** Same-origin path from public/, or an https photo the owner uploaded. */
-  image: string;
+  /**
+   * Same-origin path from public/, or an https photo the owner uploaded.
+   * Optional: a flavor with no photo renders the drawn <FlavorCone /> instead,
+   * so the lineup can list everything in the case without waiting on a shoot.
+   */
+  image?: string;
   /** Overrides the generated alt text when the owner wrote their own. */
   alt?: string;
   /** One-liner shown beside the flavor on the home page. */
@@ -114,7 +121,7 @@ const FALLBACK_HOURS: DayHours[] = [
  */
 const FALLBACK_FLAVORS: FeaturedFlavor[] = FEATURED_FLAVORS.map(({ name, image }) => ({
   name,
-  image,
+  ...(image ? { image } : {}),
 }));
 
 export const FALLBACK_CONTENT: SiteContent = {
@@ -254,11 +261,12 @@ function asFeaturedFlavors(value: unknown): FeaturedFlavor[] | null {
   const seen = new Set<string>();
   const flavors: FeaturedFlavor[] = [];
 
-  for (const raw of value.slice(0, 12)) {
+  for (const raw of value.slice(0, MAX_FLAVORS)) {
     const entry = (raw ?? {}) as Record<string, unknown>;
     const name = typeof entry.name === 'string' ? entry.name.trim() : '';
+    // A flavor with no usable photo still belongs on the page — it draws a cone.
     const image = asImageSrc(entry.image);
-    if (!name || !image) continue;
+    if (!name) continue;
 
     const key = name.toLowerCase();
     if (seen.has(key)) continue;
@@ -266,7 +274,12 @@ function asFeaturedFlavors(value: unknown): FeaturedFlavor[] | null {
 
     const alt = typeof entry.alt === 'string' ? entry.alt.trim() : '';
     const blurb = typeof entry.blurb === 'string' ? entry.blurb.trim() : '';
-    flavors.push({ name, image, ...(alt ? { alt } : {}), ...(blurb ? { blurb } : {}) });
+    flavors.push({
+      name,
+      ...(image ? { image } : {}),
+      ...(alt ? { alt } : {}),
+      ...(blurb ? { blurb } : {}),
+    });
   }
 
   return flavors;

@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ORDER_ONLINE_URL } from '@/lib/links';
+import FlavorCone from '@/components/FlavorCone';
 import { getSiteContent, flavorAlt } from '@/lib/siteContent';
 
 const SITE_URL = 'https://cobblestonecreamery.com';
@@ -13,7 +14,7 @@ const MAPS_URL =
 export const metadata: Metadata = {
   title: 'Current Ice Cream Flavors | Cobblestone Creamery in Evansville, IN',
   description:
-    'See featured ice cream flavors at Cobblestone Creamery in Evansville, IN, from Vanilla Bean and Chocolate to Superman and Triple Peanut Butter Cup. Flavors rotate, so check the live menu and order online for pickup.',
+    'See the featured ice cream flavors at Cobblestone Creamery in Evansville, IN, from Vanilla Bean, Superman and Butter Pecan to Monster Cookie, Cinnamon Churro, Orange Sherbet and Dairy Free Vanilla. Flavors rotate, so check the live menu and order online for pickup.',
   alternates: {
     canonical: `${SITE_URL}/current-flavors`,
   },
@@ -83,7 +84,7 @@ const FAQ_ITEMS = [
   {
     question: 'Do you have dairy-free options?',
     answer:
-      'We carry dairy-free options alongside our ice cream. Because availability rotates, the live menu or a quick call to (812) 499-9866 is the best way to confirm what is on hand.',
+      'Yes. Dairy Free Vanilla is part of our featured lineup, and we carry other dairy-free options alongside our ice cream. Because availability rotates, the live menu or a quick call to (812) 499-9866 is the best way to confirm what is on hand.',
   },
 ];
 
@@ -115,8 +116,9 @@ export default async function CurrentFlavorsPage() {
             </h1>
             <p className="text-dark/60 text-lg leading-relaxed">
               Here are some of the featured ice cream flavors you will find at
-              Cobblestone Creamery in downtown Evansville. Our lineup rotates, so
-              treat this as a taste of what we love to scoop. For the live,
+              Cobblestone Creamery in downtown Evansville, from the classics to
+              the ones our regulars come back for. Our lineup rotates, so treat
+              this as a taste of what we love to scoop. For the live,
               up-to-the-minute list, always check our full menu.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
@@ -144,20 +146,28 @@ export default async function CurrentFlavorsPage() {
               Featured Flavors
             </h2>
             <p className="text-dark/50 text-center mb-10 max-w-xl mx-auto">
-              A rotating selection of the scoops our Evansville regulars reach
-              for again and again.
+              The scoops our Evansville regulars reach for again and again,
+              plus the rotating picks worth making the trip downtown for.
             </p>
             <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
               {featuredFlavors.map((flavor) => (
                 <div key={flavor.name} className="bg-cream rounded-lg overflow-hidden border border-gold/20">
-                  <div className="relative aspect-square bg-white">
-                    <Image
-                      src={flavor.image}
-                      alt={flavorAlt(flavor)}
-                      width={400}
-                      height={400}
-                      className="h-full w-full object-cover"
-                    />
+                  <div className="relative aspect-square bg-[linear-gradient(180deg,#fdf9ef_0%,#f8f3e7_60%,#efe1c5_100%)]">
+                    {flavor.image ? (
+                      <Image
+                        src={flavor.image}
+                        alt={flavorAlt(flavor)}
+                        width={400}
+                        height={400}
+                        className="h-full w-full object-contain p-3"
+                      />
+                    ) : (
+                      <FlavorCone
+                        name={flavor.name}
+                        variant="card"
+                        className="h-full w-full bg-[linear-gradient(180deg,#fdf9ef_0%,#f8f3e7_60%,#efe1c5_100%)]"
+                      />
+                    )}
                   </div>
                   <div className="p-4 text-center">
                     <h3 className="font-serif text-lg text-primary">{flavor.name}</h3>
@@ -181,10 +191,13 @@ export default async function CurrentFlavorsPage() {
               the case you see on one visit might feature something new the next.
               A few beloved classics tend to stick around because Evansville
               would not have it any other way, while other flavors come and go to
-              keep things interesting. The flavors featured above, from Vanilla
-              Bean and Chocolate to Superman, Mint Chocolate Chip, Coffee,
-              Butter Pecan, Strawberry, and Triple Peanut Butter Cup, are
-              favorites we are proud to scoop.
+              keep things interesting. The flavors featured above cover both
+              sides of that. On the classic end there is Vanilla, Vanilla Bean,
+              Chocolate, Strawberry, Mint Chocolate Chip, Butter Pecan, Coffee
+              Lovers, Superman, and Orange Sherbet. On the loaded end there is
+              Cookies N Cream, Chocolate Chip Cookie Dough, Brownie Batter
+              Cookie Dough, Monster Cookie, Cinnamon Churro, and Triple Peanut
+              Butter Cup, plus Dairy Free Vanilla for guests skipping dairy.
             </p>
             <p>
               Because flavors change, we want to be clear about one thing: this

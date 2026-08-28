@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import { ORDER_ONLINE_URL } from '@/lib/links';
 
 const SITE_URL = 'https://cobblestonecreamery.com';
 const MAPS_URL =
@@ -11,7 +10,7 @@ const MAPS_URL =
 export const metadata: Metadata = {
   title: 'Ice Cream Catering in Evansville, IN | Cobblestone Creamery Events',
   description:
-    'Ice cream catering for Evansville office parties, corporate events, and weddings. Cobblestone Creamery on Main Street helps you plan a sweet spread of ice cream, sundaes, and milkshakes for your downtown Evansville gathering. Call to plan yours.',
+    'Ice cream catering for Evansville office parties, corporate events, and weddings. Book an office party online with a $75 minimum and 11am, 12pm, or 1pm pickup, or call to plan a larger event.',
   alternates: {
     canonical: `${SITE_URL}/ice-cream-catering-evansville`,
   },
@@ -20,14 +19,14 @@ export const metadata: Metadata = {
     description:
       'Plan ice cream, sundaes, and milkshakes for Evansville office parties, corporate events, and weddings with Cobblestone Creamery on Main Street.',
     url: `${SITE_URL}/ice-cream-catering-evansville`,
-    images: [{ url: '/menu-cones/strawberry.jpg', width: 800, height: 800, alt: 'Ice cream catering for Evansville events by Cobblestone Creamery' }],
+    images: [{ url: '/menu-cones/strawberry.png', width: 800, height: 800, alt: 'Ice cream catering for Evansville events by Cobblestone Creamery' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ice Cream Catering in Evansville, IN | Cobblestone Creamery',
     description:
       'Ice cream, sundaes, and milkshakes for Evansville office parties, corporate events, and weddings. Plan your sweet spread with Cobblestone Creamery.',
-    images: ['/menu-cones/strawberry.jpg'],
+    images: ['/menu-cones/strawberry.png'],
   },
 };
 
@@ -77,19 +76,24 @@ const FAQ_ITEMS = [
       'We love helping with office parties, corporate lunches, employee appreciation days, wedding dessert tables, showers, and milestone celebrations around Evansville and the tri-state area. If your gathering could use ice cream, we are happy to help you plan a sweet spread.',
   },
   {
-    question: 'How do I plan ice cream catering for my event?',
+    question: 'How do I book ice cream for an office party?',
     answer:
-      'The best first step is to call us at (812) 499-9866 or place a large pickup order online. Tell us your date, headcount, and the kinds of treats you want, and we will help you put together a plan that fits your event.',
+      'Book it yourself online. Choose any items off our menu, pick an 11:00 AM, 12:00 PM, or 1:00 PM pickup, enter your business and contact details, and pay in full. Office party orders have a $75 minimum before tax and need at least 45 minutes of notice. For weddings and larger events, call us at (812) 499-9866 instead.',
   },
   {
     question: 'What can you include in an event order?',
     answer:
-      'Popular choices include premium ice cream by the scoop, loaded sundaes, signature milkshakes prepared fresh to order, floats, fresh waffle cones, and cobbler bowls. We also carry dairy-free options so more of your guests can join in.',
+      'Anything on our menu is available for an office party, including premium ice cream by the scoop, loaded sundaes, signature milkshakes prepared fresh to order, floats, fresh waffle cones, and cobbler bowls. We also carry dairy-free options so more of your guests can join in.',
   },
   {
-    question: 'How far in advance should I reach out?',
+    question: 'How far in advance should I book?',
     answer:
-      'For larger events like weddings and corporate functions, reach out as early as you can so we can plan around your date and headcount. For smaller office gatherings, a pickup order placed ahead of time is often all you need.',
+      'Office party pickups can be booked up to 60 days out and need at least 45 minutes of notice, so a same-day order is fine as long as the pickup time is still far enough away. For larger events like weddings and corporate functions, reach out as early as you can so we can plan around your date and headcount.',
+  },
+  {
+    question: 'How do I change or cancel an office party order?',
+    answer:
+      'Give us a call at (812) 499-9866 as soon as you can. Office party orders are paid in full when you book, so cancellations and changes are handled over the phone rather than online.',
   },
 ];
 
@@ -124,19 +128,22 @@ export default function IceCreamCateringEvansvillePage() {
               spread from our home base on Main Street in downtown Evansville.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/office-party-reservation"
+                className="inline-block bg-primary text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
+              >
+                Book an Office Party
+              </Link>
               <a
                 href="tel:+18124999866"
                 className="inline-block bg-gold text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
-                Call to Plan Your Event
-              </a>
-              <a
-                href={ORDER_ONLINE_URL}
-                className="inline-block bg-primary text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
-              >
-                Start a Pickup Order
+                Call to Plan a Larger Event
               </a>
             </div>
+            <p className="mt-4 text-sm text-dark/50">
+              Office parties: $75 minimum, 11am/12pm/1pm pickup, 45 minutes notice.
+            </p>
           </div>
         </section>
 
@@ -184,11 +191,18 @@ export default function IceCreamCateringEvansvillePage() {
               How to Get Started
             </h2>
             <p>
-              Planning is simple. Give us a call at{' '}
+              For an office party, you can{' '}
+              <Link href="/office-party-reservation" className="text-primary hover:text-gold transition-colors font-medium">book the whole thing online</Link>{' '}
+              in a few minutes. Choose any items off our menu, pick an 11:00 AM, 12:00 PM, or
+              1:00 PM pickup, add your business and contact details, and pay in full. Office
+              party orders have a $75 minimum before tax and need at least 45 minutes of
+              notice, so a same-day pickup works as long as the slot is still far enough out.
+            </p>
+            <p>
+              For weddings, larger corporate functions, or anything that needs a different
+              time, give us a call at{' '}
               <a href="tel:+18124999866" className="text-primary hover:text-gold transition-colors font-medium">(812) 499-9866</a>{' '}
-              to talk through the details, or{' '}
-              <a href={ORDER_ONLINE_URL} className="text-primary hover:text-gold transition-colors font-medium">order ice cream for pickup</a>{' '}
-              if a large to-go order fits your gathering. You can also{' '}
+              and we will plan it with you. You can also{' '}
               <Link href="/menu" className="text-primary hover:text-gold transition-colors font-medium">view the full ice cream menu</Link>{' '}
               to pick your favorites,{' '}
               <Link href="/about" className="text-primary hover:text-gold transition-colors font-medium">learn more about our locally owned shop</Link>, or{' '}
@@ -267,21 +281,21 @@ export default function IceCreamCateringEvansvillePage() {
               Let&apos;s Make Your Evansville Event Sweeter
             </h2>
             <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">
-              Call us to talk through your office party, corporate event, or
-              wedding, or start a large pickup order online.
+              Book an office party online in a few minutes, or call us to plan a wedding or
+              larger corporate event.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="tel:+18124999866"
+              <Link
+                href="/office-party-reservation"
                 className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
-                Call Now
-              </a>
+                Book an Office Party
+              </Link>
               <a
-                href={ORDER_ONLINE_URL}
+                href="tel:+18124999866"
                 className="inline-block border border-white/30 text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-white/10 transition-colors"
               >
-                Order Online
+                Call Now
               </a>
             </div>
           </div>

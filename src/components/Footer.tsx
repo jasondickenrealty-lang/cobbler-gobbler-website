@@ -12,6 +12,7 @@ const quickLinks = [
   { href: '/milkshakes-evansville', label: 'Signature Milkshakes' },
   { href: '/waffle-cones-evansville', label: 'Waffle Cones' },
   { href: '/dessert-downtown-evansville', label: 'Dessert Downtown' },
+  { href: '/office-party-reservation', label: 'Book an Office Party' },
   { href: '/ice-cream-catering-evansville', label: 'Catering' },
   { href: '/ice-cream-fundraising-evansville', label: 'Fundraising Nights' },
   { href: '/about', label: 'Our Story' },

@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     description:
       'Warm, crisp waffle cones pressed to order, plus waffle bowls and waffle nachos with premium ice cream at Cobblestone Creamery in downtown Evansville, IN.',
     url: `${SITE_URL}/waffle-cones-evansville`,
-    images: [{ url: '/menu-cones/vanilla.jpg', width: 800, height: 800, alt: 'Fresh waffle cone pressed to order at Cobblestone Creamery in Evansville' }],
+    images: [{ url: '/menu-cones/vanilla.png', width: 800, height: 800, alt: 'Fresh waffle cone pressed to order at Cobblestone Creamery in Evansville' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Fresh Waffle Cones in Evansville, IN | Cobblestone Creamery',
     description:
       'Warm, crisp waffle cones pressed to order, plus waffle bowls and waffle nachos in downtown Evansville, IN. Order online for pickup.',
-    images: ['/menu-cones/vanilla.jpg'],
+    images: ['/menu-cones/vanilla.png'],
   },
 };
 

@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import GoogleReviewsWidget from '@/components/GoogleReviewsWidget';
 import { ORDER_ONLINE_URL } from '@/lib/links';
+import FlavorCone from '@/components/FlavorCone';
 import { getSiteContent, hoursLines, hoursSentence, flavorAlt } from '@/lib/siteContent';
 
 const faqItems = [
@@ -76,7 +77,7 @@ const experienceCards = [
     title: 'Fresh Waffle Cones',
     description:
       'Hot irons, crisp edges, and the kind of smell that stops people on the sidewalk.',
-    image: '/menu-cones/vanilla.jpg',
+    image: '/menu-cones/vanilla.png',
     alt: 'Vanilla ice cream cone from Cobblestone Creamery',
     href: '/menu',
     cta: 'See The Menu',
@@ -85,7 +86,7 @@ const experienceCards = [
     title: 'Big Milkshake Energy',
     description:
       'Classic shakes, loaded toppings, and a sweeter version of the neighborhood clubhouse.',
-    image: '/menu-cones/oreo.jpg',
+    image: '/menu-cones/oreo.png',
     alt: 'Cookies and cream style dessert from Cobblestone Creamery',
     href: ORDER_ONLINE_URL,
     cta: 'Order A Shake',
@@ -115,8 +116,16 @@ const HOUSE_BLURBS: Record<string, string> = {
   'mint chocolate chip': 'Cool, crisp, and one of the first tubs to disappear.',
   'vanilla bean': 'The one everything else gets measured against.',
   'chocolate': 'Deep, cold, and exactly what it promises.',
-  'coffee': 'A little grown-up, a lot of reason to come back.',
+  'vanilla': 'The everyday scoop that never has to explain itself.',
+  'coffee lovers': 'A little grown-up, a lot of reason to come back.',
   'butter pecan': 'Buttery, toasted, and quietly the regulars\' pick.',
+  'orange sherbet': 'Bright citrus and the lightest thing in the case.',
+  'dairy free vanilla': 'The same creamy finish, no dairy required.',
+  'monster cookie': 'Cookie dough, candy, and chocolate in one scoop.',
+  'cinnamon churro': 'A warm cinnamon swirl folded through sweet cream.',
+  'brownie batter cookie dough': 'Two desserts that decided to share a scoop.',
+  'chocolate chip cookie dough': 'Loaded with dough and chips in every bite.',
+  'cookies n cream': 'Cookie pieces packed into cold sweet cream.',
 };
 
 const clubhouseNotes = [
@@ -136,10 +145,15 @@ export default async function HomePage() {
   const { hours, hoursNote, featuredFlavors } = await getSiteContent();
 
   // Four cards is what this layout is built for; the lineup can be longer.
-  const fanFavorites = featuredFlavors.slice(0, 4).map((flavor) => ({
+  // Photographed flavors lead, because these cards are mostly picture — the
+  // drawn cone is right for a grid tile but thin at 16rem tall on the home page.
+  const withPhotos = featuredFlavors.filter((flavor) => flavor.image);
+  const fanFavorites = (withPhotos.length >= 4 ? withPhotos : featuredFlavors)
+    .slice(0, 4)
+    .map((flavor) => ({
     ...flavor,
-    blurb: flavor.blurb || HOUSE_BLURBS[flavor.name.toLowerCase()] || '',
-  }));
+      blurb: flavor.blurb || HOUSE_BLURBS[flavor.name.toLowerCase()] || '',
+    }));
   const hoursDisplay = hoursLines(hours);
   const resolvedFaqItems = resolveFaqItems(hoursSentence(hours));
   const faqJsonLd = buildFaqJsonLd(resolvedFaqItems);
@@ -170,7 +184,7 @@ export default async function HomePage() {
           <div className="absolute bottom-0 left-0 right-0 h-14 bg-[linear-gradient(90deg,rgba(255,255,255,0.08),transparent_20%,transparent_80%,rgba(255,255,255,0.08))]" />
 
           <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 md:pb-24 md:pt-24">
-            <div className="grid gap-12">
+            <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
               <div className="max-w-3xl">
                 <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-white/10 px-3 py-2 text-[0.62rem] uppercase tracking-[0.16em] text-gold sm:gap-3 sm:px-4 sm:text-xs sm:tracking-[0.34em]">
                   <span className="h-2 w-2 rounded-full bg-gold" />
@@ -232,6 +246,52 @@ export default async function HomePage() {
                   ))}
                 </div>
               </div>
+
+              {/* Office party signup. Sits in the empty right half of the hero
+                  on large screens and drops below the copy on phones. The whole
+                  card is the link, so the CTA below is a span — nesting an
+                  anchor inside an anchor is invalid. */}
+              <Link
+                href="/office-party-reservation"
+                className="group block rounded-[1.75rem] border-2 border-gold/70 bg-chalk/95 p-7 shadow-[0_24px_48px_rgba(0,0,0,0.32)] backdrop-blur-sm transition-transform duration-200 hover:translate-y-[-3px] md:p-8 lg:justify-self-end lg:max-w-md"
+              >
+                <p className="inline-flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.28em] text-dugout-red">
+                  <span className="h-2 w-2 rounded-full bg-dugout-red" />
+                  Office Parties
+                </p>
+
+                <p className="mt-3 font-serif text-4xl uppercase leading-[0.98] tracking-[0.06em] text-primary md:text-[2.75rem]">
+                  Book An
+                  <span className="block text-dugout-red">Office Party</span>
+                </p>
+
+                <p className="mt-4 text-base leading-7 text-dark/[0.72]">
+                  Treat the whole office. Pick anything off our menu, choose your pickup
+                  time, and pay online — we&apos;ll have it boxed up and ready.
+                </p>
+
+                <ul className="mt-5 space-y-2 border-t border-primary/10 pt-5 text-sm text-dark/[0.72]">
+                  <li className="flex items-center gap-3">
+                    <span className="font-serif text-lg text-gold">$75</span>
+                    minimum, before tax
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <span className="font-serif text-lg text-gold">3</span>
+                    pickup times — 11am, 12pm, 1pm
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <span className="font-serif text-lg text-gold">45</span>
+                    minutes minimum notice
+                  </li>
+                </ul>
+
+                <span className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-dugout-red px-8 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white transition-colors group-hover:bg-[#ca4438]">
+                  Book Your Party
+                  <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </span>
+              </Link>
             </div>
           </div>
         </section>
@@ -288,12 +348,12 @@ export default async function HomePage() {
                   key={card.title}
                   className="group overflow-hidden rounded-[2rem] border border-dark/[0.08] bg-white shadow-[0_16px_34px_rgba(16,36,63,0.08)]"
                 >
-                  <div className="relative h-72 overflow-hidden">
+                  <div className="relative h-72 overflow-hidden bg-[linear-gradient(180deg,#fdf9ef_0%,#f8f3e7_60%,#efe1c5_100%)]">
                     <Image
                       src={card.image}
                       alt={card.alt}
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_30%,rgba(11,22,40,0.62)_100%)]" />
                     <p className="absolute left-5 top-5 rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[0.68rem] uppercase tracking-[0.28em] text-white backdrop-blur-sm">
@@ -332,10 +392,10 @@ export default async function HomePage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="relative min-h-[320px] overflow-hidden rounded-[2rem] border border-dark/[0.08] bg-primary">
                 <Image
-                  src="/menu-cones/chocolate.jpeg"
+                  src="/menu-cones/chocolate.png"
                   alt="Chocolate ice cream dessert from Cobblestone Creamery"
                   fill
-                  className="object-cover"
+                  className="object-contain p-8"
                 />
               </div>
               <div className="flex min-h-[320px] flex-col justify-between rounded-[2rem] border border-dark/[0.08] bg-[linear-gradient(180deg,#10243f_0%,#1d466f_100%)] p-8 text-white shadow-[0_18px_36px_rgba(16,36,63,0.18)]">
@@ -472,8 +532,16 @@ export default async function HomePage() {
                   key={item.name}
                   className="overflow-hidden rounded-[2rem] border border-dark/[0.08] bg-white shadow-[0_16px_30px_rgba(16,36,63,0.08)]"
                 >
-                  <div className="relative h-64">
-                    <Image src={item.image} alt={flavorAlt(item)} fill className="object-cover" />
+                  <div className="relative h-64 bg-[linear-gradient(180deg,#fdf9ef_0%,#f8f3e7_60%,#efe1c5_100%)]">
+                    {item.image ? (
+                      <Image src={item.image} alt={flavorAlt(item)} fill className="object-contain p-3" />
+                    ) : (
+                      <FlavorCone
+                        name={item.name}
+                        variant="card"
+                        className="h-full w-full bg-[linear-gradient(180deg,#fdf9ef_0%,#f8f3e7_60%,#efe1c5_100%)]"
+                      />
+                    )}
                   </div>
                   <div className="p-6">
                     <h3 className="font-serif text-3xl uppercase tracking-[0.08em] text-primary">

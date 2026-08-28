@@ -33,6 +33,8 @@ export interface MenuItem {
   imageUrl?: string;
   displayOrder?: number;
   categoryOrder?: number;
+  /** Modifier groups this item offers. Used by the office party builder. */
+  modifierCategoryIds?: string[];
 }
 
 /** A menu category as shown on the page — name plus its optional blurb. */
@@ -45,6 +47,17 @@ export interface ModifierCategory {
   id: string;
   name: string;
   displayOrder?: number;
+  /**
+   * Selection rules. The POS Settings screen saves the singular spellings;
+   * older docs use the plural. Both are carried through so getModifierRule()
+   * can accept either — see lib/modifierRules.ts.
+   */
+  minSelection?: number;
+  maxSelection?: number;
+  minSelections?: number;
+  maxSelections?: number;
+  isRequired?: boolean;
+  required?: boolean;
 }
 
 export interface Modifier {
@@ -142,6 +155,9 @@ export async function getMenuData(): Promise<MenuData> {
           imageUrl: str(item.imageUrl) || undefined,
           displayOrder: num(item.displayOrder, 999),
           categoryOrder: num(linked?.displayOrder ?? item.categoryOrder, 999),
+          modifierCategoryIds: Array.isArray(item.modifierCategoryIds)
+            ? (item.modifierCategoryIds as unknown[]).map(str).filter(Boolean)
+            : [],
         };
       })
       // An item whose category was deleted has nowhere to sit on the page.
@@ -187,6 +203,14 @@ export async function getMenuData(): Promise<MenuData> {
         id: str(doc.id),
         name: str(doc.name),
         displayOrder: num(doc.displayOrder, 999),
+        // Passed through as-is (including undefined) so presence, not value,
+        // decides which spelling wins in getModifierRule().
+        minSelection: doc.minSelection as number | undefined,
+        maxSelection: doc.maxSelection as number | undefined,
+        minSelections: doc.minSelections as number | undefined,
+        maxSelections: doc.maxSelections as number | undefined,
+        isRequired: doc.isRequired as boolean | undefined,
+        required: doc.required as boolean | undefined,
       }))
       .sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999));
 

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ORDER_ONLINE_URL } from '@/lib/links';
+import FlavorCone from '@/components/FlavorCone';
 import { getSiteContent, flavorAlt } from '@/lib/siteContent';
 import { getMenuData, categoryAnchorId, type MenuItem, type MenuCategory } from '@/lib/menu-data';
 
@@ -104,13 +105,20 @@ export default async function MenuPage() {
             <div className="grid grid-cols-2 gap-4 sm:gap-8 md:grid-cols-3 lg:grid-cols-5 place-items-center">
               {featuredFlavors.map((cone) => (
                 <figure key={cone.name} className="text-center">
-                  <Image
-                    src={cone.image}
-                    alt={flavorAlt(cone)}
-                    width={231}
-                    height={432}
-                    className="w-full max-w-[180px] h-auto object-contain mx-auto drop-shadow-sm"
-                  />
+                  {cone.image ? (
+                    <Image
+                      src={cone.image}
+                      alt={flavorAlt(cone)}
+                      width={231}
+                      height={432}
+                      className="w-full max-w-[180px] h-auto object-contain mx-auto drop-shadow-sm"
+                    />
+                  ) : (
+                    <FlavorCone
+                      name={cone.name}
+                      className="w-full max-w-[180px] h-auto mx-auto drop-shadow-sm"
+                    />
+                  )}
                   <figcaption className="mt-3 text-sm text-dark/70">{cone.name}</figcaption>
                 </figure>
               ))}

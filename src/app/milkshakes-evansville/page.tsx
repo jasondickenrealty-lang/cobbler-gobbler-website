@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     description:
       'Signature milkshakes and floats blended to order with premium ice cream at 900 Main Street in downtown Evansville, Indiana. Order online for pickup!',
     url: `${SITE_URL}/milkshakes-evansville`,
-    images: [{ url: '/menu-cones/oreo.jpg', width: 800, height: 800, alt: 'Signature milkshake at Cobblestone Creamery in Evansville, IN' }],
+    images: [{ url: '/menu-cones/oreo.png', width: 800, height: 800, alt: 'Signature milkshake at Cobblestone Creamery in Evansville, IN' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Milkshakes in Evansville, IN | Cobblestone Creamery',
     description:
       'Thick, signature milkshakes and floats blended to order in downtown Evansville, IN. Order online for pickup or visit us seven days a week.',
-    images: ['/menu-cones/oreo.jpg'],
+    images: ['/menu-cones/oreo.png'],
   },
 };
 
