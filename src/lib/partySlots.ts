@@ -12,7 +12,7 @@
 
 const TIME_ZONE = 'America/Chicago';
 
-/** The only pickup times an office party may be booked for. */
+/** The only delivery times an office party may be booked for. */
 export const SLOTS = ['11:00', '12:00', '13:00'] as const;
 
 export type SlotTime = (typeof SLOTS)[number];
@@ -25,6 +25,21 @@ export const LEAD_TIME_MINUTES = 45;
 
 /** How far into the future bookings are accepted. */
 export const MAX_DAYS_AHEAD = 60;
+
+/**
+ * How a party's orders get paid for. Chosen by the host when the reservation
+ * is created and fixed from then on, because it decides whether a guest is
+ * asked for a card at all.
+ */
+export const BILLING_MODES = ['individual', 'host'] as const;
+
+export type BillingMode = (typeof BILLING_MODES)[number];
+
+/**
+ * How long an uncaptured card hold stays good, in days. Quoted to guests so
+ * they know what the hold on their statement means.
+ */
+export const AUTH_HOLD_DAYS = 7;
 
 /**
  * Slots allowed per weekday (0 = Sunday). The shop opens at noon on Sunday, so
@@ -157,6 +172,20 @@ export function availableSlotsFor(
     const instant = centralInstant(dateKey, slot);
     return instant !== null && instant.getTime() >= cutoff;
   });
+}
+
+/**
+ * May guests still add orders to a party? Mirrors the server's rule: once the
+ * slot is inside the lead time the kitchen is already working from what it has.
+ */
+export function orderingWindowOpen(
+  dateKey: string,
+  time: string,
+  now: Date = new Date()
+): boolean {
+  const instant = centralInstant(dateKey, time);
+  if (!instant) return false;
+  return instant.getTime() >= now.getTime() + LEAD_TIME_MINUTES * 60000;
 }
 
 /** Friendly label for a date key, e.g. "Thursday, August 27". */

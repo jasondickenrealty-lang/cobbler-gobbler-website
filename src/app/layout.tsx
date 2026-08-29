@@ -137,7 +137,7 @@ const baseJsonLd = {
   logo: `${SITE_URL}/logo.png`,
   url: SITE_URL,
   telephone: '+18124999866',
-  email: 'info@cobblestonecreamery.com',
+  email: 'cobblestonecreameryllc@gmail.com',
   address: {
     '@type': 'PostalAddress',
     streetAddress: '900 Main Street',
@@ -228,7 +228,7 @@ const organizationJsonLd = {
   name: 'Cobblestone Creamery',
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
-  email: 'info@cobblestonecreamery.com',
+  email: 'cobblestonecreameryllc@gmail.com',
   telephone: '+18124999866',
   foundingDate: '2026',
   sameAs: ['https://www.facebook.com/profile.php?id=61588303764359'],

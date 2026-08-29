@@ -261,13 +261,13 @@ export default async function HomePage() {
                 </p>
 
                 <p className="mt-3 font-serif text-4xl uppercase leading-[0.98] tracking-[0.06em] text-primary md:text-[2.75rem]">
-                  Book An
+                  Host An
                   <span className="block text-dugout-red">Office Party</span>
                 </p>
 
                 <p className="mt-4 text-base leading-7 text-dark/[0.72]">
-                  Treat the whole office. Pick anything off our menu, choose your pickup
-                  time, and pay online — we&apos;ll have it boxed up and ready.
+                  Set up the party, share the link, and let everyone order and pay for
+                  their own — or put the whole thing on the company card.
                 </p>
 
                 <ul className="mt-5 space-y-2 border-t border-primary/10 pt-5 text-sm text-dark/[0.72]">
@@ -277,16 +277,16 @@ export default async function HomePage() {
                   </li>
                   <li className="flex items-center gap-3">
                     <span className="font-serif text-lg text-gold">3</span>
-                    pickup times — 11am, 12pm, 1pm
+                    delivery times — 11am, 12pm, 1pm
                   </li>
                   <li className="flex items-center gap-3">
-                    <span className="font-serif text-lg text-gold">45</span>
-                    minutes minimum notice
+                    <span className="font-serif text-lg text-gold">60</span>
+                    days ahead you can book
                   </li>
                 </ul>
 
                 <span className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-dugout-red px-8 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white transition-colors group-hover:bg-[#ca4438]">
-                  Book Your Party
+                  Start Your Party
                   <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
                     &rarr;
                   </span>

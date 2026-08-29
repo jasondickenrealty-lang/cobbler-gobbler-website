@@ -147,8 +147,8 @@ export default function FundraisingPage() {
                   <h3 className="font-serif text-xl text-primary mb-2">Reach Out</h3>
                   <p className="text-dark/60 leading-relaxed">
                     Email us at{' '}
-                    <a href="mailto:info@cobblestonecreamery.com" className="text-primary hover:text-gold underline transition-colors">
-                      info@cobblestonecreamery.com
+                    <a href="mailto:cobblestonecreameryllc@gmail.com" className="text-primary hover:text-gold underline transition-colors">
+                      cobblestonecreameryllc@gmail.com
                     </a>{' '}
                     or call{' '}
                     <a href="tel:+18124999866" className="text-primary hover:text-gold underline transition-colors">
@@ -242,7 +242,7 @@ export default function FundraisingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:info@cobblestonecreamery.com"
+                href="mailto:cobblestonecreameryllc@gmail.com"
                 className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
                 Email Us

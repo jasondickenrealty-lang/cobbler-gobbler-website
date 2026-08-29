@@ -2,27 +2,22 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import OfficePartyBooking from '@/components/office-party/OfficePartyBooking';
-import { getMenuData } from '@/lib/menu-data';
-import { MIN_SUBTOTAL_CENTS, LEAD_TIME_MINUTES } from '@/lib/partySlots';
+import OfficePartyHostForm from '@/components/office-party/OfficePartyHostForm';
+import { MIN_SUBTOTAL_CENTS, MAX_DAYS_AHEAD } from '@/lib/partySlots';
 
 const SITE_URL = 'https://cobblestonecreamery.com';
 
-// The menu is fetched per request so an item pulled from the POS cannot be
-// ordered from a stale cached page.
-export const dynamic = 'force-dynamic';
-
 export const metadata: Metadata = {
-  title: 'Book an Office Party | Cobblestone Creamery Evansville',
+  title: 'Host an Office Party | Cobblestone Creamery Evansville',
   description:
-    'Reserve ice cream for your Evansville office party online. Pick any items off our menu, choose an 11am, 12pm, or 1pm pickup, and pay in full. $75 minimum.',
+    'Set up an ice cream office party in Evansville, share the link with your coworkers, and let everyone order and pay for what they want. $75 minimum, delivered to your floor.',
   alternates: {
     canonical: `${SITE_URL}/office-party-reservation`,
   },
   openGraph: {
-    title: 'Book an Office Party | Cobblestone Creamery',
+    title: 'Host an Office Party | Cobblestone Creamery',
     description:
-      'Reserve ice cream for your Evansville office party online. Any menu item, 11am/12pm/1pm pickup, $75 minimum.',
+      'Set up the party, share the link, let everyone order their own. $75 minimum, delivered to your floor.',
     url: `${SITE_URL}/office-party-reservation`,
     images: [
       {
@@ -49,7 +44,7 @@ const breadcrumbJsonLd = {
     {
       '@type': 'ListItem',
       position: 3,
-      name: 'Book an Office Party',
+      name: 'Host an Office Party',
       item: `${SITE_URL}/office-party-reservation`,
     },
   ],
@@ -57,9 +52,22 @@ const breadcrumbJsonLd = {
 
 const MINIMUM_LABEL = `$${(MIN_SUBTOTAL_CENTS / 100).toFixed(0)}`;
 
-export default async function OfficePartyReservationPage() {
-  const menu = await getMenuData();
+const STEPS = [
+  {
+    title: 'Set it up',
+    body: 'Tell us your company, where in the building to deliver, and when. Takes a minute, and costs nothing.',
+  },
+  {
+    title: 'Share the link',
+    body: 'Send it around the office. Everyone picks their own thing off the full menu — no group spreadsheet.',
+  },
+  {
+    title: `Hit ${MINIMUM_LABEL} and it's on`,
+    body: 'The party goes ahead as soon as the orders add up to the minimum. Until then nobody is charged.',
+  },
+];
 
+export default function OfficePartyReservationPage() {
   return (
     <>
       <script
@@ -72,44 +80,44 @@ export default async function OfficePartyReservationPage() {
         <section className="bg-cream">
           <div className="max-w-3xl mx-auto px-6 py-16 md:py-20 text-center">
             <h1 className="text-4xl md:text-5xl font-serif text-primary mb-5">
-              Book an Office Party
+              Host an Office Party
             </h1>
             <p className="text-dark/60 text-lg leading-relaxed">
-              Pick anything off our menu, choose a pickup time, and pay online. We will have
-              it boxed up and ready at 900 Main Street.
+              Start the party here, then send the link around and let everyone order what
+              they actually want. We box it all up and bring it to your floor.
             </p>
-            <ul className="mt-8 grid gap-3 sm:grid-cols-3 text-sm">
-              <li className="rounded-lg bg-white/70 px-4 py-3 text-dark/70">
-                <span className="block font-bold text-primary">{MINIMUM_LABEL} minimum</span>
-                before tax
-              </li>
-              <li className="rounded-lg bg-white/70 px-4 py-3 text-dark/70">
-                <span className="block font-bold text-primary">11am · 12pm · 1pm</span>
-                pickup times
-              </li>
-              <li className="rounded-lg bg-white/70 px-4 py-3 text-dark/70">
-                <span className="block font-bold text-primary">
-                  {LEAD_TIME_MINUTES} minutes ahead
-                </span>
-                minimum notice
-              </li>
-            </ul>
+            <ol className="mt-10 grid gap-4 sm:grid-cols-3 text-left">
+              {STEPS.map((step, index) => (
+                <li
+                  key={step.title}
+                  className="rounded-xl bg-white/70 px-5 py-4 text-sm text-dark/70"
+                >
+                  <span className="block text-xs font-bold uppercase tracking-widest text-gold">
+                    Step {index + 1}
+                  </span>
+                  <span className="mt-1 block font-bold text-primary">{step.title}</span>
+                  <span className="mt-1 block leading-6">{step.body}</span>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-8 text-sm text-dark/55">
+              {MINIMUM_LABEL} minimum before tax · 11am, 12pm or 1pm delivery · book up to{' '}
+              {MAX_DAYS_AHEAD} days ahead
+            </p>
           </div>
         </section>
 
-        {/* Booking flow */}
+        {/* Host setup */}
         <section className="bg-white">
-          <OfficePartyBooking menu={menu} />
+          <OfficePartyHostForm />
         </section>
 
         {/* Footer note */}
         <section className="bg-cream">
           <div className="max-w-3xl mx-auto px-6 py-14 text-center">
-            <h2 className="text-2xl font-serif text-primary mb-3">
-              Planning something bigger?
-            </h2>
+            <h2 className="text-2xl font-serif text-primary mb-3">Planning something bigger?</h2>
             <p className="text-dark/60 leading-relaxed">
-              Weddings, large corporate events, and anything outside these pickup windows are
+              Weddings, large corporate events, and anything outside these delivery windows are
               still best handled by phone. Call{' '}
               <a
                 href="tel:+18124999866"
@@ -124,7 +132,14 @@ export default async function OfficePartyReservationPage() {
               >
                 ice cream catering in Evansville
               </Link>
-              .
+              . You can also{' '}
+              <Link
+                href="/menu"
+                className="text-primary hover:text-gold transition-colors font-medium"
+              >
+                browse the full menu
+              </Link>{' '}
+              before you set anything up.
             </p>
           </div>
         </section>

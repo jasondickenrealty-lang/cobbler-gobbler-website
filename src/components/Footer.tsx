@@ -12,7 +12,7 @@ const quickLinks = [
   { href: '/milkshakes-evansville', label: 'Signature Milkshakes' },
   { href: '/waffle-cones-evansville', label: 'Waffle Cones' },
   { href: '/dessert-downtown-evansville', label: 'Dessert Downtown' },
-  { href: '/office-party-reservation', label: 'Book an Office Party' },
+  { href: '/office-party-reservation', label: 'Host an Office Party' },
   { href: '/ice-cream-catering-evansville', label: 'Catering' },
   { href: '/ice-cream-fundraising-evansville', label: 'Fundraising Nights' },
   { href: '/about', label: 'Our Story' },
@@ -100,14 +100,14 @@ export default function Footer() {
                 </p>
                 <p>
                   <a
-                    href="mailto:info@cobblestonecreamery.com"
+                    href="mailto:cobblestonecreameryllc@gmail.com"
                     /* normal-case + no tracking + break-all: uppercased with
                        0.14em tracking this 28-char address measured ~310px
                        against a 262px card and scrolled the whole page
                        sideways on a 360px phone. */
                     className="inline-flex min-h-[44px] items-center break-all normal-case tracking-normal transition-colors hover:text-gold"
                   >
-                    info@cobblestonecreamery.com
+                    cobblestonecreameryllc@gmail.com
                   </a>
                 </p>
               </address>

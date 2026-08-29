@@ -261,8 +261,8 @@ export default function SmsOptInPage() {
                   dangerouslySetInnerHTML={{
                     __html:
                       '<!--email_off-->' +
-                      '<a href="mailto:info@cobblestonecreamery.com" class="text-primary hover:text-gold transition-colors">' +
-                      'info@cobblestonecreamery.com' +
+                      '<a href="mailto:cobblestonecreameryllc@gmail.com" class="text-primary hover:text-gold transition-colors">' +
+                      'cobblestonecreameryllc@gmail.com' +
                       '</a>' +
                       '<!--email_on-->',
                   }}

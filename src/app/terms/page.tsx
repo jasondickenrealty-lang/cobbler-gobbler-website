@@ -98,8 +98,8 @@ export default function TermsPage() {
               <p className="mb-4">
                 <span className="font-medium text-dark">Help:</span> For assistance with our SMS program,
                 reply <strong>HELP</strong> to any message you receive from us, or contact us directly at{' '}
-                <a href="mailto:info@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
-                  info@cobblestonecreamery.com
+                <a href="mailto:cobblestonecreameryllc@gmail.com" className="text-primary hover:text-gold transition-colors">
+                  cobblestonecreameryllc@gmail.com
                 </a>{' '}
                 or{' '}
                 <a href="tel:8124999866" className="text-primary hover:text-gold transition-colors">
@@ -164,8 +164,8 @@ export default function TermsPage() {
                 <p className="font-medium text-dark">Cobblestone Creamery</p>
                 <p>900 Main Street, Evansville, Indiana 47708</p>
                 <p>
-                  <a href="mailto:info@cobblestonecreamery.com" className="text-primary hover:text-gold transition-colors">
-                    info@cobblestonecreamery.com
+                  <a href="mailto:cobblestonecreameryllc@gmail.com" className="text-primary hover:text-gold transition-colors">
+                    cobblestonecreameryllc@gmail.com
                   </a>
                 </p>
                 <p>

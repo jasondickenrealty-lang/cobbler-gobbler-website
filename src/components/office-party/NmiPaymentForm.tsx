@@ -23,6 +23,10 @@ interface NmiPaymentFormProps {
   onError: (message: string) => void;
   processing: boolean;
   disabled?: boolean;
+  /** Verb on the button. A guest places a hold; a host pays outright. */
+  action?: string;
+  /** Reassurance under the card fields, e.g. what a hold means. */
+  note?: string;
 }
 
 interface CollectJsResponse {
@@ -57,6 +61,8 @@ export default function NmiPaymentForm({
   onError,
   processing,
   disabled = false,
+  action = 'Pay',
+  note,
 }: NmiPaymentFormProps) {
   const collectJsUrls = COLLECT_JS_URLS[environment] ?? COLLECT_JS_URLS.production;
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -200,8 +206,8 @@ export default function NmiPaymentForm({
   return (
     <div className="space-y-4">
       <p className="text-xs text-dark/60">
-        Card details are entered securely through NMI and never touch our servers. Your
-        reservation is only created after the card is approved.
+        Card details are entered securely through NMI and never touch our servers.
+        {note ? ` ${note}` : ' Your order is only saved after the card is approved.'}
       </p>
 
       {/* Collect.js injects secure iframes into these containers */}
@@ -260,7 +266,7 @@ export default function NmiPaymentForm({
         }}
         className="min-h-[52px] w-full rounded-xl bg-primary px-6 py-3.5 text-lg font-bold text-cream transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {busy ? 'Processing…' : `Pay $${amount} & Book Party`}
+        {busy ? 'Processing…' : `${action} $${amount}`}
       </button>
     </div>
   );

@@ -80,7 +80,7 @@ const menuItems = [
 <p>123 Main Street</p>              ← YOUR STREET
 <p>Sweetville, ST 12345</p>         ← YOUR CITY/ZIP
 <p>📞 (555) 123-4567</p>            ← YOUR PHONE
-<p>✉️ info@cobblestonecreamery.com</p>  ← YOUR EMAIL
+<p>✉️ cobblestonecreameryllc@gmail.com</p>  ← YOUR EMAIL
 ```
 
 **Change Hours** (around line 35):

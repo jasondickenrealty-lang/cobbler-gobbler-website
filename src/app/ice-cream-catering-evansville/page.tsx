@@ -10,7 +10,7 @@ const MAPS_URL =
 export const metadata: Metadata = {
   title: 'Ice Cream Catering in Evansville, IN | Cobblestone Creamery Events',
   description:
-    'Ice cream catering for Evansville office parties, corporate events, and weddings. Book an office party online with a $75 minimum and 11am, 12pm, or 1pm pickup, or call to plan a larger event.',
+    'Ice cream catering for Evansville office parties, corporate events, and weddings. Book an office party online with a $75 minimum and 11am, 12pm, or 1pm delivery, or call to plan a larger event.',
   alternates: {
     canonical: `${SITE_URL}/ice-cream-catering-evansville`,
   },
@@ -78,7 +78,7 @@ const FAQ_ITEMS = [
   {
     question: 'How do I book ice cream for an office party?',
     answer:
-      'Book it yourself online. Choose any items off our menu, pick an 11:00 AM, 12:00 PM, or 1:00 PM pickup, enter your business and contact details, and pay in full. Office party orders have a $75 minimum before tax and need at least 45 minutes of notice. For weddings and larger events, call us at (812) 499-9866 instead.',
+      'Book it yourself online. Choose any items off our menu, pick an 11:00 AM, 12:00 PM, or 1:00 PM delivery, enter your business and contact details, and pay in full. Office party orders have a $75 minimum before tax and need at least 45 minutes of notice. For weddings and larger events, call us at (812) 499-9866 instead.',
   },
   {
     question: 'What can you include in an event order?',
@@ -88,7 +88,7 @@ const FAQ_ITEMS = [
   {
     question: 'How far in advance should I book?',
     answer:
-      'Office party pickups can be booked up to 60 days out and need at least 45 minutes of notice, so a same-day order is fine as long as the pickup time is still far enough away. For larger events like weddings and corporate functions, reach out as early as you can so we can plan around your date and headcount.',
+      'Office party deliveries can be booked up to 60 days out and need at least 45 minutes of notice, so a same-day order is fine as long as the delivery time is still far enough away. For larger events like weddings and corporate functions, reach out as early as you can so we can plan around your date and headcount.',
   },
   {
     question: 'How do I change or cancel an office party order?',
@@ -132,7 +132,7 @@ export default function IceCreamCateringEvansvillePage() {
                 href="/office-party-reservation"
                 className="inline-block bg-primary text-white px-8 py-3 rounded text-sm font-medium tracking-wide uppercase hover:bg-primary/90 transition-colors"
               >
-                Book an Office Party
+                Host an Office Party
               </Link>
               <a
                 href="tel:+18124999866"
@@ -142,7 +142,7 @@ export default function IceCreamCateringEvansvillePage() {
               </a>
             </div>
             <p className="mt-4 text-sm text-dark/50">
-              Office parties: $75 minimum, 11am/12pm/1pm pickup, 45 minutes notice.
+              Office parties: $75 minimum, 11am/12pm/1pm delivery, book up to 60 days ahead.
             </p>
           </div>
         </section>
@@ -192,11 +192,14 @@ export default function IceCreamCateringEvansvillePage() {
             </h2>
             <p>
               For an office party, you can{' '}
-              <Link href="/office-party-reservation" className="text-primary hover:text-gold transition-colors font-medium">book the whole thing online</Link>{' '}
-              in a few minutes. Choose any items off our menu, pick an 11:00 AM, 12:00 PM, or
-              1:00 PM pickup, add your business and contact details, and pay in full. Office
-              party orders have a $75 minimum before tax and need at least 45 minutes of
-              notice, so a same-day pickup works as long as the slot is still far enough out.
+              <Link href="/office-party-reservation" className="text-primary hover:text-gold transition-colors font-medium">set the whole thing up online</Link>{' '}
+              in a few minutes. Pick an 11:00 AM, 12:00 PM, or 1:00 PM delivery, tell us where
+              in your building to bring it, and choose whether everyone pays for their own
+              order or the company covers it. Then share the link and let each person order
+              what they actually want off the full menu. The party is confirmed as soon as the
+              orders reach the $75 minimum before tax — until then nobody is charged. Book
+              anywhere from 45 minutes out to 60 days ahead, so same-day and next-month both
+              work.
             </p>
             <p>
               For weddings, larger corporate functions, or anything that needs a different
@@ -289,7 +292,7 @@ export default function IceCreamCateringEvansvillePage() {
                 href="/office-party-reservation"
                 className="inline-block bg-gold text-white px-10 py-3.5 rounded text-sm font-medium tracking-wide uppercase hover:bg-gold/90 transition-colors"
               >
-                Book an Office Party
+                Host an Office Party
               </Link>
               <a
                 href="tel:+18124999866"

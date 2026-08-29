@@ -63,7 +63,7 @@ const locationJsonLd = [
     name: 'Cobblestone Creamery',
     url: SITE_URL,
     telephone: '+18124999866',
-    email: 'info@cobblestonecreamery.com',
+    email: 'cobblestonecreameryllc@gmail.com',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '900 Main Street',
